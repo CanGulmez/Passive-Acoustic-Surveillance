@@ -180,6 +180,10 @@ void nav_plot_area_accel(cairo_t *cr, int width, int height, NavAccel navAccel)
 			cairo_line_to(cr, center_x, center_y + NAV_PLOT_VAXIS);
 			cairo_line_to(cr, center_x + 10, center_y + NAV_PLOT_VAXIS - 10);
 			break;
+
+		case NAV_ACCEL_UNDEF:
+			/* Not found any data so that leave it back. */
+			break;
 	}
 	cairo_stroke(cr);
 }
@@ -235,7 +239,7 @@ void nav_plot_area_gyro(cairo_t *cr, int width, int height, NavGyro navGyro)
 
 			/* Draw the elliptical circle toward to left side. */
 			cairo_move_to(cr, center_x + 30, center_y - NAV_PLOT_VAXIS + 20);
-			cairo_arc(cr, center_x, center_y - NAV_PLOT_VAXIS + 20,30, 0, -M_PI);
+			cairo_arc(cr, center_x, center_y - NAV_PLOT_VAXIS + 20, 30, 0, -M_PI);
 
 			cairo_move_to(cr, center_x + 30 - 10, center_y - NAV_PLOT_VAXIS + 20 + 10);
 			cairo_line_to(cr, center_x + 30, center_y - NAV_PLOT_VAXIS + 20);
@@ -254,6 +258,10 @@ void nav_plot_area_gyro(cairo_t *cr, int width, int height, NavGyro navGyro)
 			cairo_move_to(cr, center_x - 30 - 10, center_y - NAV_PLOT_VAXIS + 20 + 10);
 			cairo_line_to(cr, center_x - 30, center_y - NAV_PLOT_VAXIS + 20);
 			cairo_line_to(cr, center_x - 30 + 10, center_y - NAV_PLOT_VAXIS + 20 + 10);
+			break;
+
+		case NAV_GYRO_UNDEF:
+			/* Not found any data so that leave it back. */
 			break;
 	}
 	cairo_stroke(cr);

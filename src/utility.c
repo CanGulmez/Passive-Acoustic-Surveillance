@@ -77,8 +77,8 @@ void set_serial_attributes(int fd, struct termios *tty)
    tty->c_iflag &= ~(IXON | IXOFF | IXANY);
    tty->c_lflag &= ~(ICANON | ECHO | ECHOE | ECHONL | ISIG); 	/* Raw mode */
    tty->c_oflag &= ~OPOST;
-   tty->c_cc[VTIME] = 0;  				
-   tty->c_cc[VMIN] = 0;
+   tty->c_cc[VTIME] = 10;  				
+   tty->c_cc[VMIN] = 1;
    tty->c_cflag |= CREAD | CLOCAL;	/* Enable receiver */
 
    if (tcsetattr(fd, TCSANOW, tty) == -1)
@@ -170,13 +170,7 @@ int open_device_node(MicChannel channel, const char *node)
 	pathSize += strlen(node);
 	devicePath[pathSize] = '\0';
 
-	fd = open(
-		devicePath, 
-		O_RDONLY 	| 						/* read-only channel */
-		O_NOCTTY 	|						/* no controlling terminal */
-		O_NONBLOCK 	| 						/* non-blocking I/O */
-		O_SYNC								/* wait for completion */
-	);	
+	fd = open(devicePath, O_RDONLY);	/* read-only channel */	
 	if (fd == -1)
 	{
 		syscallError();
@@ -198,17 +192,35 @@ void read_device_node(int fd)
 {
 	ssize_t numRead, totalRead;
 	uint8_t *payloadPtr;
+	uint32_t magicNum;
 	long payloadSize;
 
-	/* Initialize with NULLs. */
+	/* Initialize with 0s. */
 	memset(&payloadData, 0, sizeof(payloadData));
 
+	/* Firstly, find the magic number to synchronize the stream. */
+	while (TRUE)
+	{
+		numRead = read(fd, &magicNum, sizeof(magicNum));
+		if (numRead == sizeof(magicNum))
+		{
+			if (magicNum == MAGIC_WORD)
+			{
+				break;
+			}
+		}
+		else if (numRead == -1 && errno != EAGAIN)
+			syscallError();
+	}
+
+	totalRead = 0;
 	payloadPtr = (uint8_t *) &payloadData;
 	payloadSize = sizeof(payloadData);
-	totalRead = 0;
-	/* Read the device node simulatenously. If the received data is 
-		bigger than kernel buffer size (defaultly, 4096 bytes), loop 
-		the read operations. */
+	/**
+	 * Read the device node simulatenously. If the received data is 
+	 * bigger than kernel buffer size (defaultly, 4096 bytes), loop 
+	 * the read operations.
+	 */
 	while (totalRead < payloadSize)
 	{
 		numRead = read(fd, payloadPtr+totalRead, payloadSize-totalRead);

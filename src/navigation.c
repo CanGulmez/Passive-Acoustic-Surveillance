@@ -19,8 +19,8 @@
 
 /* Shared widgets and variables */
 
-NavAccel navAccel = NAV_ACCEL_X_PLUS;
-NavGyro navGyro = NAV_ACCEL_Z_MINUS;
+NavAccel navAccel = NAV_ACCEL_UNDEF;
+NavGyro navGyro = NAV_ACCEL_UNDEF;
 GtkWidget *navPlotArea;
 NavButton navButton;
 GtkWidget *navSensorRows[8];	/* module, accel-status, accel-output,

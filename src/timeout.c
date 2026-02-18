@@ -49,7 +49,7 @@ gboolean timeout_device_node(gpointer data)
 	/* Lastly, redraw the cartesian and polar plots. */
 	gtk_widget_queue_draw(micCarPlot);
 	gtk_widget_queue_draw(micPolarPlot);
-	printLog("requested the plot redraws");
+	printLog("requested the microphone plot redraws");
 
 	return G_SOURCE_CONTINUE;
 }
@@ -98,6 +98,7 @@ gboolean timeout_nav_update(gpointer data)
 {
 	/* Update the navigation data. */
 	update_nav_data();
+	printLog("updated the navigation data correctly");
 
 	/* Select the direction and rotation for plot. */
 	navAccel = select_accel_direction();
@@ -105,6 +106,7 @@ gboolean timeout_nav_update(gpointer data)
 
 	/* Request redraw for navigation plot. */
 	gtk_widget_queue_draw(navPlotArea);
+	printLog("requested the navigtion plot redraw");
 
 	return G_SOURCE_CONTINUE;
 }
@@ -118,6 +120,7 @@ gboolean timeout_gps_update(gpointer)
 
 	/* Update the gps module data. */
 	update_gps_data();
+	printLog("updated the GPS map data correctly");
 
 	/* Update the GPS map. */
 	latitude = atof(payloadData.gpsLatitude);
@@ -126,6 +129,7 @@ gboolean timeout_gps_update(gpointer)
 	// gps_map_area_markers(gpsMarkerLayer, 41.008, 28.9784 + i * 0.01);
 	shumate_map_center_on(gpsMap, latitude, longitude);
 	gps_map_area_markers(gpsMarkerLayer, latitude, longitude);
+	printLog("marked the last position onto the map");
 
 	return G_SOURCE_CONTINUE;
 }

@@ -116,19 +116,19 @@ extern "C" {
 #define GPS_INIT_LONG						28.9784
 #define GPS_MODULE							"E22 900T22D"
 
-#define TIMEOUT_DEVICE_READ				2000		/* ms */
-#define TIMEOUT_PLOT_REDRAW				2000		/* ms */
+#define TIMEOUT_DEVICE_READ				3000		/* ms */
+#define TIMEOUT_PLOT_REDRAW				3000		/* ms */
 #define TIMEOUT_MODEL_LOG					10000		/* ms */
 #define TIMEOUT_DATA_RECORD				10000		/* ms */
-#define TIMEOUT_NAV_UPDATE					2000		/* ms */ 
-#define TIMEOUT_GPS_UPDATE					2000		/* ms */
+#define TIMEOUT_NAV_UPDATE					3000		/* ms */ 
+#define TIMEOUT_GPS_UPDATE					3000		/* ms */
 
 /* Attribute and built-in macro definitions  */
 
 #define FILE									__FILE__
 #define LINE									__LINE__
 #define FUNC									__func__
-#define PACKED									__attribute__((packed))
+#define PACKED									__attribute__((packed, aligned(1)))
 #define NORETURN								__attribute__((noreturn))
 #define DEPRECATED							__attribute__((deprecated))
 #define ALIGNED(n)							__attribute__((aligned(n)))
@@ -316,7 +316,8 @@ typedef enum _NavAccel
 	NAV_ACCEL_Y_PLUS,
 	NAV_ACCEL_Y_MINUS,
 	NAV_ACCEL_Z_PLUS,
-	NAV_ACCEL_Z_MINUS
+	NAV_ACCEL_Z_MINUS,
+	NAV_ACCEL_UNDEF
 } NavAccel;
 
 typedef enum _NavGyro
@@ -326,7 +327,8 @@ typedef enum _NavGyro
 	NAV_GYRO_Y_PLUS,
 	NAV_GYRO_Y_MINUS,
 	NAV_GYRO_Z_PLUS,
-	NAV_GYRO_Z_MINUS
+	NAV_GYRO_Z_MINUS,
+	NAV_GYRO_UNDEF
 } NavGyro;
 
 typedef enum _NavButton

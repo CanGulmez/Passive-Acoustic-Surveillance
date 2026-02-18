@@ -193,31 +193,37 @@ int select_sector(void)
  */
 NavAccel select_accel_direction(void)
 {
-	if (payloadData.imuAccelX > NAV_ACCEL_NOISE)
+	if ((payloadData.imuAccelX > payloadData.imuAccelY) &&
+		 (payloadData.imuAccelX > payloadData.imuAccelZ))
 	{
 		return NAV_ACCEL_X_PLUS;
 	}
-	else if (payloadData.imuAccelX < -NAV_ACCEL_NOISE)
-	{
-		return NAV_ACCEL_X_MINUS;
-	}
-	else if (payloadData.imuAccelY > NAV_ACCEL_NOISE)
+	else if ((payloadData.imuAccelY > payloadData.imuAccelX) &&
+		 		(payloadData.imuAccelY > payloadData.imuAccelZ))
 	{
 		return NAV_ACCEL_Y_PLUS;
 	}
-	else if (payloadData.imuAccelY < -NAV_ACCEL_NOISE)
-	{
-		return NAV_ACCEL_Y_MINUS;
-	}
-	else if (payloadData.imuAccelZ > NAV_FLAT_GRAVITY)
+	else if ((payloadData.imuAccelZ > payloadData.imuAccelX) &&
+		 		(payloadData.imuAccelZ > payloadData.imuAccelY))
 	{
 		return NAV_ACCEL_Z_PLUS;
 	}
-	else if (payloadData.imuAccelZ < -NAV_FLAT_GRAVITY)
+	else if ((payloadData.imuAccelX < payloadData.imuAccelY) &&
+		 		(payloadData.imuAccelX < payloadData.imuAccelZ))
+	{
+		return NAV_ACCEL_X_MINUS;
+	}
+	else if ((payloadData.imuAccelY < payloadData.imuAccelX) &&
+		 		(payloadData.imuAccelY < payloadData.imuAccelZ))
+	{
+		return NAV_ACCEL_Y_MINUS;
+	}
+	else if ((payloadData.imuAccelZ < payloadData.imuAccelX) &&
+		 		(payloadData.imuAccelZ < payloadData.imuAccelY))
 	{
 		return NAV_ACCEL_Z_MINUS;
 	}
-	return -1;
+	return NAV_ACCEL_UNDEF;
 }
 
 /**
@@ -225,31 +231,37 @@ NavAccel select_accel_direction(void)
  */
 NavGyro select_gyro_rotation(void)
 {
-	if (payloadData.imuGyroX > NAV_GYRO_NOISE)
+	if ((payloadData.imuGyroX > payloadData.imuGyroY) &&
+		 (payloadData.imuGyroX > payloadData.imuGyroZ))
 	{
 		return NAV_GYRO_X_PLUS;
 	}
-	else if (payloadData.imuGyroX < -NAV_GYRO_NOISE)
+	else if ((payloadData.imuGyroY > payloadData.imuGyroX) &&
+		 		(payloadData.imuGyroY > payloadData.imuGyroZ))
+	{
+		return NAV_GYRO_Y_PLUS;
+	}
+	else if ((payloadData.imuGyroZ > payloadData.imuGyroX) &&
+		 		(payloadData.imuGyroZ > payloadData.imuGyroY))
+	{
+		return NAV_GYRO_Z_PLUS;
+	}
+	else if ((payloadData.imuGyroX < payloadData.imuGyroY) &&
+		 		(payloadData.imuGyroX < payloadData.imuGyroZ))
 	{
 		return NAV_GYRO_X_MINUS;
 	}
-	else if (payloadData.imuGyroY > NAV_GYRO_NOISE)
-	{
-		return NAV_GYRO_Y_PLUS;		
-	}
-	else if (payloadData.imuGyroY < -NAV_GYRO_NOISE)
+	else if ((payloadData.imuGyroY < payloadData.imuGyroX) &&
+		 		(payloadData.imuGyroY < payloadData.imuGyroZ))
 	{
 		return NAV_GYRO_Y_MINUS;
 	}
-	else if (payloadData.imuGyroZ > NAV_GYRO_NOISE)
-	{
-		return NAV_GYRO_Z_PLUS;		
-	}
-	else if (payloadData.imuGyroZ < -NAV_GYRO_NOISE)
+	else if ((payloadData.imuGyroZ < payloadData.imuGyroX) &&
+		 		(payloadData.imuGyroZ < payloadData.imuGyroY))
 	{
 		return NAV_GYRO_Z_MINUS;
 	}
-	return -1;
+	return NAV_GYRO_UNDEF;
 }
 
 /**
