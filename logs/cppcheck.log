@@ -1,0 +1,1743 @@
+[1msrc/__generic.c:62:14: [31mstyle:[39m Local variable 'model' shadows outer function [shadowFunction][0m
+ GListModel *model;
+             ^
+[1msrc/main.h:488:13: [2mnote:[0m Shadowed declaration
+extern void model(GtkBox *, gpointer);
+            ^
+[1msrc/__generic.c:62:14: [2mnote:[0m Shadow variable
+ GListModel *model;
+             ^
+[1msrc/__generic.c:56:60: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+guint __generic_row_selected(GObject *gobject, GParamSpec *pspec,
+                                                           ^
+[1msrc/__generic.c:57:11: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+ gpointer data, const char *func)
+          ^
+[1msrc/__generic.c:76:59: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+guint __generic_row_changed(GObject *gobject, GParamSpec *pspec, gpointer data,
+                                                          ^
+[1msrc/__generic.c:92:63: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+gboolean __generic_row_switched(GObject *gobject, GParamSpec *pspec, gpointer data,
+                                                              ^
+[1msrc/__generic.c:108:58: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+char *__generic_row_texted(GObject *gobject, GParamSpec *pspec, gpointer data,
+                                                         ^
+[1msrc/main.h:463:24: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void microphone(GtkBox *, gpointer);
+                       ^
+[1msrc/main.h:464:33: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_row_device_node(GtkWidget *);
+                                ^
+[1msrc/main.h:465:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_row_baud_rate(GtkWidget *);
+                              ^
+[1msrc/main.h:466:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_row_data_bits(GtkWidget *);
+                              ^
+[1msrc/main.h:467:32: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_row_parity_bit(GtkWidget *);
+                               ^
+[1msrc/main.h:468:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_row_stop_bits(GtkWidget *);
+                              ^
+[1msrc/main.h:469:34: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_row_flow_control(GtkWidget *);
+                                 ^
+[1msrc/main.h:470:28: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_group_UART(gpointer);
+                           ^
+[1msrc/main.h:471:27: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_group_USB(gpointer);
+                          ^
+[1msrc/main.h:472:28: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_group_WiFi(gpointer);
+                           ^
+[1msrc/main.h:473:33: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_signal_analysis(GtkWidget *);
+                                ^
+[1msrc/main.h:474:26: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_plot_car(GtkDrawingArea *, cairo_t *, int, int, gpointer);
+                         ^
+[1msrc/main.h:475:32: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_plot_car_frame(cairo_t *, int, int);
+                               ^
+[1msrc/main.h:476:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_plot_car_grid(cairo_t *, int, int);
+                              ^
+[1msrc/main.h:477:34: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_plot_car_label_x(cairo_t *, int, int);
+                                 ^
+[1msrc/main.h:478:34: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_plot_car_label_y(cairo_t *, int, int);
+                                 ^
+[1msrc/main.h:479:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_plot_car_data(cairo_t *, int, int);
+                              ^
+[1msrc/main.h:480:28: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_plot_polar(GtkDrawingArea *, cairo_t *, int, int, gpointer);
+                           ^
+[1msrc/main.h:481:34: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_plot_polar_frame(cairo_t *, int, int);
+                                 ^
+[1msrc/main.h:482:34: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_plot_polar_label(cairo_t *, int, int);
+                                 ^
+[1msrc/main.h:483:33: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_plot_polar_fill(cairo_t *, int, int, double, double);
+                                ^
+[1msrc/main.h:484:35: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void mic_plot_polar_sector(cairo_t *, int, int, int);
+                                  ^
+[1msrc/main.h:488:19: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void model(GtkBox *, gpointer);
+                  ^
+[1msrc/main.h:489:33: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void model_group_dataset(GtkWidget *);
+                                ^
+[1msrc/main.h:490:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void model_group_model(GtkWidget *);
+                              ^
+[1msrc/main.h:494:24: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void navigation(GtkBox *, gpointer);
+                       ^
+[1msrc/main.h:495:35: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern GtkWidget *nav_accel_group(gpointer);
+                                  ^
+[1msrc/main.h:496:34: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern GtkWidget *nav_gyro_group(gpointer);
+                                 ^
+[1msrc/main.h:497:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern GtkWidget *nav_magnet_group(gpointer);
+                                   ^
+[1msrc/main.h:498:32: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void nav_plot_area_grid(cairo_t *, int, int);
+                               ^
+[1msrc/main.h:499:32: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void nav_plot_area_axes(cairo_t *, int, int);
+                               ^
+[1msrc/main.h:500:34: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void nav_plot_area_labels(cairo_t *, int, int);
+                                 ^
+[1msrc/main.h:501:33: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void nav_plot_area_accel(cairo_t *, int, int, NavAccel);
+                                ^
+[1msrc/main.h:502:32: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void nav_plot_area_gyro(cairo_t *, int, int, NavGyro);
+                               ^
+[1msrc/main.h:503:27: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void nav_plot_area(GtkDrawingArea *, cairo_t *, int, int, gpointer);
+                          ^
+[1msrc/main.h:507:21: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void gps_map(GtkBox *, gpointer);
+                    ^
+[1msrc/main.h:508:26: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void gps_map_area(GtkBox *, gpointer);
+                         ^
+[1msrc/main.h:509:34: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void gps_map_area_markers(ShumateMarkerLayer *, double, double);
+                                 ^
+[1msrc/main.h:513:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern sqlite3 *db_open(const char *);
+                              ^
+[1msrc/main.h:514:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void db_create_table(struct sqlite3 *, Database);
+                                   ^
+[1msrc/main.h:515:33: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void db_bind_data(struct sqlite3 *, Database);
+                                ^
+[1msrc/main.h:516:34: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void db_query_data(struct sqlite3 *, Database);
+                                 ^
+[1msrc/main.h:517:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void db_close(struct sqlite3 *);
+                            ^
+[1msrc/main.h:521:27: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void logging(const char *, size_t);
+                          ^
+[1msrc/main.h:522:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern char *get_time(const char *);
+                            ^
+[1msrc/main.h:523:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern int get_device_nodes(MicChannel);
+                            ^
+[1msrc/main.h:524:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern int open_device_node(MicChannel, const char *);
+                            ^
+[1msrc/main.h:525:30: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void read_device_node(int);
+                             ^
+[1msrc/main.h:527:30: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void set_serial_attrs(int, struct termios *);
+                             ^
+[1msrc/main.h:528:35: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern int run_keras_script(const char *);
+                                  ^
+[1msrc/main.h:529:32: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void abort_keras_script(int);
+                               ^
+[1msrc/main.h:530:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern int is_keras_script_running(int);
+                                   ^
+[1msrc/main.h:531:42: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern char *get_keras_script_logs(const char *);
+                                         ^
+[1msrc/main.h:535:37: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern gboolean timeout_device_node(gpointer);
+                                    ^
+[1msrc/main.h:536:41: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern gboolean timeout_model_keras_log(gpointer);
+                                        ^
+[1msrc/main.h:537:35: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern gboolean timeout_db_record(gpointer);
+                                  ^
+[1msrc/main.h:538:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern gboolean timeout_nav_update(gpointer);
+                                   ^
+[1msrc/main.h:539:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern gboolean timeout_gps_update(gpointer);
+                                   ^
+[1msrc/main.h:544:46: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern GtkWidget *__generic_header_button_new(const char *, const char *);
+                                             ^
+[1msrc/main.h:545:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern guint __generic_row_selected(GObject *, GParamSpec *, gpointer, const char *);
+                                   ^
+[1msrc/main.h:546:35: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern guint __generic_row_changed(GObject *, GParamSpec *, gpointer, const char *);
+                                  ^
+[1msrc/main.h:547:39: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern gboolean __generic_row_switched(GObject *, GParamSpec *, gpointer, const char *);
+                                      ^
+[1msrc/main.h:548:34: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern char *__generic_row_texted(GObject *, GParamSpec *, gpointer, const char *);
+                                 ^
+[1msrc/main.h:549:43: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern GtkWidget *__generic_action_row_new(const char *, const char *);
+                                          ^
+[1msrc/main.h:550:40: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void __generic_action_row_update(GtkWidget *, const char *);
+                                       ^
+[1msrc/main.h:551:42: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern GtkWidget *__generic_combo_row_new(const char *, const char **, guint);
+                                         ^
+[1msrc/main.h:552:41: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern GtkWidget *__generic_spin_row_new(const char *, double, double, double, double, guint);
+                                        ^
+[1msrc/main.h:553:43: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern GtkWidget *__generic_switch_row_new(const char *);
+                                          ^
+[1msrc/main.h:554:42: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern GtkWidget *__generic_entry_row_new(const char *);
+                                         ^
+[1msrc/main.h:555:38: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern GtkWidget *__generic_group_new(const char *, const char *);
+                                     ^
+[1msrc/main.h:556:32: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void __generic_group_add(GtkWidget *, GtkWidget *);
+                               ^
+[1msrc/main.h:557:35: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void __generic_group_remove(GtkWidget *, GtkWidget *);
+                                  ^
+[1msrc/main.h:558:39: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern GtkWidget *__generic_button_new(const char *, const char *);
+                                      ^
+[1msrc/main.h:564:30: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern int calculate_arrival(double);
+                             ^
+[1msrc/main.h:565:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern DspTime do_beamforming(double, double);
+                              ^
+[1msrc/main.h:566:34: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void make_signal_analysis(DspTime *, int);
+                                 ^
+[1msrc/main.h:578:37: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_visible_page_changed(GObject *, GParamSpec *, gpointer);
+                                    ^
+[1msrc/main.h:579:38: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_header_button_clicked(GtkButton *, gpointer);
+                                     ^
+[1msrc/main.h:583:38: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_comm_channel_selected(GObject *, GParamSpec *, gpointer);
+                                     ^
+[1msrc/main.h:584:37: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_device_node_selected(GObject *, GParamSpec *, gpointer);
+                                    ^
+[1msrc/main.h:585:35: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_baud_rate_selected(GObject *, GParamSpec *, gpointer);
+                                  ^
+[1msrc/main.h:586:35: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_data_bits_selected(GObject *, GParamSpec *, gpointer);
+                                  ^
+[1msrc/main.h:587:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_parity_bit_selected(GObject *, GParamSpec *, gpointer);
+                                   ^
+[1msrc/main.h:588:35: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_stop_bits_selected(GObject *, GParamSpec *, gpointer);
+                                  ^
+[1msrc/main.h:589:38: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_flow_control_selected(GObject *, GParamSpec *, gpointer);
+                                     ^
+[1msrc/main.h:590:35: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_mic_button_clicked(GtkButton *, gpointer);
+                                  ^
+[1msrc/main.h:594:33: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_dataset_selected(GObject *, GParamSpec *, gpointer);
+                                ^
+[1msrc/main.h:595:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_layer_type_selected(GObject *, GParamSpec *, gpointer);
+                                   ^
+[1msrc/main.h:596:42: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_recurrent_dropout_changed(GObject *, GParamSpec *, gpointer);
+                                         ^
+[1msrc/main.h:597:30: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_units_changed(GObject *, GParamSpec *, gpointer);
+                             ^
+[1msrc/main.h:598:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_batch_size_selected(GObject *, GParamSpec *, gpointer);
+                                   ^
+[1msrc/main.h:599:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_epochs_changed(GObject *, GParamSpec *, gpointer);
+                              ^
+[1msrc/main.h:600:37: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_layer_number_changed(GObject *, GParamSpec *, gpointer);
+                                    ^
+[1msrc/main.h:601:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_early_stop_switched(GObject *, GParamSpec *, gpointer);
+                                   ^
+[1msrc/main.h:602:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_output_model_texted(GObject *, GParamSpec *, gpointer);
+                                   ^
+[1msrc/main.h:603:37: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_model_button_clicked(GtkButton *, gpointer);
+                                    ^
+[1msrc/main.h:607:35: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_nav_button_clicked(GtkButton *, gpointer);
+                                  ^
+[1msrc/main.h:611:35: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+extern void on_gps_button_clicked(GtkButton *, gpointer);
+                                  ^
+[1msrc/__generic.c:161:22: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *actionRow, *labelWid;
+                     ^
+[1msrc/__generic.c:190:18: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.3][0m
+   if (suffix && GTK_IS_LABEL(suffix))
+                 ^
+[1msrc/__generic.c:68:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("%s(): '%s'", func, item);
+ ^
+[1msrc/__generic.c:84:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("%s(): '%d'", func, value);
+ ^
+[1msrc/__generic.c:100:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("%s(): '%d'", func, isActive);
+ ^
+[1msrc/__generic.c:114:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("%s(): '%s'", func, currentText);
+ ^
+[1msrc/main.h:178:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-20.4][0m
+#define switchRowSig(row, callback) (g_signal_connect(row, "notify::active", G_CALLBACK(callback), NULL))
+^
+[1mlib/include/dsp.h:62:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-20.7][0m
+#define DEG(rad)            (rad * 180.0 / M_PI)
+^
+[1mlib/include/dsp.h:63:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-20.7][0m
+#define RAD(deg)            (deg * M_PI / 180.0)
+^
+[1mlib/include/dsp.h:149:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-20.7][0m
+#define assert_length(length)              \
+^
+[1mlib/include/dsp.h:157:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-20.7][0m
+#define assert_sample(sample)              \
+^
+[1mlib/include/dsp.h:166:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-20.7][0m
+#define assert_beamform(beamform)            \
+^
+[1mlib/include/dsp.h:178:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-20.7][0m
+#define assert_arrival(arrival)             \
+^
+[1mlib/include/dsp.h:191:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-20.7][0m
+#define assert_plot(plot)               \
+^
+[1mlib/include/dsp.h:27:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-21.1][0m
+#define _GNU_SOURCE
+^
+[1msrc/main.h:27:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-21.1][0m
+#define _GNU_SOURCE
+^
+[1msrc/main.h:127:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-21.1][0m
+#define FILE         __FILE__
+^
+[1msrc/main.h:42:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-21.5][0m
+#include <signal.h>
+^
+[1mlib/include/dsp.h:28:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-21.6][0m
+#include <stdio.h>
+^
+[1mlib/include/dsp.h:36:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-21.10][0m
+#include <time.h>
+^
+[1msrc/analysis.c:132:36: [31mstyle:[39m Parameter 'beamformed' can be declared as pointer to const [constParameterPointer][0m
+void make_signal_analysis(DspTime *beamformed, int arrival)
+                                   ^
+[1msrc/analysis.c:61:18: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.3][0m
+ double max_freq = 0;
+                 ^
+[1msrc/analysis.c:67:48: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+  outputs[i].length = (int) (outputs[i].length / 2);
+                                               ^
+[1msrc/analysis.c:164:25: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ double means[MIC_COUNT], biggest;
+                        ^
+[1msrc/analysis.c:184:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+   return i + 1;
+   ^
+[1msrc/analysis.c:199:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return NAV_ACCEL_X_PLUS;
+  ^
+[1msrc/analysis.c:204:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return NAV_ACCEL_Y_PLUS;
+  ^
+[1msrc/analysis.c:209:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return NAV_ACCEL_Z_PLUS;
+  ^
+[1msrc/analysis.c:214:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return NAV_ACCEL_X_MINUS;
+  ^
+[1msrc/analysis.c:219:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return NAV_ACCEL_Y_MINUS;
+  ^
+[1msrc/analysis.c:224:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return NAV_ACCEL_Z_MINUS;
+  ^
+[1msrc/analysis.c:237:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return NAV_GYRO_X_PLUS;
+  ^
+[1msrc/analysis.c:242:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return NAV_GYRO_Y_PLUS;
+  ^
+[1msrc/analysis.c:247:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return NAV_GYRO_Z_PLUS;
+  ^
+[1msrc/analysis.c:252:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return NAV_GYRO_X_MINUS;
+  ^
+[1msrc/analysis.c:257:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return NAV_GYRO_Y_MINUS;
+  ^
+[1msrc/analysis.c:262:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return NAV_GYRO_Z_MINUS;
+  ^
+[1msrc/analysis.c:225:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.7][0m
+ }
+ ^
+[1msrc/analysis.c:263:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.7][0m
+ }
+ ^
+[1msrc/analysis.c:138:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(buffer[0], BUFFER_SIZE, "%.4f", dsp_time_max(beamformed)); /* maximum */
+         ^
+[1msrc/analysis.c:139:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(buffer[1], BUFFER_SIZE, "%.4f", dsp_time_min(beamformed)); /* minimum */
+         ^
+[1msrc/analysis.c:140:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(buffer[2], BUFFER_SIZE, "%.4f", dsp_time_mean(beamformed)); /* mean */
+         ^
+[1msrc/analysis.c:141:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(buffer[3], BUFFER_SIZE, "%.4f", dsp_time_stddev(beamformed)); /* standard deviation */
+         ^
+[1msrc/analysis.c:142:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(buffer[4], BUFFER_SIZE, "%.4f", dsp_time_energy(beamformed)); /* energy */
+         ^
+[1msrc/analysis.c:143:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(buffer[5], BUFFER_SIZE, "%.4f", dsp_time_rms(beamformed)); /* RMS */
+         ^
+[1msrc/analysis.c:144:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(buffer[6], BUFFER_SIZE, "%.4f", dsp_time_power(beamformed)); /* power */
+         ^
+[1msrc/analysis.c:145:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(buffer[7], BUFFER_SIZE, "%.4f", dsp_time_crest_factor(beamformed)); /* crest factor */
+         ^
+[1msrc/analysis.c:146:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(buffer[8], BUFFER_SIZE, "%.4f", dsp_time_skewness(beamformed)); /* skewness */
+         ^
+[1msrc/analysis.c:147:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(buffer[9], BUFFER_SIZE, "%.4f", dsp_time_kurtosis(beamformed)); /* kurtosis */
+         ^
+[1msrc/analysis.c:148:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(buffer[10], BUFFER_SIZE, "%.4f", dsp_time_variance(beamformed)); /* variance */
+         ^
+[1msrc/analysis.c:149:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(buffer[11], BUFFER_SIZE, "%d", arrival); /* arrival of angle */
+         ^
+[1msrc/analysis.c:278:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(
+         ^
+[1msrc/analysis.c:286:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(
+         ^
+[1msrc/analysis.c:294:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(
+         ^
+[1msrc/database.c:40:6: [31mstyle:[39m The scope of the variable 'i' can be reduced. [variableScope][0m
+ int i, rc;
+     ^
+[1msrc/database.c:41:7: [31mstyle:[39m The scope of the variable 'data' can be reduced. [variableScope][0m
+ char data[32];
+      ^
+[1msrc/database.c:71:6: [31mstyle:[39m The scope of the variable 'i' can be reduced. [variableScope][0m
+ int i, rc;
+     ^
+[1msrc/database.c:72:7: [31mstyle:[39m The scope of the variable 'data' can be reduced. [variableScope][0m
+ char data[16];
+      ^
+[1msrc/database.c:73:7: [31mstyle:[39m The scope of the variable 'sql' can be reduced. [variableScope][0m
+ char sql[SQL_SIZE];
+      ^
+[1msrc/database.c:123:6: [31mstyle:[39m The scope of the variable 'i' can be reduced. [variableScope][0m
+ int i, rc;
+     ^
+[1msrc/database.c:125:7: [31mstyle:[39m The scope of the variable 'sql' can be reduced. [variableScope][0m
+ char sql[SQL_SIZE];
+      ^
+[1msrc/database.c:40:7: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ int i, rc;
+      ^
+[1msrc/database.c:71:7: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ int i, rc;
+      ^
+[1msrc/database.c:123:7: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ int i, rc;
+      ^
+[1msrc/database.c:136:14: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-13.4][0m
+  while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
+             ^
+[1msrc/database.c:29:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (rc != SQLITE_OK)
+ ^
+[1msrc/database.c:62:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (rc != SQLITE_OK)
+ ^
+[1msrc/database.c:96:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+  if (rc != SQLITE_OK)
+  ^
+[1msrc/database.c:110:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (rc != SQLITE_DONE)
+ ^
+[1msrc/database.c:114:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (rc != SQLITE_OK)
+ ^
+[1msrc/database.c:133:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+  if (rc != SQLITE_OK)
+  ^
+[1msrc/database.c:148:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (rc != SQLITE_OK)
+ ^
+[1msrc/database.c:160:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (rc != SQLITE_OK)
+ ^
+[1msrc/database.c:29:12: [31merror:[39m Variable 'SQLITE_OK' is unknown [misra-config][0m
+ if (rc != SQLITE_OK)
+           ^
+[1msrc/database.c:62:12: [31merror:[39m Variable 'SQLITE_OK' is unknown [misra-config][0m
+ if (rc != SQLITE_OK)
+           ^
+[1msrc/database.c:96:13: [31merror:[39m Variable 'SQLITE_OK' is unknown [misra-config][0m
+  if (rc != SQLITE_OK)
+            ^
+[1msrc/database.c:110:12: [31merror:[39m Variable 'SQLITE_DONE' is unknown [misra-config][0m
+ if (rc != SQLITE_DONE)
+           ^
+[1msrc/database.c:114:12: [31merror:[39m Variable 'SQLITE_OK' is unknown [misra-config][0m
+ if (rc != SQLITE_OK)
+           ^
+[1msrc/database.c:133:13: [31merror:[39m Variable 'SQLITE_OK' is unknown [misra-config][0m
+  if (rc != SQLITE_OK)
+            ^
+[1msrc/database.c:136:39: [31merror:[39m Variable 'SQLITE_ROW' is unknown [misra-config][0m
+  while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
+                                      ^
+[1msrc/database.c:148:12: [31merror:[39m Variable 'SQLITE_OK' is unknown [misra-config][0m
+ if (rc != SQLITE_OK)
+           ^
+[1msrc/database.c:160:12: [31merror:[39m Variable 'SQLITE_OK' is unknown [misra-config][0m
+ if (rc != SQLITE_OK)
+           ^
+[1msrc/database.c:30:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  dbError(db);
+  ^
+[1msrc/database.c:47:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  sprintf(sql,
+         ^
+[1msrc/database.c:54:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   memset(data, 0, 32);  /* initialize 0s */
+         ^
+[1msrc/database.c:55:11: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   sprintf(data, "Data%d INTEGER,", i);
+          ^
+[1msrc/database.c:56:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   strcat(sql, data);
+         ^
+[1msrc/database.c:59:9: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  strcat(sql, "Timestamp TEXT NOT NULL);");
+        ^
+[1msrc/database.c:63:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  dbError(db);
+  ^
+[1msrc/database.c:80:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  sprintf(sql, "INSERT INTO %s (", DB_SENSOR_DATA_TABLE);
+         ^
+[1msrc/database.c:83:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   memset(data, 0, 16);  /* initialize with 0s */
+         ^
+[1msrc/database.c:84:11: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   sprintf(data, "Data%d, ", i);
+          ^
+[1msrc/database.c:85:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   strcat(sql, data);
+         ^
+[1msrc/database.c:87:9: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  strcat(sql, "Timestamp) VALUES (");
+        ^
+[1msrc/database.c:90:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   strcat(sql, "?, ");
+         ^
+[1msrc/database.c:92:9: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  strcat(sql, "?);");
+        ^
+[1msrc/database.c:97:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   dbError(db);
+   ^
+[1msrc/database.c:106:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("recorded the sensor data into '%s'", DB_SENSOR_DATA_PATH);
+ ^
+[1msrc/database.c:111:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  dbError(db);
+  ^
+[1msrc/database.c:115:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  dbError(db);
+  ^
+[1msrc/database.c:130:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  sprintf(sql, "SELECT * FROM %s", DB_SENSOR_DATA_TABLE);
+         ^
+[1msrc/database.c:134:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   dbError(db);
+   ^
+[1msrc/database.c:138:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   printf("ID: %d, ", sqlite3_column_int(stmt, 0));
+         ^
+[1msrc/database.c:141:11: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+    printf("Data%d: %d, ", i, sqlite3_column_int(stmt, i));
+          ^
+[1msrc/database.c:143:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   printf("Timestamp: %s\n", sqlite3_column_text(stmt, 513));
+         ^
+[1msrc/database.c:149:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  dbError(db);
+  ^
+[1msrc/database.c:161:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  dbError(db);
+  ^
+[1msrc/gps_map.c:93:39: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void gps_map(GtkBox *mapBox, gpointer data)
+                                      ^
+[1msrc/gps_map.c:56:46: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void gps_map_area(GtkBox *rightBox, gpointer data)
+                                             ^
+[1msrc/gps_map.c:96:21: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *rightBox, *leftBox, *separator;
+                    ^
+[1msrc/gps_map.c:97:27: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *GPSModuleGroup, *GPSResGroup;
+                          ^
+[1msrc/gps_map.c:98:24: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *scrolledWin, *propertyBox;
+                       ^
+[1msrc/main.c:25:48: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void on_activate(GtkApplication *app, gpointer user_data)
+                                               ^
+[1msrc/main.c:27:19: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *window, *headerBar;
+                  ^
+[1msrc/main.c:28:20: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *mainBox, *micBox, *modelBox, *imuBox, *gpsBox;
+                   ^
+[1msrc/main.c:29:25: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *viewSwitcher, *viewStack;
+                        ^
+[1msrc/main.c:30:19: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *newBtn, *saveAsBtn, *trashBtn, *prefsBtn, *infoBtn,
+                  ^
+[1msrc/mic_plot.c:141:35: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void mic_plot_car(GtkDrawingArea *area, cairo_t *cr,
+                                  ^
+[1msrc/mic_plot.c:142:34: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+ int width, int height, gpointer data)
+                                 ^
+[1msrc/mic_plot.c:72:44: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void mic_plot_car_label_x(cairo_t *cr, int width, int height)
+                                           ^
+[1msrc/mic_plot.c:90:44: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void mic_plot_car_label_y(cairo_t *cr, int width, int height)
+                                           ^
+[1msrc/mic_plot.c:303:37: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void mic_plot_polar(GtkDrawingArea *area, cairo_t *cr, int width,
+                                    ^
+[1msrc/mic_plot.c:304:30: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+        int height, gpointer data)
+                             ^
+[1msrc/mic_plot.c:116:9: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.3][0m
+ middle = (MIC_PLOT_MARGIN / 2) +
+        ^
+[1msrc/mic_plot.c:118:7: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.3][0m
+ step = (width - (MIC_PLOT_MARGIN * 3 / 2)) / (DATA_SIZE - 1);
+      ^
+[1msrc/mic_plot.c:266:9: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.3][0m
+ radius = (height - 2 * MIC_PLOT_MARGIN) / 2;
+        ^
+[1msrc/mic_plot.c:126:38: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, MIC_PLOT_MARGIN + (step * i) + 2,
+                                     ^
+[1msrc/mic_plot.c:131:38: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, MIC_PLOT_MARGIN + (step * i) + 2,
+                                     ^
+[1msrc/mic_plot.c:275:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_line_to(cr, center_x + radius * cos(start_compass),
+                            ^
+[1msrc/mic_plot.c:276:17: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+       center_y + radius * sin(start_compass));
+                ^
+[1msrc/mic_plot.c:31:26: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+ cairo_line_to(cr, width - MIC_PLOT_MARGIN / 2, height - MIC_PLOT_MARGIN);
+                         ^
+[1msrc/mic_plot.c:32:26: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+ cairo_move_to(cr, width - MIC_PLOT_MARGIN / 2, height - MIC_PLOT_MARGIN);
+                         ^
+[1msrc/mic_plot.c:33:26: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+ cairo_line_to(cr, width - MIC_PLOT_MARGIN / 2, MIC_PLOT_MARGIN / 2);
+                         ^
+[1msrc/mic_plot.c:34:26: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+ cairo_move_to(cr, width - MIC_PLOT_MARGIN / 2, MIC_PLOT_MARGIN / 2);
+                         ^
+[1msrc/mic_plot.c:52:7: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+    i < width - (MIC_PLOT_MARGIN / 2); i += MIC_PLOT_GRID)
+      ^
+[1msrc/mic_plot.c:61:7: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+    i < height - MIC_PLOT_MARGIN; i += MIC_PLOT_GRID)
+      ^
+[1msrc/mic_plot.c:122:26: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+ for (i = 1; i <= (width - MIC_PLOT_MARGIN * 3 / 2) - 2; i++)
+                         ^
+[1msrc/mic_plot.c:168:19: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+ radius = (height - 2 * MIC_PLOT_MARGIN) / 2;
+                  ^
+[1msrc/mic_plot.c:182:39: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+  cairo_move_to(cr, center_x - radius + i * MIC_PLOT_GRID, center_y);
+                                      ^
+[1msrc/mic_plot.c:183:44: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+  cairo_arc(cr, center_x, center_y, radius - i * MIC_PLOT_GRID, -M_PI, M_PI);
+                                           ^
+[1msrc/mic_plot.c:222:19: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+ radius = (height - 2 * MIC_PLOT_MARGIN) / 2;
+                  ^
+[1msrc/mic_plot.c:110:13: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ double step, middle;
+            ^
+[1msrc/mic_plot.c:164:7: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ int i, center_x, center_y, radius;
+      ^
+[1msrc/mic_plot.c:218:14: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ int center_x, center_y, radius;
+             ^
+[1msrc/mic_plot.c:257:14: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ int center_x, center_y;
+             ^
+[1msrc/mic_plot.c:258:15: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ double radius, start_rad, end_rad;
+              ^
+[1msrc/mic_plot.c:259:22: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ double start_compass, end_compass;
+                     ^
+[1msrc/mic_plot.c:287:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.4][0m
+ switch (mic)
+ ^
+[1msrc/mic_plot.c:83:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(buffer, 64, "Sensor Data (%d-points)", DATA_SIZE);
+         ^
+[1msrc/microphone.c:209:42: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void microphone(GtkBox *micBox, gpointer data)
+                                         ^
+[1msrc/microphone.c:132:30: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void mic_group_UART(gpointer data)
+                             ^
+[1msrc/microphone.c:149:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void mic_group_USB(gpointer data)
+                            ^
+[1msrc/microphone.c:166:30: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void mic_group_WiFi(gpointer data)
+                             ^
+[1msrc/microphone.c:212:21: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *rightBox, *rightSep, *centerBox, *leftSep, *leftBox;
+                    ^
+[1msrc/microphone.c:213:25: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *scrolledComm, *scrolledSig, *propertyBox, *btnBox;
+                        ^
+[1msrc/microphone.c:214:22: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *commGroup, *analysisGroup;
+                     ^
+[1msrc/microphone.c:216:21: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *startBtn, *stopBtn;
+                    ^
+[1msrc/microphone.c:266:18: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ get_device_nodes(micChannel);
+                 ^
+[1msrc/model.c:121:39: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void model(GtkBox *modelBox, gpointer data)
+                                      ^
+[1msrc/model.c:61:25: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *layerTypeRow, *unitsRow, *epochsRow,
+                        ^
+[1msrc/model.c:62:16: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+  *batchSizeRow, *earlyStopRow, *dropoutRow,
+               ^
+[1msrc/model.c:63:18: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+  *outputModelRow, *layerNumberRow;
+                 ^
+[1msrc/model.c:124:21: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *rightBox, *separator, *leftBox;
+                    ^
+[1msrc/model.c:125:24: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *scrolledWin, *settingsBox, *btnBox;
+                       ^
+[1msrc/model.c:126:25: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *datasetGroup, *modelGroup;
+                        ^
+[1msrc/model.c:127:19: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *fitBtn, *abortBtn;
+                  ^
+[1msrc/model.c:47:20: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ get_model_datasets(); /* datasets from host */
+                   ^
+[1msrc/nav_plot.c:28:12: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+ for (i = (NAV_PLOT_MARGIN + NAV_PLOT_GRID);
+           ^
+[1msrc/nav_plot.c:29:18: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+    i < (width - NAV_PLOT_MARGIN); i += NAV_PLOT_GRID)
+                 ^
+[1msrc/nav_plot.c:32:33: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+  cairo_line_to(cr, i, height - NAV_PLOT_MARGIN);
+                                ^
+[1msrc/nav_plot.c:37:12: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+ for (i = (NAV_PLOT_MARGIN + NAV_PLOT_GRID);
+           ^
+[1msrc/nav_plot.c:38:20: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+    i <= (height - NAV_PLOT_MARGIN); i += NAV_PLOT_GRID)
+                   ^
+[1msrc/nav_plot.c:41:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+  cairo_line_to(cr, width - NAV_PLOT_MARGIN, i);
+                            ^
+[1msrc/nav_plot.c:50:23: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+ center_x = (width - (2 * NAV_PLOT_MARGIN)) / 2;
+                      ^
+[1msrc/nav_plot.c:51:24: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+ center_y = (height - (2 * NAV_PLOT_MARGIN)) / 2;
+                       ^
+[1msrc/nav_plot.c:69:23: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+ center_x = (width - (2 * NAV_PLOT_MARGIN)) / 2;
+                      ^
+[1msrc/nav_plot.c:70:24: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+ center_y = (height - (2 * NAV_PLOT_MARGIN)) / 2;
+                       ^
+[1msrc/nav_plot.c:96:23: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+ center_x = (width - (2 * NAV_PLOT_MARGIN)) / 2;
+                      ^
+[1msrc/nav_plot.c:97:24: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+ center_y = (height - (2 * NAV_PLOT_MARGIN)) / 2;
+                       ^
+[1msrc/nav_plot.c:127:23: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+ center_x = (width - (2 * NAV_PLOT_MARGIN)) / 2;
+                      ^
+[1msrc/nav_plot.c:128:24: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+ center_y = (height - (2 * NAV_PLOT_MARGIN)) / 2;
+                       ^
+[1msrc/nav_plot.c:195:23: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+ center_x = (width - (2 * NAV_PLOT_MARGIN)) / 2;
+                      ^
+[1msrc/nav_plot.c:196:24: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.2][0m
+ center_y = (height - (2 * NAV_PLOT_MARGIN)) / 2;
+                       ^
+[1msrc/nav_plot.c:270:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void nav_plot_area(GtkDrawingArea *area, cairo_t *cr, int width,
+                                   ^
+[1msrc/nav_plot.c:271:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+       int height, gpointer data)
+                            ^
+[1msrc/nav_plot.c:46:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.4][0m
+void nav_plot_area_device(cairo_t *cr, int width, int height)
+     ^
+[1msrc/nav_plot.c:57:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_line_to(cr, center_x + 180, center_y - 180);
+                            ^
+[1msrc/nav_plot.c:58:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_line_to(cr, center_x - 150, center_y);
+                            ^
+[1msrc/nav_plot.c:60:39: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_line_to(cr, center_x, center_y + 150);
+                                      ^
+[1msrc/nav_plot.c:61:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_line_to(cr, center_x + 180, center_y - 180);
+                            ^
+[1msrc/nav_plot.c:77:39: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_line_to(cr, center_x, center_y - NAV_PLOT_VAXIS);
+                                      ^
+[1msrc/nav_plot.c:78:39: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_line_to(cr, center_x, center_y + NAV_PLOT_VAXIS);
+                                      ^
+[1msrc/nav_plot.c:82:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_line_to(cr, center_x + NAV_PLOT_CAXIS, center_y - NAV_PLOT_CAXIS);
+                            ^
+[1msrc/nav_plot.c:83:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_line_to(cr, center_x - NAV_PLOT_CAXIS, center_y + NAV_PLOT_CAXIS);
+                            ^
+[1msrc/nav_plot.c:87:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_line_to(cr, center_x - NAV_PLOT_CAXIS, center_y - NAV_PLOT_CAXIS);
+                            ^
+[1msrc/nav_plot.c:88:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_line_to(cr, center_x + NAV_PLOT_CAXIS, center_y + NAV_PLOT_CAXIS);
+                            ^
+[1msrc/nav_plot.c:105:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_move_to(cr, center_x - 5, center_y - NAV_PLOT_VAXIS - 5);
+                            ^
+[1msrc/nav_plot.c:107:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_move_to(cr, center_x - 5, center_y + NAV_PLOT_VAXIS + 20);
+                            ^
+[1msrc/nav_plot.c:109:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_move_to(cr, center_x + NAV_PLOT_CAXIS, center_y - NAV_PLOT_CAXIS - 5);
+                            ^
+[1msrc/nav_plot.c:113:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_move_to(cr, center_x - NAV_PLOT_CAXIS - 20, center_y + NAV_PLOT_CAXIS + 20);
+                            ^
+[1msrc/nav_plot.c:115:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_move_to(cr, center_x - NAV_PLOT_CAXIS - 10, center_y - NAV_PLOT_CAXIS - 5);
+                            ^
+[1msrc/nav_plot.c:119:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ cairo_move_to(cr, center_x + NAV_PLOT_CAXIS + 5, center_y + NAV_PLOT_CAXIS + 20);
+                            ^
+[1msrc/nav_plot.c:138:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x + NAV_PLOT_CAXIS, center_y - NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:139:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x + NAV_PLOT_CAXIS - 15, center_y - NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:140:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x + NAV_PLOT_CAXIS, center_y - NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:141:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x + NAV_PLOT_CAXIS, center_y - NAV_PLOT_CAXIS + 15);
+                              ^
+[1msrc/nav_plot.c:146:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x - NAV_PLOT_CAXIS, center_y - NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:147:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x - NAV_PLOT_CAXIS, center_y - NAV_PLOT_CAXIS + 15);
+                              ^
+[1msrc/nav_plot.c:148:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x - NAV_PLOT_CAXIS, center_y - NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:149:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x - NAV_PLOT_CAXIS + 15, center_y - NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:154:41: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x, center_y - NAV_PLOT_VAXIS);
+                                        ^
+[1msrc/nav_plot.c:155:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x - 10, center_y - NAV_PLOT_VAXIS + 10);
+                              ^
+[1msrc/nav_plot.c:156:41: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x, center_y - NAV_PLOT_VAXIS);
+                                        ^
+[1msrc/nav_plot.c:157:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x + 10, center_y - NAV_PLOT_VAXIS + 10);
+                              ^
+[1msrc/nav_plot.c:162:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x - NAV_PLOT_CAXIS, center_y + NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:163:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x - NAV_PLOT_CAXIS, center_y + NAV_PLOT_CAXIS - 15);
+                              ^
+[1msrc/nav_plot.c:164:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x - NAV_PLOT_CAXIS, center_y + NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:165:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x - NAV_PLOT_CAXIS + 15, center_y + NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:170:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x - NAV_PLOT_CAXIS, center_y + NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:171:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x - NAV_PLOT_CAXIS, center_y + NAV_PLOT_CAXIS - 15);
+                              ^
+[1msrc/nav_plot.c:172:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x - NAV_PLOT_CAXIS, center_y + NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:173:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x - NAV_PLOT_CAXIS + 15, center_y + NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:178:41: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x, center_y + NAV_PLOT_VAXIS);
+                                        ^
+[1msrc/nav_plot.c:179:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x - 10, center_y + NAV_PLOT_VAXIS - 10);
+                              ^
+[1msrc/nav_plot.c:180:41: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x, center_y + NAV_PLOT_VAXIS);
+                                        ^
+[1msrc/nav_plot.c:181:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x + 10, center_y + NAV_PLOT_VAXIS - 10);
+                              ^
+[1msrc/nav_plot.c:205:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x - NAV_PLOT_CAXIS, center_y + NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:206:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x + NAV_PLOT_CAXIS, center_y - NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:213:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x - NAV_PLOT_CAXIS, center_y + NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:214:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x + NAV_PLOT_CAXIS, center_y - NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:221:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x - NAV_PLOT_CAXIS, center_y - NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:222:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x + NAV_PLOT_CAXIS, center_y + NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:229:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x - NAV_PLOT_CAXIS, center_y - NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:230:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x + NAV_PLOT_CAXIS, center_y + NAV_PLOT_CAXIS);
+                              ^
+[1msrc/nav_plot.c:237:41: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x, center_y - NAV_PLOT_VAXIS);
+                                        ^
+[1msrc/nav_plot.c:238:41: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x, center_y + NAV_PLOT_VAXIS);
+                                        ^
+[1msrc/nav_plot.c:241:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x + 30, center_y - NAV_PLOT_VAXIS + 20);
+                              ^
+[1msrc/nav_plot.c:242:37: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_arc(cr, center_x, center_y - NAV_PLOT_VAXIS + 20, 30, 0, -M_PI);
+                                    ^
+[1msrc/nav_plot.c:244:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x + 30 - 10, center_y - NAV_PLOT_VAXIS + 20 + 10);
+                              ^
+[1msrc/nav_plot.c:245:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x + 30, center_y - NAV_PLOT_VAXIS + 20);
+                              ^
+[1msrc/nav_plot.c:246:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x + 30 + 10, center_y - NAV_PLOT_VAXIS + 20 + 10);
+                              ^
+[1msrc/nav_plot.c:251:41: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x, center_y - NAV_PLOT_VAXIS);
+                                        ^
+[1msrc/nav_plot.c:252:41: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x, center_y + NAV_PLOT_VAXIS);
+                                        ^
+[1msrc/nav_plot.c:255:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x + 30, center_y - NAV_PLOT_VAXIS + 20);
+                              ^
+[1msrc/nav_plot.c:256:37: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_arc(cr, center_x, center_y - NAV_PLOT_VAXIS + 20, 30, 0, -M_PI);
+                                    ^
+[1msrc/nav_plot.c:258:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_move_to(cr, center_x - 30 - 10, center_y - NAV_PLOT_VAXIS + 20 + 10);
+                              ^
+[1msrc/nav_plot.c:259:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x - 30, center_y - NAV_PLOT_VAXIS + 20);
+                              ^
+[1msrc/nav_plot.c:260:31: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+   cairo_line_to(cr, center_x - 30 + 10, center_y - NAV_PLOT_VAXIS + 20 + 10);
+                              ^
+[1msrc/nav_plot.c:48:17: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ double center_x, center_y;
+                ^
+[1msrc/nav_plot.c:67:17: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ double center_x, center_y;
+                ^
+[1msrc/nav_plot.c:94:17: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ double center_x, center_y;
+                ^
+[1msrc/nav_plot.c:125:17: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ double center_x, center_y;
+                ^
+[1msrc/nav_plot.c:193:17: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ double center_x, center_y;
+                ^
+[1msrc/nav_plot.c:134:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.4][0m
+ switch (navAccel)
+ ^
+[1msrc/nav_plot.c:201:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.4][0m
+ switch (navGyro)
+ ^
+[1msrc/navigation.c:102:42: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void navigation(GtkBox *imuBox, gpointer data)
+                                         ^
+[1msrc/navigation.c:44:37: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+GtkWidget *nav_accel_group(gpointer data)
+                                    ^
+[1msrc/navigation.c:59:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+GtkWidget *nav_gyro_group(gpointer data)
+                                   ^
+[1msrc/navigation.c:74:38: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+GtkWidget *nav_magnet_group(gpointer data)
+                                     ^
+[1msrc/navigation.c:31:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+GtkWidget *nav_info_group(gpointer data)
+                                   ^
+[1msrc/navigation.c:89:36: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+GtkWidget *nav_temp_group(gpointer data)
+                                   ^
+[1msrc/navigation.c:104:20: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *leftBox, *separator, *rightBox;
+                   ^
+[1msrc/navigation.c:105:23: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *accelGroup, *gyroGroup, *magnetGroup, *tempGroup,
+                      ^
+[1msrc/navigation.c:107:24: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ GtkWidget *propertyBox, *scrolledWin, *startBtn;
+                       ^
+[1msrc/signals.c:140:14: [31mstyle:[39m Local variable 'model' shadows outer function [shadowFunction][0m
+ GListModel *model;
+             ^
+[1msrc/main.h:488:13: [2mnote:[0m Shadowed declaration
+extern void model(GtkBox *, gpointer);
+            ^
+[1msrc/signals.c:140:14: [2mnote:[0m Shadow variable
+ GListModel *model;
+             ^
+[1msrc/signals.c:251:14: [31mstyle:[39m Local variable 'model' shadows outer function [shadowFunction][0m
+ GListModel *model;
+             ^
+[1msrc/main.h:488:13: [2mnote:[0m Shadowed declaration
+extern void model(GtkBox *, gpointer);
+            ^
+[1msrc/signals.c:251:14: [2mnote:[0m Shadow variable
+ GListModel *model;
+             ^
+[1msrc/signals.c:20:59: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void on_visible_page_changed(GObject *object, GParamSpec *pspec, gpointer data)
+                                                          ^
+[1msrc/signals.c:51:59: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void on_header_button_clicked(GtkButton *button, gpointer data)
+                                                          ^
+[1msrc/signals.c:135:60: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void on_device_node_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
+                                                           ^
+[1msrc/signals.c:355:56: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void on_mic_button_clicked(GtkButton *button, gpointer data)
+                                                       ^
+[1msrc/signals.c:246:56: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void on_dataset_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
+                                                       ^
+[1msrc/signals.c:279:65: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void on_recurrent_dropout_changed(GObject *gobject, GParamSpec *pspec, gpointer data)
+                                                                ^
+[1msrc/signals.c:433:58: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void on_model_button_clicked(GtkButton *button, gpointer data)
+                                                         ^
+[1msrc/signals.c:506:56: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void on_nav_button_clicked(GtkButton *button, gpointer data)
+                                                       ^
+[1msrc/signals.c:529:56: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+void on_gps_button_clicked(GtkButton *button, gpointer data)
+                                                       ^
+[1msrc/signals.c:414:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+   if (close(deviceFd) == -1)
+   ^
+[1msrc/signals.c:132:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.7][0m
+ }
+ ^
+[1msrc/signals.c:430:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.7][0m
+ }
+ ^
+[1msrc/signals.c:503:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.7][0m
+ }
+ ^
+[1msrc/signals.c:107:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.3][0m
+ }
+ ^
+[1msrc/signals.c:170:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.3][0m
+ }
+ ^
+[1msrc/signals.c:188:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.3][0m
+ }
+ ^
+[1msrc/signals.c:207:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.3][0m
+ }
+ ^
+[1msrc/signals.c:223:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.3][0m
+ }
+ ^
+[1msrc/signals.c:240:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.3][0m
+ }
+ ^
+[1msrc/signals.c:276:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.3][0m
+ }
+ ^
+[1msrc/signals.c:320:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.3][0m
+ }
+ ^
+[1msrc/signals.c:342:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.3][0m
+ }
+ ^
+[1msrc/signals.c:27:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("%s(): '%s'", FUNC, page);
+ ^
+[1msrc/signals.c:47:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  customError("Unknown page: '%s'", page);
+  ^
+[1msrc/signals.c:56:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("%s(): '%s'", FUNC, icon);
+ ^
+[1msrc/signals.c:84:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  customError("Unknown header bar button: '%s'", icon);
+  ^
+[1msrc/signals.c:106:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   customError("Unknown combo row selection");
+   ^
+[1msrc/signals.c:146:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("%s(): '%s'", FUNC, item);
+ ^
+[1msrc/signals.c:169:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   customError("Unknown combo row selection");
+   ^
+[1msrc/signals.c:187:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   customError("Unknown combo row selection");
+   ^
+[1msrc/signals.c:206:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   customError("Unknown combo row selection");
+   ^
+[1msrc/signals.c:222:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   customError("Unknown combo row selection");
+   ^
+[1msrc/signals.c:239:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   customError("Unknown combo row selection");
+   ^
+[1msrc/signals.c:257:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("%s(): '%s'", FUNC, item);
+ ^
+[1msrc/signals.c:275:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   customError("Unknown combo row selection");
+   ^
+[1msrc/signals.c:286:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("%s(): '%.2f'", FUNC, value);
+ ^
+[1msrc/signals.c:319:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   customError("Unknown combo row selection");
+   ^
+[1msrc/signals.c:341:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   customError("Unknown combo row selection");
+   ^
+[1msrc/signals.c:362:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("%s(): '%s'", FUNC, label);
+ ^
+[1msrc/signals.c:378:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  customError("Unknown microphone button: '%s'", label);
+  ^
+[1msrc/signals.c:415:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   syscallError();
+   ^
+[1msrc/signals.c:438:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("%s(): '%s'", FUNC, label);
+ ^
+[1msrc/signals.c:458:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  customError("Unknown AI model button: '%s'", label);
+  ^
+[1msrc/signals.c:470:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   printLog("running the Keras script of '%s'", MODEL_FIT_SCRIPT);
+   ^
+[1msrc/signals.c:471:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   printLog("recording the Keras script log to '%s'", MODEL_LOG_PATH);
+   ^
+[1msrc/signals.c:485:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   printLog("aborted the running Keras script (%d)", modelFitPid);
+   ^
+[1msrc/signals.c:511:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("%s(): '%s'", FUNC, label);
+ ^
+[1msrc/signals.c:534:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("%s(): '%s'", FUNC, label);
+ ^
+[1msrc/timeout.c:60:43: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+gboolean timeout_model_keras_log(gpointer data)
+                                          ^
+[1msrc/timeout.c:97:38: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.7][0m
+gboolean timeout_nav_update(gpointer data)
+                                     ^
+[1msrc/timeout.c:117:29: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.2][0m
+gboolean timeout_gps_update(gpointer)
+                            ^
+[1msrc/timeout.c:129:52: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ shumate_map_center_on(gpsMap, latitude, longitude + i * 0.01);
+                                                   ^
+[1msrc/timeout.c:130:59: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ gps_map_area_markers(gpsMarkerLayer, latitude, longitude + i * 0.01);
+                                                          ^
+[1msrc/timeout.c:120:18: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ double longitude, latitude;
+                 ^
+[1msrc/timeout.c:70:5: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-14.4][0m
+ if ( is_keras_script_running(modelFitPid) )
+    ^
+[1msrc/timeout.c:72:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return G_SOURCE_CONTINUE;
+  ^
+[1msrc/timeout.c:76:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return G_SOURCE_REMOVE;
+  ^
+[1msrc/timeout.c:47:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("completed the signal analysis operations");
+ ^
+[1msrc/timeout.c:52:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("requested the microphone plot redraws");
+ ^
+[1msrc/timeout.c:101:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("updated the navigation data correctly");
+ ^
+[1msrc/timeout.c:109:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("requested the navigtion plot redraw");
+ ^
+[1msrc/timeout.c:124:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("updated the GPS map data correctly");
+ ^
+[1msrc/timeout.c:131:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("marked the last position onto the map");
+ ^
+[1msrc/timeout.c:127:17: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-21.7][0m
+ latitude = atof(payloadData.gpsLatitude);
+                ^
+[1msrc/timeout.c:128:18: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-21.7][0m
+ longitude = atof(payloadData.gpsLongitude);
+                 ^
+[1msrc/utility.c:49:13: [31mstyle:[39m Variable 'tm' can be declared as pointer to const [constVariablePointer][0m
+ struct tm *tm;
+            ^
+[1msrc/utility.c:248:17: [31mstyle:[39m Variable 'entry' can be declared as pointer to const [constVariablePointer][0m
+ struct dirent *entry;
+                ^
+[1msrc/utility.c:169:9: [31merror:[39m Uninitialized variable: devicePath [legacyUninitvar][0m
+ strcat(devicePath, node);
+        ^
+[1msrc/utility.c:207:20: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-7.2][0m
+   if (magicNum == MAGIC_WORD)
+                   ^
+[1msrc/utility.c:170:11: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+ pathSize += strlen(node);
+          ^
+[1msrc/utility.c:205:15: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+  if (numRead == sizeof(magicNum))
+              ^
+[1msrc/utility.c:272:17: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-10.4][0m
+  for (i = 0; i < strlen(entry->d_name)-4; i++)
+                ^
+[1msrc/utility.c:159:34: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+ if (channel == MIC_CHANNEL_UART || channel == MIC_CHANNEL_USB)
+                                 ^
+[1msrc/utility.c:212:26: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+  else if (numRead == -1 && errno != EAGAIN)
+                         ^
+[1msrc/utility.c:234:24: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.1][0m
+   if (errno != EAGAIN && errno != EWOULDBLOCK)
+                       ^
+[1msrc/utility.c:154:8: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ int fd, pathSize = 0;
+       ^
+[1msrc/utility.c:193:17: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ ssize_t numRead, totalRead;
+                ^
+[1msrc/utility.c:247:7: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ int i, index = 0;
+      ^
+[1msrc/utility.c:293:14: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-12.3][0m
+ int childPid, logFd;
+             ^
+[1msrc/utility.c:337:19: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-13.4][0m
+ switch (childPid = fork())
+                  ^
+[1msrc/utility.c:276:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-14.4][0m
+  if (strstr(filename, MODEL_DATASET_SUFFIX))
+     ^
+[1msrc/utility.c:388:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return TRUE;
+  ^
+[1msrc/utility.c:392:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.5][0m
+  return FALSE;
+  ^
+[1msrc/utility.c:28:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (fd == -1)
+ ^
+[1msrc/utility.c:31:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (write(fd, buffer, size) == -1) /* write the logs. */
+ ^
+[1msrc/utility.c:35:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (fsync(fd) == -1)
+ ^
+[1msrc/utility.c:38:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (close(fd) == -1)
+ ^
+[1msrc/utility.c:53:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (tm == NULL)
+ ^
+[1msrc/utility.c:67:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (tcgetattr(fd, tty) == -1)
+ ^
+[1msrc/utility.c:84:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+   if (tcsetattr(fd, TCSANOW, tty) == -1)
+   ^
+[1msrc/utility.c:109:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if ( dir == NULL )
+ ^
+[1msrc/utility.c:143:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (closedir(dir) == -1)
+ ^
+[1msrc/utility.c:256:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (dir == NULL)
+ ^
+[1msrc/utility.c:282:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (closedir(dir) == -1)
+ ^
+[1msrc/utility.c:344:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+   if (logFd == -1)
+   ^
+[1msrc/utility.c:347:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+   if ((dup2(logFd, STDOUT_FILENO) == -1) ||
+   ^
+[1msrc/utility.c:351:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+   if (close(logFd) == -1)
+   ^
+[1msrc/utility.c:373:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (kill(childPid, SIGKILL) == -1)
+ ^
+[1msrc/utility.c:406:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (fd == -1)
+ ^
+[1msrc/utility.c:410:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (fstat(fd, &st) == -1)
+ ^
+[1msrc/utility.c:413:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (read(fd, buffer, st.st_size) == -1)
+ ^
+[1msrc/utility.c:418:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.6][0m
+ if (close(fd) == -1)
+ ^
+[1msrc/utility.c:168:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.7][0m
+ }
+ ^
+[1msrc/utility.c:213:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.7][0m
+   syscallError();
+   ^
+[1msrc/utility.c:237:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-15.7][0m
+  }
+  ^
+[1msrc/utility.c:342:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.3][0m
+  case 0:
+  ^
+[1msrc/utility.c:362:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.3][0m
+  default:  /* let the parent-process runs the main program */
+  ^
+[1msrc/utility.c:312:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.4][0m
+ switch (modelLayerType)        /* layer type */
+ ^
+[1msrc/utility.c:320:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.4][0m
+ switch (modelBatchSize)        /* batch size */
+ ^
+[1msrc/utility.c:329:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-16.4][0m
+ switch (modelEarlyStop)        /* early stopping */
+ ^
+[1msrc/utility.c:84:22: [31merror:[39m Variable 'TCSANOW' is unknown [misra-config][0m
+   if (tcsetattr(fd, TCSANOW, tty) == -1)
+                     ^
+[1msrc/utility.c:202:9: [31merror:[39m Variable 'TRUE' is unknown [misra-config][0m
+ while (TRUE)
+        ^
+[1msrc/utility.c:212:38: [31merror:[39m Variable 'EAGAIN' is unknown [misra-config][0m
+  else if (numRead == -1 && errno != EAGAIN)
+                                     ^
+[1msrc/utility.c:234:17: [31merror:[39m Variable 'EAGAIN' is unknown [misra-config][0m
+   if (errno != EAGAIN && errno != EWOULDBLOCK)
+                ^
+[1msrc/utility.c:234:36: [31merror:[39m Variable 'EWOULDBLOCK' is unknown [misra-config][0m
+   if (errno != EAGAIN && errno != EWOULDBLOCK)
+                                   ^
+[1msrc/utility.c:347:21: [31merror:[39m Variable 'STDOUT_FILENO' is unknown [misra-config][0m
+   if ((dup2(logFd, STDOUT_FILENO) == -1) ||
+                    ^
+[1msrc/utility.c:348:19: [31merror:[39m Variable 'STDERR_FILENO' is unknown [misra-config][0m
+     (dup2(logFd, STDERR_FILENO) == -1)) /* duplicate the stdout */
+                  ^
+[1msrc/utility.c:29:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:32:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:36:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:39:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:54:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:57:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ strftime(buffer, 64, (format != NULL) ? format : "%c", tm);
+         ^
+[1msrc/utility.c:68:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:85:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:99:8: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ memset(micDeviceNodes, 0, sizeof(micDeviceNodes));
+       ^
+[1msrc/utility.c:110:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:144:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:161:9: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  strcpy(devicePath, MIC_SERIAL_PATH);
+        ^
+[1msrc/utility.c:166:9: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  strcpy(devicePath, MIC_WIFI_PATH);
+        ^
+[1msrc/utility.c:169:8: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ strcat(devicePath, node);
+       ^
+[1msrc/utility.c:176:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:180:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  printLog("opened the '%s' device node", devicePath);
+  ^
+[1msrc/utility.c:199:8: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ memset(&payloadData, 0, sizeof(payloadData));
+       ^
+[1msrc/utility.c:230:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   printLog("read %ld bytes from the node", numRead);
+   ^
+[1msrc/utility.c:235:5: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+    syscallError();
+    ^
+[1msrc/utility.c:239:2: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ printLog("read total %ld bytes from the associated node", totalRead);
+ ^
+[1msrc/utility.c:253:8: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ memset(modelDatasets, 0, sizeof(modelDatasets));
+       ^
+[1msrc/utility.c:257:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:283:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:306:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(scriptFile, sizeof(scriptFile), "%s", script);
+         ^
+[1msrc/utility.c:307:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(logFile, sizeof(logFile), "%s", MODEL_LOG_PATH);
+         ^
+[1msrc/utility.c:308:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(datasetPath, sizeof(datasetPath), "%s%s", MODEL_DATASET_PATH,
+         ^
+[1msrc/utility.c:317:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(layerNumStr, sizeof(layerNumStr), "%u", modelLayerNumber);
+         ^
+[1msrc/utility.c:318:12: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   snprintf(unitsStr, sizeof(unitsStr), "%u", modelUnits);
+           ^
+[1msrc/utility.c:319:12: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   snprintf(epochsStr, sizeof(epochsStr), "%u", modelEpochs);
+           ^
+[1msrc/utility.c:334:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+ snprintf(dropoutStr, sizeof(dropoutStr), "%.2f", modelDropout);
+         ^
+[1msrc/utility.c:340:4: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+   syscallError();
+   ^
+[1msrc/utility.c:345:5: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+    syscallError();
+    ^
+[1msrc/utility.c:349:5: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+    syscallError();
+    ^
+[1msrc/utility.c:352:5: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+    syscallError();
+    ^
+[1msrc/utility.c:374:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:407:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:411:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:414:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:419:3: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-17.7][0m
+  syscallError();
+  ^
+[1msrc/utility.c:226:32: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-18.4][0m
+  numRead = read(fd, payloadPtr+totalRead, payloadSize-totalRead);
+                               ^
+[1mlib/include/dsp.h:59:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define MAX_SOURCES         8
+^
+[1mlib/include/dsp.h:60:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define SOUND_SPEED         343.0    // m/s
+^
+[1mlib/include/dsp.h:65:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define PLOT_ID     "com.example.DSPPlot"
+^
+[1mlib/include/dsp.h:66:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define PLOT_MARGIN    40  /* pixel */
+^
+[1mlib/include/dsp.h:67:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define PLOT_GRID     20  /* pixel */
+^
+[1mlib/include/dsp.h:68:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define PLOT_WIDTH    800 /* pixel */
+^
+[1mlib/include/dsp.h:69:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define PLOT_HEIGHT    600 /* pixel */
+^
+[1msrc/main.h:70:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define MAX_COMM_CHANNEL     3
+^
+[1msrc/main.h:73:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define MAX_BALLISTIC_LAYER    10
+^
+[1msrc/main.h:74:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define MAX_LAYER_THICKNESS    200
+^
+[1msrc/main.h:79:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define MAX_CAMERA_FILE      16
+^
+[1msrc/main.h:86:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define BOX_SPACING       25   /* pixel */
+^
+[1msrc/main.h:109:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define NAV_FLAT_GRAVITY     9.81  /* m/s^2 */
+^
+[1msrc/main.h:110:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define NAV_ACCEL_NOISE      1.0  /* m/s^2 */
+^
+[1msrc/main.h:111:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define NAV_GYRO_NOISE      NAV_ACCEL_NOISE
+^
+[1msrc/main.h:131:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define NORETURN        __attribute__((noreturn))
+^
+[1msrc/main.h:132:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define DEPRECATED       __attribute__((deprecated))
+^
+[1msrc/main.h:133:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define ALIGNED(n)       __attribute__((aligned(n)))
+^
+[1msrc/main.h:134:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define SECTION(s)       __attribute__((section(s)))
+^
+[1msrc/main.h:135:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define ADDRESS0        __builtin_return_address(0)
+^
+[1msrc/main.h:136:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define UNREACHABLE       __builtin_unreachable()
+^
+[1msrc/main.h:182:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define spinRowSigWithData(row, callback, data) (g_signal_connect(row, "notify::value", G_CALLBACK(callback), data))
+^
+[1msrc/main.h:183:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define buttonSigWithData(button, callback, data) (g_signal_connect(button, "clicked", G_CALLBACK(callback), data))
+^
+[1msrc/main.h:185:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define renderSig(widget, callback) (g_signal_connect(widget, "render", G_CALLBACK(callback), NULL))
+^
+[1msrc/main.h:186:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define pressedSig(widget, callback) (g_signal_connect(widget, "pressed", G_CALLBACK(callback), NULL))
+^
+[1msrc/main.h:187:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define releasedSig(widget, callback) (g_signal_connect(widget, "released", G_CALLBACK(callback), NULL))
+^
+[1msrc/main.h:188:0: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-2.5][0m
+#define motionSig(widget, callback) (g_signal_connect(widget, "motion", G_CALLBACK(callback), NULL))
+^
+[1msrc/gps_map.c:33:47: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-5.8][0m
+void gps_map_area_markers(ShumateMarkerLayer *gpsMarkerLayer,
+                                              ^
+[1msrc/gps_map.c:22:21: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-5.8][0m
+ShumateMarkerLayer *gpsMarkerLayer = {0};
+                    ^
+[1msrc/nav_plot.c:123:71: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-5.8][0m
+void nav_plot_area_accel(cairo_t *cr, int width, int height, NavAccel navAccel)
+                                                                      ^
+[1msrc/navigation.c:22:10: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-5.8][0m
+NavAccel navAccel = NAV_ACCEL_UNDEF;
+         ^
+[1msrc/nav_plot.c:191:69: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-5.8][0m
+void nav_plot_area_gyro(cairo_t *cr, int width, int height, NavGyro navGyro)
+                                                                    ^
+[1msrc/navigation.c:23:9: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-5.8][0m
+NavGyro navGyro = NAV_ACCEL_UNDEF;
+        ^
+[1msrc/signals.c:140:14: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-5.8][0m
+ GListModel *model;
+             ^
+[1msrc/mic_plot.c:23:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+void mic_plot_car_frame(cairo_t *cr, int width, int height)
+     ^
+[1msrc/mic_plot.c:43:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+void mic_plot_car_grid(cairo_t *cr, int width, int height)
+     ^
+[1msrc/mic_plot.c:107:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+void mic_plot_car_data(cairo_t *cr, int width, int height)
+     ^
+[1msrc/mic_plot.c:162:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+void mic_plot_polar_frame(cairo_t *cr, int width, int height)
+     ^
+[1msrc/mic_plot.c:216:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+void mic_plot_polar_label(cairo_t *cr, int width, int height)
+     ^
+[1msrc/mic_plot.c:285:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+void mic_plot_polar_sector(cairo_t *cr, int width, int height, int mic)
+     ^
+[1msrc/microphone.c:178:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+void mic_signal_analysis(GtkWidget *analysisGroup)
+     ^
+[1msrc/model.c:25:7: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+char *modelKerasLog = NULL;
+      ^
+[1msrc/model.c:42:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+void model_group_dataset(GtkWidget *datasetGroup)
+     ^
+[1msrc/model.c:59:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+void model_group_model(GtkWidget *modelGroup)
+     ^
+[1msrc/nav_plot.c:20:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+void nav_plot_area_grid(cairo_t *cr, int width, int height)
+     ^
+[1msrc/nav_plot.c:65:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+void nav_plot_area_axes(cairo_t *cr, int width, int height)
+     ^
+[1msrc/nav_plot.c:92:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+void nav_plot_area_labels(cairo_t *cr, int width, int height)
+     ^
+[1msrc/utility.c:65:6: [31mstyle:[39m misra violation (use --rule-texts=<file> to get proper output) [misra-c2012-8.7][0m
+void set_serial_attrs(int fd, struct termios *tty)
+     ^

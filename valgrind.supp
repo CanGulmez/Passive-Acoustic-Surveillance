@@ -1,0 +1,23 @@
+{
+   libpixbufloader-svg
+   Memcheck:*
+   obj:*libpixbufloader-svg.so*
+}
+
+{
+   librsvg-2
+   Memcheck:*
+   obj:*librsvg-2.so*
+}
+
+{
+   libgobject-2.0
+   Memcheck:*
+   obj:*libgobject-2.0.so*
+}
+
+{
+   libgdk_pixbuf-2.0
+   Memcheck:*
+   obj:*libgdk_pixbuf-2.0.so*
+}

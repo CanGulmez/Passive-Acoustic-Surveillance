@@ -114,7 +114,7 @@ extern "C" {
 #define GPS_ZOOM_LEVEL						12.0
 #define GPS_INIT_LAT							41.008
 #define GPS_INIT_LONG						28.9784
-#define GPS_MODULE							"NEO6M"
+#define GPS_MODULE							"GY-NEO6MV2"
 
 #define TIMEOUT_DEVICE_READ				5000		/* ms */
 #define TIMEOUT_MODEL_LOG					5000		/* ms */
