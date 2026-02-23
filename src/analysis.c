@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	analysis.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	Payload analysis operations of AeroSONAR.
+ * @brief 	Payload analysis operations of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention 
@@ -302,33 +302,19 @@ void update_nav_data(void)
  */
 void update_gps_data(void)
 {
-	char buffer[BUFFER_SIZE];
-
 	/* Update the GPS module information. */
 	__generic_action_row_update(gpsModuleRows[0], GPS_MODULE);
 
-	/* Update the UTC time output. */
-	snprintf(
-		buffer, BUFFER_SIZE, "%c%c:%c%c:%c%c",
-		payloadData.gpsUTCTime[0], payloadData.gpsUTCTime[1],
-		payloadData.gpsUTCTime[2], payloadData.gpsUTCTime[3],
-		payloadData.gpsUTCTime[4], payloadData.gpsUTCTime[5]
-	);
-	__generic_action_row_update(gpsModuleRows[1], buffer);
-
-	/* Update the latitude output. */
-	
-	/* Update the longitude output. */
-
-	/* Update the fix quality output. */
+	/* Update the GPS module outputs. */
+	__generic_action_row_update(gpsModuleRows[1], payloadData.gpsUTCTime);
+	__generic_action_row_update(gpsModuleRows[2], payloadData.gpsLatitude);
+	__generic_action_row_update(gpsModuleRows[3], payloadData.gpsLongitude);
 	__generic_action_row_update(gpsModuleRows[4], payloadData.gpsQuality);
 	__generic_action_row_update(gpsModuleRows[5], payloadData.gpsNumSat);
 	__generic_action_row_update(gpsModuleRows[6], payloadData.gpsAltitude);
 	__generic_action_row_update(gpsModuleRows[7], payloadData.gpsStatus);
 	__generic_action_row_update(gpsModuleRows[8], payloadData.gpsSpeed);
 	__generic_action_row_update(gpsModuleRows[9], payloadData.gpsCourse);
-
-	/* Update the date output. */
-	
+	__generic_action_row_update(gpsModuleRows[10], payloadData.gpsDate);
 }
  

@@ -51,7 +51,7 @@
 
 #define FILE					__FILE__
 #define LINE					__LINE__
-#define PACKED					__attribute__((packed))
+#define PACKED					__attribute__((packed, aligned(1)))
 #define NORETURN				__attribute__((noreturn))
 #define DEPRECATED			__attribute__((deprecated))
 #define ALIGNED(n)			__attribute__((aligned(n)))

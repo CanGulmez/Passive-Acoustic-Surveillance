@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	signals.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	Signal handlers of AeroSONAR.
+ * @brief 	Signal handlers of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention
@@ -355,7 +355,7 @@ void on_output_model_texted(GObject *gobject, GParamSpec *pspec, gpointer data)
 void on_mic_button_clicked(GtkButton *button, gpointer data)
 {
 	const char *label;
-	static sqlite3 *db = NULL;
+	static struct sqlite3 *db = NULL;
 	static int deviceFd = -1;
 
 	label = gtk_button_get_label(button);

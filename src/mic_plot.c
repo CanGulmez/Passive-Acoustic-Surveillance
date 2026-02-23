@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	mic_plot.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	Microphone plot area integrations of AeroSONAR. 
+ * @brief 	Microphone plot integrations of passive acoustic surveillance. 
  * 
  ******************************************************************************
  * @attention

@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	microphone.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	Microphone data integration of AeroSONAR.
+ * @brief 	Microphone data integration of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention

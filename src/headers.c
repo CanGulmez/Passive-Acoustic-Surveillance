@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	headers.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	Header button actions of AeroSONAR.
+ * @brief 	Header button actions of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention

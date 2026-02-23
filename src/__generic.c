@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	__generic.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	Generic components of AeroSONAR.
+ * @brief 	Generic components of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention
@@ -162,6 +162,14 @@ GtkWidget *__generic_action_row_new(const char *title, const char *label)
 
 	actionRow = adw_action_row_new();
 	labelWid = gtk_label_new(label);
+
+	/* Set the text as scrollabe so that long strings can be fit into 
+		the fixed-height action row. */
+	gtk_label_set_single_line_mode(GTK_LABEL(labelWid), TRUE);
+	gtk_label_set_ellipsize(GTK_LABEL(labelWid), PANGO_ELLIPSIZE_END);
+	gtk_widget_set_halign(labelWid, GTK_ALIGN_END);
+	gtk_widget_set_hexpand(labelWid, TRUE);
+
 	adw_preferences_row_set_title(ADW_PREFERENCES_ROW(actionRow), title);
 	adw_action_row_add_suffix(ADW_ACTION_ROW(actionRow), labelWid);
 

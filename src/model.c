@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	model.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	AI model integration of AeroSONAR.
+ * @brief 	AI model integration of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention

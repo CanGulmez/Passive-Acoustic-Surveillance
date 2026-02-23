@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	main.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	Passive SONAR implementation for aircrafts.
+ * @brief 	Passive acoustic surveillance system primarily designed for drones.
  * 
  ******************************************************************************
  * @attention

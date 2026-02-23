@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	navigation.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	Navigation system of AeroSONAR.
+ * @brief 	Navigation system of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention

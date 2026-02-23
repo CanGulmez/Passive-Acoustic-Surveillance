@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	main.h
  * @author 	Ahmet Can GULMEZ
- * @brief 	Passive acoustic surveillance system for aircraft.
+ * @brief 	Passive acoustic surveillance system primarily designed for drones.
  * 
  ******************************************************************************
  * @attention
@@ -15,8 +15,8 @@
  ******************************************************************************
  */
 
-#ifndef AERO_SONAR_H
-#define AERO_SONAR_H
+#ifndef ACOUSTIC_SURVEILLANCE_H
+#define ACOUSTIC_SURVEILLANCE_H
 
 #ifdef __cplusplus
 extern "C" {	
@@ -114,14 +114,13 @@ extern "C" {
 #define GPS_ZOOM_LEVEL						12.0
 #define GPS_INIT_LAT							41.008
 #define GPS_INIT_LONG						28.9784
-#define GPS_MODULE							"E22 900T22D"
+#define GPS_MODULE							"NEO6M"
 
-#define TIMEOUT_DEVICE_READ				3000		/* ms */
-#define TIMEOUT_PLOT_REDRAW				3000		/* ms */
-#define TIMEOUT_MODEL_LOG					10000		/* ms */
-#define TIMEOUT_DATA_RECORD				10000		/* ms */
-#define TIMEOUT_NAV_UPDATE					3000		/* ms */ 
-#define TIMEOUT_GPS_UPDATE					3000		/* ms */
+#define TIMEOUT_DEVICE_READ				5000		/* ms */
+#define TIMEOUT_MODEL_LOG					5000		/* ms */
+#define TIMEOUT_DATA_RECORD				15000		/* ms */
+#define TIMEOUT_NAV_UPDATE					5000		/* ms */ 
+#define TIMEOUT_GPS_UPDATE					5000		/* ms */
 
 /* Attribute and built-in macro definitions  */
 
@@ -525,7 +524,7 @@ extern int get_device_nodes(MicChannel);
 extern int open_device_node(MicChannel, const char *);
 extern void read_device_node(int);
 extern int get_model_datasets(void);
-extern void set_serial_attributes(int, struct termios *);
+extern void set_serial_attrs(int, struct termios *);
 extern int run_keras_script(const char *);
 extern void abort_keras_script(int);
 extern int is_keras_script_running(int);
@@ -615,4 +614,4 @@ extern void on_gps_button_clicked(GtkButton *, gpointer);
 }
 #endif
 
-#endif /* AERO_SONAR_H */
+#endif /* ACOUSTIC_SURVEILLANCE_H */

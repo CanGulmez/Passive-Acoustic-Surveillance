@@ -2,7 +2,7 @@
 
 CC				:= gcc
 PIO			:= pio
-CFLAGS		:= -Wall -std=c17 -g3 -O2 -march=native
+CFLAGS		:= -Wall -std=c17 -g3 -O3 -march=native
 
 SRC			:= ./src/*.h ./src/*.c
 DEPENDS		:= gtk4 libadwaita-1 shumate-1.0

@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	nav_plot.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	Navigation plotting of AeroSONAR.
+ * @brief 	Navigation plotting of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention

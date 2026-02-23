@@ -1,8 +1,8 @@
 /**
  ******************************************************************************
- * @file 	db.c
+ * @file 	database.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	SQLite3 database management of AeroSONAR.
+ * @brief 	SQLite3 database management of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention
@@ -98,7 +98,7 @@ void db_bind_data(struct sqlite3 *db, Database database)
 
 		for (i = 1; i <= DATA_SIZE; i++)
 		{
-			sqlite3_bind_int(stmt, i, payloadData.micNorth[i - 1]);
+			sqlite3_bind_int(stmt, i, sigBeamformed.data[i - 1]);
 		}
 		sqlite3_bind_text(stmt, DATA_SIZE + 1, 
 			get_time(TIME_FORMAT), -1, SQLITE_STATIC);
@@ -155,7 +155,7 @@ void db_query_data(struct sqlite3 *db, Database database)
 void db_close(struct sqlite3 *db)
 {
 	int rc;
-	
+
 	rc = sqlite3_close(db);
 	if (rc != SQLITE_OK)
 		dbError(db);

@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	utility.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	Common utilities of AeroSONAR.
+ * @brief 	Common utilities of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention 
@@ -18,16 +18,16 @@
 #include "main.h"
 
 /**
- * Write the system logs into required file.
+ * Write the system logs into associated file.
  */
 void logging(const char* buffer, size_t size)
 {
 	int fd;
-
+	
 	fd = open(SYSTEM_LOG_PATH, O_WRONLY | O_APPEND);
 	if (fd == -1)
 		syscallError();
-
+	
 	if (write(fd, buffer, size) == -1)	/* write the logs. */
 		syscallError();
 	
@@ -47,7 +47,7 @@ char *get_time(const char* format)
 	static char buffer[64];
 	time_t t;
 	struct tm *tm;
-	
+
 	t = time(NULL);			/* get the time in seconds */
 	tm = localtime(&t);		/* convert it into broken-down */
 	if (tm == NULL)
@@ -62,7 +62,7 @@ char *get_time(const char* format)
 /**
  * Set the 'termios' structure according to selected attributes.
  */
-void set_serial_attributes(int fd, struct termios *tty)
+void set_serial_attrs(int fd, struct termios *tty)
 {
 	if (tcgetattr(fd, tty) == -1)
 		syscallError();
@@ -77,8 +77,8 @@ void set_serial_attributes(int fd, struct termios *tty)
    tty->c_iflag &= ~(IXON | IXOFF | IXANY);
    tty->c_lflag &= ~(ICANON | ECHO | ECHOE | ECHONL | ISIG); 	/* Raw mode */
    tty->c_oflag &= ~OPOST;
-   tty->c_cc[VTIME] = 10;  				
-   tty->c_cc[VMIN] = 1;
+   tty->c_cc[VTIME] = 0;  				
+   tty->c_cc[VMIN] = 0;
    tty->c_cflag |= CREAD | CLOCAL;	/* Enable receiver */
 
    if (tcsetattr(fd, TCSANOW, tty) == -1)
@@ -170,7 +170,7 @@ int open_device_node(MicChannel channel, const char *node)
 	pathSize += strlen(node);
 	devicePath[pathSize] = '\0';
 
-	fd = open(devicePath, O_RDONLY);	/* read-only channel */	
+	fd = open(devicePath, O_RDONLY | O_NONBLOCK);	/* read-only channel */	
 	if (fd == -1)
 	{
 		syscallError();
@@ -180,7 +180,7 @@ int open_device_node(MicChannel channel, const char *node)
 		printLog("opened the '%s' device node", devicePath);
 	}
 	/* Set serial terminal attributes. */
-	set_serial_attributes(fd, &tty);
+	set_serial_attrs(fd, &tty);
 
 	return fd;
 }

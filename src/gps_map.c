@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	gps_map.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	GPS map interation of AeroSONAR.
+ * @brief 	GPS map interation of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention

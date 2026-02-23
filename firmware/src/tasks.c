@@ -356,6 +356,8 @@ void taskServoMotors(void *pvParams)
  */
 void taskLoRaModule(void *pvParams)
 {
+	PayloadData temp;
+
 	printLog("I'm taskLoRaModule() task!");
 
 	for (;;)
@@ -363,12 +365,14 @@ void taskLoRaModule(void *pvParams)
 		/* Take the mutex to update shared variable. */
 		if (xSemaphoreTake(payloadMutex, portMAX_DELAY) == pdPASS)
 		{
-			/* Transmit the packed structure to ground station. */
-			HAL_UART_Transmit(&huart5, (uint8_t *) &payloadData, sizeof(payloadData), HAL_MAX_DELAY);
-
+			memcpy(&temp, &payloadData, sizeof(payloadData));	/* for debugging */
+			
 			/* Give up the mutex. */
 			xSemaphoreGive(payloadMutex);
 		}
+		/* Transmit the packed structure to ground station. */
+			HAL_UART_Transmit(&huart5, (uint8_t *) &temp, sizeof(temp), HAL_MAX_DELAY);
+
 		/* Give some delay. */
 		vTaskDelay(TASK_LORA_DELAY);
 	}	
