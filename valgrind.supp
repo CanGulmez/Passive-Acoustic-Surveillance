@@ -1,23 +1,95 @@
+#############################
+# Valgrind Suppression File #
+#############################
+
 {
-   libpixbufloader-svg
-   Memcheck:*
+   a1
+   Memcheck:Leak
+   obj:*libpixbufloader-svg.so*
+}
+{
+   a2
+   Memcheck:Addr
+   obj:*libpixbufloader-svg.so*
+}
+{
+   a3
+   Memcheck:Value
+   obj:*libpixbufloader-svg.so*
+}
+{
+   a4
+   Memcheck:Cond
    obj:*libpixbufloader-svg.so*
 }
 
+#####################################################################
+
 {
-   librsvg-2
-   Memcheck:*
+   b1
+   Memcheck:Leak
+   obj:*librsvg-2.so*
+}
+{
+   b2
+   Memcheck:Addr
+   obj:*librsvg-2.so*
+}
+{
+   b3
+   Memcheck:Value
+   obj:*librsvg-2.so*
+}
+{
+   b4
+   Memcheck:Cond
    obj:*librsvg-2.so*
 }
 
+#####################################################################
+
 {
-   libgobject-2.0
-   Memcheck:*
+   c1
+   Memcheck:Leak
+   obj:*libgobject-2.0.so*
+}
+{
+   c2
+   Memcheck:Addr
+   obj:*libgobject-2.0.so*
+}
+{
+   c3
+   Memcheck:Value
+   obj:*libgobject-2.0.so*
+}
+{
+   c4
+   Memcheck:Cond
    obj:*libgobject-2.0.so*
 }
 
+#####################################################################
+
 {
-   libgdk_pixbuf-2.0
-   Memcheck:*
+   d1
+   Memcheck:Leak
    obj:*libgdk_pixbuf-2.0.so*
 }
+{
+   d2
+   Memcheck:Addr
+   obj:*libgdk_pixbuf-2.0.so*
+}
+{
+   d3
+   Memcheck:Value
+   obj:*libgdk_pixbuf-2.0.so*
+}
+{
+   d4
+   Memcheck:Cond
+   obj:*libgdk_pixbuf-2.0.so*
+}
+
+#####################################################################

@@ -8,9 +8,8 @@ CPPCHECK		:= cppcheck
 CFLAGS		:= -Wall -std=c17 -g -O0 -march=native
 
 SRC			:= ./src/*.h ./src/*.c
-DEPENDS		:= gtk4 libadwaita-1 shumate-1.0
-CONFIG		:= $(shell pkg-config --cflags --libs $(DEPENDS)) \
-					-lm -lsqlite3 -ldsp -lgsl -L./lib
+DEPENDS		:= sqlite3 gsl gtk4 libadwaita-1 shumate-1.0
+CONFIG		:= -ldsp -L./lib $(shell pkg-config --cflags --libs $(DEPENDS))
 
 VAL_CONFIG	:= --leak-check=full --track-origins=yes --show-leak-kinds=all \
 				   --suppressions=./valgrind.supp

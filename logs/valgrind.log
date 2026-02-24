@@ -1,9 +1,0 @@
-==88808== Memcheck, a memory error detector
-==88808== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==88808== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==88808== Command: ./SONAR
-==88808== Parent PID: 88805
-==88808== 
-==88808== FATAL: in suppressions file "./valgrind.supp" near line 3:
-==88808==    unknown tool suppression type
-==88808== exiting now.

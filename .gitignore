@@ -2,4 +2,5 @@
 firmware/.pio
 firmware/.vscode
 firmware/ex
-
+SONAR.odt
+valgrind.supp
