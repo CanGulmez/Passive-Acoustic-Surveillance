@@ -69,8 +69,33 @@ $ sudo apt install check \
 	libshumate-dev \
 	libsqlite3-dev \
 	pkg-config
-
 ```
+
+To run the project in isolated environment, you need to build a Docker image with
+this command:
+
+```bash
+$ docker build -t sonar .
+```
+
+This command will create a **sonar** image using the Dockerfile instructions. This
+project is based GTK-4 so that you need to specify that which window server (X11
+or Wayland) you will use from the Docker image. I'm gonna use the X11 server for my
+image. Firstly, enable it for Docker with this command:
+
+```bash
+$ xhost +local:docker
+$ xhost +SI:localuser:root
+```
+
+After that, create and run the docker container with this command:
+
+```bash
+$ docker run -it --rm -e DISPLAY=$DISPLAY -e GDK_BACKEND=x11 -v /tmp/.X11-unix:/tmp/.X11-unix sonar
+```
+
+After entered into the **sonar** container, again run the ground station.
+
 The ground station has four sub-modules:
 
 + Microphone

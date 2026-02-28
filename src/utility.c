@@ -18,7 +18,7 @@
 #include "main.h"
 
 /**
- * Write the system logs into associated file.
+ * Write the system logs into associated .log file.
  */
 void logging(const char* buffer, size_t size)
 {

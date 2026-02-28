@@ -97,7 +97,7 @@ extern "C" {
 #define MIC_RADIUS							0.1		/* 0.1 meter */
 #define MIC_SAMPLE_FREQ						12000		/* 12kHz */
 
-#define MODEL_DATASET_PATH					"/home/can/Datasets/"
+#define MODEL_DATASET_PATH					"./datasets/"
 #define MODEL_DATASET_SUFFIX				".csv"
 #define MODEL_FIT_SCRIPT					"./scripts/acoustic_model.py"
 #define MODEL_LOG_PATH						"./logs/keras-output.log"

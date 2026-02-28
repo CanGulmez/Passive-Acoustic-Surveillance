@@ -11,8 +11,7 @@ SRC			:= ./src/*.h ./src/*.c
 DEPENDS		:= sqlite3 gsl gtk4 libadwaita-1 shumate-1.0
 CONFIG		:= -ldsp -L./lib $(shell pkg-config --cflags --libs $(DEPENDS))
 
-VAL_CONFIG	:= --leak-check=full --track-origins=yes --show-leak-kinds=all \
-				   --suppressions=./valgrind.supp
+VAL_CONFIG	:= --leak-check=full --track-origins=yes --show-leak-kinds=all
 VAL_OUTPUT	:= ./logs/valgrind.log
 
 CPP_CONFIG	:= --enable=warning,style,portability --std=c23 --addon=misra

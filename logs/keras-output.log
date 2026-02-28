@@ -1,13 +1,13 @@
-2026-02-21 13:41:28.646684: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
-2026-02-21 13:41:29.764023: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
-2026-02-21 13:41:30.423511: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:485] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
-2026-02-21 13:41:31.135233: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:8454] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
-2026-02-21 13:41:31.402672: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1452] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
-2026-02-21 13:41:32.866597: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+2026-02-28 15:18:52.421127: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
+2026-02-28 15:18:53.723582: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
+2026-02-28 15:18:54.386111: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:485] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2026-02-28 15:18:55.015042: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:8454] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2026-02-28 15:18:55.308117: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1452] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2026-02-28 15:18:56.789070: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
 To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2026-02-21 13:41:44.098096: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2026-02-28 15:19:08.455349: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
 
-Processing '/home/can/Datasets/jena_climate.csv' dataset with LSTM layer type, 5 layer number, 16 units per layer, 20 epochs, and 16 batch size as 'acoustic-surveillance.keras' in the script directory.
+Processing './datasets/jena_climate.csv' dataset with LSTM layer type, 2 layer number, 1 units per layer, 1 epochs, and 16 batch size as 'xxx.keras' in the script directory.
 
 Found 420451 samples and 15 data in each sample.
 Raw data shape : (420451, 14)
@@ -15,30 +15,20 @@ Target shape   : (420451,)
 
 Splitted the raw data into train (210225 samples), validation (105112 samples) and test (105114 samples) groups.
 
-Model: "acoustic-surveillance"
+Model: "xxx"
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
 ┃ Layer (type)                    ┃ Output Shape           ┃       Param # ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
 │ input_layer (InputLayer)        │ (None, 120, 14)        │             0 │
 ├─────────────────────────────────┼────────────────────────┼───────────────┤
-│ lstm (LSTM)                     │ (None, 120, 16)        │         1,984 │
+│ lstm (LSTM)                     │ (None, 120, 1)         │            64 │
 ├─────────────────────────────────┼────────────────────────┼───────────────┤
-│ lstm_1 (LSTM)                   │ (None, 120, 16)        │         2,112 │
+│ lstm_1 (LSTM)                   │ (None, 1)              │            12 │
 ├─────────────────────────────────┼────────────────────────┼───────────────┤
-│ lstm_2 (LSTM)                   │ (None, 120, 16)        │         2,112 │
+│ dropout (Dropout)               │ (None, 1)              │             0 │
 ├─────────────────────────────────┼────────────────────────┼───────────────┤
-│ lstm_3 (LSTM)                   │ (None, 120, 16)        │         2,112 │
-├─────────────────────────────────┼────────────────────────┼───────────────┤
-│ lstm_4 (LSTM)                   │ (None, 16)             │         2,112 │
-├─────────────────────────────────┼────────────────────────┼───────────────┤
-│ dropout (Dropout)               │ (None, 16)             │             0 │
-├─────────────────────────────────┼────────────────────────┼───────────────┤
-│ dense (Dense)                   │ (None, 1)              │            17 │
+│ dense (Dense)                   │ (None, 1)              │             2 │
 └─────────────────────────────────┴────────────────────────┴───────────────┘
- Total params: 10,449 (40.82 KB)
- Trainable params: 10,449 (40.82 KB)
+ Total params: 78 (312.00 B)
+ Trainable params: 78 (312.00 B)
  Non-trainable params: 0 (0.00 B)
-
-Fitting the model with common datasets:
-
-Epoch 1/20
