@@ -129,7 +129,7 @@ DspTime do_beamforming(double freq, double arrival)
 /**
  * Make the other signal analysis to update `MicSignal` struct.
  */
-void make_signal_analysis(DspTime *beamformed, int arrival)
+void make_signal_analysis(const DspTime *beamformed, int arrival)
 {
 	int i;
 	char buffer[MIC_SIGNAL_NUM][BUFFER_SIZE];

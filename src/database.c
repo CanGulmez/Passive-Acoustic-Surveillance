@@ -20,12 +20,12 @@
 /**
  * Open the SQLite3 database.
  */
-struct sqlite3 *db_open(const char *filepath)
+sqlite3 *db_open(const char *dbPath)
 {
 	int rc;
-	struct sqlite3 *db;
+	sqlite3 *db;
 
-	rc = sqlite3_open(filepath, &db);
+	rc = sqlite3_open(dbPath, &db);
 	if (rc != SQLITE_OK)
 		dbError(db);
 
@@ -35,11 +35,12 @@ struct sqlite3 *db_open(const char *filepath)
 /**
  * Create a new table into the open database.
  */
-void db_create_table(struct sqlite3 *db, Database database)
+void db_create_table(sqlite3 *db, Database database)
 {
-	int i, rc;
-	char data[32];
-	char sql[SQL_SIZE];
+	int i;
+	int rc;
+	char data[32] = {0};
+	char sql[SQL_SIZE] = {0};
 
 	/* Create the database table for sensor data. */
 	if (database == DATABASE_SENSOR_DATA)
@@ -66,11 +67,12 @@ void db_create_table(struct sqlite3 *db, Database database)
 /**
  * Bind the appropriate data into the open database.
  */
-void db_bind_data(struct sqlite3 *db, Database database)
+void db_bind_data(sqlite3 *db, Database database)
 {
-	int i, rc;
-	char data[16];
-	char sql[SQL_SIZE];
+	int i;
+	int rc;
+	char data[16] = {0};
+	char sql[SQL_SIZE] = {0};
 	sqlite3_stmt *stmt;
 	
 	/* Bind the "micSensorData" structure into open database. */
@@ -118,11 +120,12 @@ void db_bind_data(struct sqlite3 *db, Database database)
 /**
  * Query the appropriate data into the open database.
  */
-void db_query_data(struct sqlite3 *db, Database database)
+void db_query_data(sqlite3 *db, Database database)
 {
-	int i, rc;
+	int i;
+	int rc;
 	sqlite3_stmt *stmt;
-	char sql[SQL_SIZE];
+	char sql[SQL_SIZE] = {0};
 
 	/* Get the binded data of "micSensorData". */
 	if (database == DATABASE_SENSOR_DATA)
@@ -152,7 +155,7 @@ void db_query_data(struct sqlite3 *db, Database database)
 /**
  * Close the open database.
  */
-void db_close(struct sqlite3 *db)
+void db_close(sqlite3 *db)
 {
 	int rc;
 

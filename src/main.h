@@ -460,110 +460,113 @@ extern guint sigVolumest;
 
 /* Microphone function prototypes */
 
-extern void microphone(GtkBox *, gpointer);
-extern void mic_row_device_node(GtkWidget *);						
-extern void mic_row_baud_rate(GtkWidget *);	
-extern void mic_row_data_bits(GtkWidget *);	
-extern void mic_row_parity_bit(GtkWidget *);
-extern void mic_row_stop_bits(GtkWidget *);	
-extern void mic_row_flow_control(GtkWidget *);
-extern void mic_group_UART(gpointer);
-extern void mic_group_USB(gpointer);
-extern void mic_group_WiFi(gpointer);
-extern void mic_signal_analysis(GtkWidget *);
-extern void mic_plot_car(GtkDrawingArea *, cairo_t *, int, int, gpointer);
-extern void mic_plot_car_frame(cairo_t *, int, int);	
-extern void mic_plot_car_grid(cairo_t *, int, int);	
-extern void mic_plot_car_label_x(cairo_t *, int, int);		
-extern void mic_plot_car_label_y(cairo_t *, int, int);	
-extern void mic_plot_car_data(cairo_t *, int, int);
-extern void mic_plot_polar(GtkDrawingArea *, cairo_t *, int, int, gpointer);
-extern void mic_plot_polar_frame(cairo_t *, int, int);
-extern void mic_plot_polar_label(cairo_t *, int, int);
-extern void mic_plot_polar_fill(cairo_t *, int, int, double, double);
-extern void mic_plot_polar_sector(cairo_t *, int, int, int);
+extern void microphone(GtkBox *micBox, gpointer data);
+extern void mic_row_device_node(GtkWidget *propertyGroup);						
+extern void mic_row_baud_rate(GtkWidget *propertyGroup);	
+extern void mic_row_data_bits(GtkWidget *propertyGroup);	
+extern void mic_row_parity_bit(GtkWidget *propertyGroup);
+extern void mic_row_stop_bits(GtkWidget *propertyGroup);	
+extern void mic_row_flow_control(GtkWidget *propertyGroup);
+extern void mic_group_UART(gpointer data);
+extern void mic_group_USB(gpointer data);
+extern void mic_group_WiFi(gpointer data);
+extern void mic_signal_analysis(GtkWidget *analysisGroup);
+extern void mic_plot_car(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer data);
+extern void mic_plot_car_frame(cairo_t *cr, int width, int height);	
+extern void mic_plot_car_grid(cairo_t *cr, int width, int height);	
+extern void mic_plot_car_label_x(cairo_t *cr, int width, int height);		
+extern void mic_plot_car_label_y(cairo_t *cr, int width, int height);	
+extern void mic_plot_car_data(cairo_t *cr, int width, int height);
+extern void mic_plot_polar(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer data);
+extern void mic_plot_polar_frame(cairo_t *cr, int width, int height);
+extern void mic_plot_polar_label(cairo_t *cr, int width, int height);
+extern void mic_plot_polar_fill(cairo_t *cr, int width, int height, double start, double end);
+extern void mic_plot_polar_sector(cairo_t *cr, int width, int height, int mic);
 
 /* AI Model function prototypes */
 
-extern void model(GtkBox *, gpointer);
-extern void model_group_dataset(GtkWidget *);
-extern void model_group_model(GtkWidget *);
+extern void model(GtkBox *modelBox, gpointer data);
+extern void model_group_dataset(GtkWidget *datasetGroup);
+extern void model_group_model(GtkWidget *modelGroup);
 
 /* Navigation function prototypes */
 
-extern void navigation(GtkBox *, gpointer);
-extern GtkWidget *nav_accel_group(gpointer);
-extern GtkWidget *nav_gyro_group(gpointer);
-extern GtkWidget *nav_magnet_group(gpointer);
-extern void nav_plot_area_grid(cairo_t *, int, int);
-extern void nav_plot_area_axes(cairo_t *, int, int);
-extern void nav_plot_area_labels(cairo_t *, int, int);
-extern void nav_plot_area_accel(cairo_t *, int, int, NavAccel);
-extern void nav_plot_area_gyro(cairo_t *, int, int, NavGyro);
-extern void nav_plot_area(GtkDrawingArea *, cairo_t *, int, int, gpointer);
+extern void navigation(GtkBox *imuBox, gpointer data);
+extern GtkWidget *nav_info_group(gpointer data);
+extern GtkWidget *nav_accel_group(gpointer data);
+extern GtkWidget *nav_gyro_group(gpointer data);
+extern GtkWidget *nav_magnet_group(gpointer data);
+extern GtkWidget *nav_temp_group(gpointer data);
+extern void nav_plot_area_grid(cairo_t *cr, int width, int height);
+extern void nav_plot_area_device(cairo_t *cr, int width, int height);
+extern void nav_plot_area_axes(cairo_t *cr, int width, int height);
+extern void nav_plot_area_labels(cairo_t *cr, int width, int height);
+extern void nav_plot_area_accel(cairo_t *cr, int width, int height, NavAccel accel);
+extern void nav_plot_area_gyro(cairo_t *cr, int width, int height, NavGyro gyro);
+extern void nav_plot_area(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer data);
 
 /* GPS map function prototypes */
 
-extern void gps_map(GtkBox *, gpointer);
-extern void gps_map_area(GtkBox *, gpointer);
-extern void gps_map_area_markers(ShumateMarkerLayer *, double, double);
+extern void gps_map(GtkBox *mapBox, gpointer data);
+extern void gps_map_area(GtkBox *rightBox, gpointer data);
+extern void gps_map_area_markers(ShumateMarkerLayer *gpsMarkerLayer, double lat, double lon);
 
 /* Database function prototypes */
 
-extern sqlite3 *db_open(const char *);
-extern void db_create_table(struct sqlite3 *, Database);
-extern void db_bind_data(struct sqlite3 *, Database);
-extern void db_query_data(struct sqlite3 *, Database);
-extern void db_close(struct sqlite3 *);
+extern sqlite3 *db_open(const char *dbPath);
+extern void db_create_table(sqlite3 *db, Database database);
+extern void db_bind_data(sqlite3 *db, Database database);
+extern void db_query_data(sqlite3 *db, Database database);
+extern void db_close(sqlite3 *db);
 
 /* Common utility function prototypes */
 
-extern void logging(const char *, size_t);
-extern char *get_time(const char *);
-extern int get_device_nodes(MicChannel);
-extern int open_device_node(MicChannel, const char *);
-extern void read_device_node(int);
+extern void logging(const char* buffer, size_t size);
+extern const char *get_time(const char *format);
+extern void set_serial_attrs(int fd, struct termios *tty);
+extern int get_device_nodes(MicChannel channel);
+extern int open_device_node(MicChannel channel, const char *node);
+extern void read_device_node(int fd);
 extern int get_model_datasets(void);
-extern void set_serial_attrs(int, struct termios *);
-extern int run_keras_script(const char *);
-extern void abort_keras_script(int);
-extern int is_keras_script_running(int);
-extern char *get_keras_script_logs(const char *);
+extern int run_keras_script(const char *script);
+extern void abort_keras_script(int childPid);
+extern int is_keras_script_running(int childPid);
+extern const char *get_keras_script_logs(const char *logFile);
 
 /* Timeout utility function prototypes */
 
-extern gboolean timeout_device_node(gpointer);
-extern gboolean timeout_model_keras_log(gpointer);
-extern gboolean timeout_db_record(gpointer);
-extern gboolean timeout_nav_update(gpointer);
-extern gboolean timeout_gps_update(gpointer);
+extern gboolean timeout_device_node(gpointer data);
+extern gboolean timeout_model_keras_log(gpointer data);
+extern gboolean timeout_db_record(gpointer data);
+extern gboolean timeout_nav_update(gpointer data);
+extern gboolean timeout_gps_update(gpointer data);
 
 /* Generic component function prototypes */
 
 extern GtkWidget *__generic_page_box_new(void);
-extern GtkWidget *__generic_header_button_new(const char *, const char *);
-extern guint __generic_row_selected(GObject *, GParamSpec *, gpointer, const char *);
-extern guint __generic_row_changed(GObject *, GParamSpec *, gpointer, const char *);
-extern gboolean __generic_row_switched(GObject *, GParamSpec *, gpointer, const char *);
-extern char *__generic_row_texted(GObject *, GParamSpec *, gpointer, const char *);
-extern GtkWidget *__generic_action_row_new(const char *, const char *);
-extern void __generic_action_row_update(GtkWidget *, const char *);
-extern GtkWidget *__generic_combo_row_new(const char *, const char **, guint);
-extern GtkWidget *__generic_spin_row_new(const char *, double, double, double, double, guint);
-extern GtkWidget *__generic_switch_row_new(const char *);
-extern GtkWidget *__generic_entry_row_new(const char *);
-extern GtkWidget *__generic_group_new(const char *, const char *);
-extern void __generic_group_add(GtkWidget *, GtkWidget *);
-extern void __generic_group_remove(GtkWidget *, GtkWidget *);
-extern GtkWidget *__generic_button_new(const char *, const char *);
+extern GtkWidget *__generic_header_button_new(const char *icon, const char *tooltip);
+extern guint __generic_row_selected(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
+extern guint __generic_row_changed(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
+extern gboolean __generic_row_switched(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
+extern const char *__generic_row_texted(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
+extern GtkWidget *__generic_action_row_new(const char *title, const char *label);
+extern void __generic_action_row_update(GtkWidget *row, const char *label);
+extern GtkWidget *__generic_combo_row_new(const char *title, const char **strings, guint index);
+extern GtkWidget *__generic_spin_row_new(const char *title, double value, double lower, double upper, double increment, guint digits);
+extern GtkWidget *__generic_switch_row_new(const char *title);
+extern GtkWidget *__generic_entry_row_new(const char *title);
+extern GtkWidget *__generic_group_new(const char *title, const char *description);
+extern void __generic_group_add(GtkWidget *group, GtkWidget *row);
+extern void __generic_group_remove(GtkWidget *group, GtkWidget *row);
+extern GtkWidget *__generic_button_new(const char *label, const char *action);
 
 /* Signal analysis function prototypes */
 
 extern void convert_payload_to_sample(void);
 extern double find_dominant_freq(void);
-extern int calculate_arrival(double);
-extern DspTime do_beamforming(double, double);
-extern void make_signal_analysis(DspTime *, int);
+extern int calculate_arrival(double freq);
+extern DspTime do_beamforming(double freq, double arrival);
+extern void make_signal_analysis(const DspTime *beamformed, int arrival);
 extern int select_sector(void);
 extern NavAccel select_accel_direction(void);
 extern NavGyro select_gyro_rotation(void);
@@ -575,40 +578,40 @@ extern void update_gps_data(void);
 
 /* General signal handler prototypes */
 
-extern void on_visible_page_changed(GObject *, GParamSpec *, gpointer);
-extern void on_header_button_clicked(GtkButton *, gpointer);
+extern void on_visible_page_changed(GObject *object, GParamSpec *pspec, gpointer data);
+extern void on_header_button_clicked(GtkButton *button, gpointer data);
 
 /* Microphone signal handler prototypes */
 
-extern void on_comm_channel_selected(GObject *, GParamSpec *, gpointer);
-extern void on_device_node_selected(GObject *, GParamSpec *, gpointer);
-extern void on_baud_rate_selected(GObject *, GParamSpec *, gpointer);
-extern void on_data_bits_selected(GObject *, GParamSpec *, gpointer);
-extern void on_parity_bit_selected(GObject *, GParamSpec *, gpointer);
-extern void on_stop_bits_selected(GObject *, GParamSpec *, gpointer);
-extern void on_flow_control_selected(GObject *, GParamSpec *, gpointer);
-extern void on_mic_button_clicked(GtkButton *, gpointer);
+extern void on_comm_channel_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_device_node_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_baud_rate_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_data_bits_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_parity_bit_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_stop_bits_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_flow_control_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_mic_button_clicked(GtkButton *button, gpointer data);
 
 /* AI model signal handler prototypes */
 
-extern void on_dataset_selected(GObject *, GParamSpec *, gpointer);
-extern void on_layer_type_selected(GObject *, GParamSpec *, gpointer);
-extern void on_recurrent_dropout_changed(GObject *, GParamSpec *, gpointer);
-extern void on_units_changed(GObject *, GParamSpec *, gpointer);
-extern void on_batch_size_selected(GObject *, GParamSpec *, gpointer);
-extern void on_epochs_changed(GObject *, GParamSpec *, gpointer);
-extern void on_layer_number_changed(GObject *, GParamSpec *, gpointer);
-extern void on_early_stop_switched(GObject *, GParamSpec *, gpointer);
-extern void on_output_model_texted(GObject *, GParamSpec *, gpointer);
-extern void on_model_button_clicked(GtkButton *, gpointer);
+extern void on_dataset_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_layer_type_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_recurrent_dropout_changed(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_units_changed(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_batch_size_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_epochs_changed(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_layer_number_changed(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_early_stop_switched(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_output_model_texted(GObject *gobject, GParamSpec *pspec, gpointer data);
+extern void on_model_button_clicked(GtkButton *button, gpointer data);
 
 /* Navigation signal handler prototypes */
 
-extern void on_nav_button_clicked(GtkButton *, gpointer);
+extern void on_nav_button_clicked(GtkButton *button, gpointer data);
 
 /* GPS map signal handler prototypes */
 
-extern void on_gps_button_clicked(GtkButton *, gpointer);
+extern void on_gps_button_clicked(GtkButton *button, gpointer data);
 
 #ifdef __cplusplus
 }

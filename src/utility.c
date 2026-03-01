@@ -42,7 +42,7 @@ void logging(const char* buffer, size_t size)
 /**
  * Get the current time to show with handlers.
  */
-char *get_time(const char* format)
+const char *get_time(const char *format)
 {
 	static char buffer[64];
 	time_t t;
@@ -152,7 +152,7 @@ int get_device_nodes(MicChannel channel)
 int open_device_node(MicChannel channel, const char *node)
 {
 	int fd, pathSize = 0;
-	char devicePath[32];
+	char devicePath[32] = {0};
 	struct termios tty;
 
 	/* Create the device node path name correctly. */
@@ -396,7 +396,7 @@ int is_keras_script_running(int childPid)
 /**
  * Get the Keras script outputs from the its log file.
  */
-char *get_keras_script_logs(const char *logFile)
+const char *get_keras_script_logs(const char *logFile)
 {
 	int fd;
 	struct stat st;

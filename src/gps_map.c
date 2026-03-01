@@ -30,8 +30,8 @@ guint gpsTimeout = 0;
 /**
  * Put the markers at specific locations in the map.
  */
-void gps_map_area_markers(ShumateMarkerLayer *gpsMarkerLayer, 
-	double latitude, double longitude)
+void gps_map_area_markers(ShumateMarkerLayer *gpsMarkerLayer, double lat, 
+								  double lon)
 {
 	GtkWidget *image;
 	ShumateMarker *marker;
@@ -43,8 +43,7 @@ void gps_map_area_markers(ShumateMarkerLayer *gpsMarkerLayer,
 	gtk_widget_set_valign(GTK_WIDGET(marker), GTK_ALIGN_CENTER);
 	gtk_widget_set_halign(GTK_WIDGET(marker), GTK_ALIGN_CENTER);
 	
-	shumate_location_set_location(SHUMATE_LOCATION(marker), 
-		latitude, longitude);
+	shumate_location_set_location(SHUMATE_LOCATION(marker), lat, lon);
 	shumate_marker_set_child(marker, image);
 
 	shumate_marker_layer_add_marker(gpsMarkerLayer, marker);

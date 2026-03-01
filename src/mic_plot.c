@@ -138,8 +138,8 @@ void mic_plot_car_data(cairo_t *cr, int width, int height)
 /**
  * Draw the cartesian plot area.
  */
-void mic_plot_car(GtkDrawingArea *area, cairo_t *cr, 
-	int width, int height, gpointer data)
+void mic_plot_car(GtkDrawingArea *area, cairo_t *cr, int width, int height, 
+						gpointer data)
 {
 	/* Set the background of plot area. */
 	cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);	/* white background */
@@ -300,8 +300,8 @@ void mic_plot_polar_sector(cairo_t *cr, int width, int height, int mic)
 /**
  * Draw the polar plot area.
  */
-void mic_plot_polar(GtkDrawingArea *area, cairo_t *cr, int width, 
-						  int height, gpointer data)
+void mic_plot_polar(GtkDrawingArea *area, cairo_t *cr, int width, int height, 
+						  gpointer data)
 {
 	/* Set the background of plot area */
 	cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);	/* white background */

@@ -137,12 +137,12 @@ void on_device_node_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	AdwComboRow *comboRow;
 	guint selected;
 	char *item;
-	GListModel *model;
+	GListModel *mod;
 
 	comboRow = ADW_COMBO_ROW(gobject);
 	selected = adw_combo_row_get_selected(comboRow);
-	model = adw_combo_row_get_model(comboRow);
-	item = (char *) gtk_string_list_get_string(GTK_STRING_LIST(model), selected);
+	mod = adw_combo_row_get_model(comboRow);
+	item = (char *) gtk_string_list_get_string(GTK_STRING_LIST(mod), selected);
 	printLog("%s(): '%s'", FUNC, item);
 
 	/* Clear the current device node and fill it with new */
@@ -248,12 +248,12 @@ void on_dataset_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	AdwComboRow *comboRow;
 	guint selected;
 	char *item;
-	GListModel *model;
+	GListModel *mod;
 
 	comboRow = ADW_COMBO_ROW(gobject);
 	selected = adw_combo_row_get_selected(comboRow);
-	model = adw_combo_row_get_model(comboRow);
-	item = (char *) gtk_string_list_get_string(GTK_STRING_LIST(model), selected);
+	mod = adw_combo_row_get_model(comboRow);
+	item = (char *) gtk_string_list_get_string(GTK_STRING_LIST(mod), selected);
 	printLog("%s(): '%s'", FUNC, item);
 
 	/* Clear the current device node and fill it with new. */
@@ -345,8 +345,7 @@ void on_early_stop_switched(GObject *gobject, GParamSpec *pspec, gpointer data)
 void on_output_model_texted(GObject *gobject, GParamSpec *pspec, gpointer data)
 {
 	/* Call the generic entry row signal and then get the current text. */
-	modelOutputName = __generic_row_texted(gobject, pspec, data, FUNC);
-
+	modelOutputName = (char *) __generic_row_texted(gobject, pspec, data, FUNC);
 }
 
 /*****************************************************************************/

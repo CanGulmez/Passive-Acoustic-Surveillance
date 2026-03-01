@@ -14,8 +14,6 @@ RUN apt update && apt install -y \
 	make \
 	dbus-x11
 
-# RUN apt install -y dbus-x11
-
 WORKDIR /home/SONAR/
 
 COPY . /home/SONAR/

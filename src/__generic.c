@@ -53,18 +53,18 @@ GtkWidget *__generic_header_button_new(const char *icon, const char *tooltip)
 /**
  * Generic combo row signal handler to get the selected item
  */
-guint __generic_row_selected(GObject *gobject, GParamSpec *pspec, 
-	gpointer data, const char *func)
+guint __generic_row_selected(GObject *gobject, GParamSpec *pspec, gpointer data, 
+									  const char *func)
 {
 	AdwComboRow *comboRow;
 	guint selected;
 	const char *item;
-	GListModel *model;
+	GListModel *mod;
 
 	comboRow = ADW_COMBO_ROW(gobject);
 	selected = adw_combo_row_get_selected(comboRow);
-	model = adw_combo_row_get_model(comboRow);
-	item = gtk_string_list_get_string(GTK_STRING_LIST(model), selected);
+	mod = adw_combo_row_get_model(comboRow);
+	item = gtk_string_list_get_string(GTK_STRING_LIST(mod), selected);
 	printLog("%s(): '%s'", func, item);
 
 	return selected;
@@ -74,7 +74,7 @@ guint __generic_row_selected(GObject *gobject, GParamSpec *pspec,
  * Generic spin row signal handler to get the value.
  */
 guint __generic_row_changed(GObject *gobject, GParamSpec *pspec, gpointer data, 
-	const char *func)
+									 const char *func)
 {
 	guint value;
 	AdwSpinRow *spinRow;
@@ -90,7 +90,7 @@ guint __generic_row_changed(GObject *gobject, GParamSpec *pspec, gpointer data,
  * Generic switch row signal handler to get active state.
  */
 gboolean __generic_row_switched(GObject *gobject, GParamSpec *pspec, gpointer data, 
-	const char *func)
+										  const char *func)
 {
 	gboolean isActive;
 	AdwSwitchRow *switchRow;
@@ -105,12 +105,12 @@ gboolean __generic_row_switched(GObject *gobject, GParamSpec *pspec, gpointer da
 /**
  * Generic entry row signal handler to get current text.
  */
-char *__generic_row_texted(GObject *gobject, GParamSpec *pspec, gpointer data, 
-	const char *func)
+const char *__generic_row_texted(GObject *gobject, GParamSpec *pspec, 
+											gpointer data, const char *func)
 {
-	char *currentText;
+	const char *currentText;
 
-	currentText = (char *) gtk_editable_get_text(GTK_EDITABLE(gobject));
+	currentText = gtk_editable_get_text(GTK_EDITABLE(gobject));
 	printLog("%s(): '%s'", func, currentText);
 	
 	return currentText;
@@ -118,10 +118,12 @@ char *__generic_row_texted(GObject *gobject, GParamSpec *pspec, gpointer data,
 
 /*****************************************************************************/
 /*****************************************************************************/
+
 /**
  * Generic combo row creation
  */
-GtkWidget *__generic_combo_row_new(const char *title, const char **strings, guint index)
+GtkWidget *__generic_combo_row_new(const char *title, const char **strings, 
+											  guint index)
 {
 	GtkWidget *comboRow;
 	GtkStringList *stringList;
@@ -140,7 +142,7 @@ GtkWidget *__generic_combo_row_new(const char *title, const char **strings, guin
  * Generic spin row creation
  */
 GtkWidget *__generic_spin_row_new(const char *title, double value, double lower,
-	double upper, double increment, guint digits)
+											 double upper, double increment, guint digits)
 {
 	GtkWidget *spinRow;
 	GtkAdjustment *adjustment;
@@ -259,7 +261,7 @@ void __generic_group_remove(GtkWidget *group, GtkWidget *row)
 /**
  * Generic button
  */
-GtkWidget *__generic_button_new(const char *label, const char* action)
+GtkWidget *__generic_button_new(const char *label, const char *action)
 {
 	GtkWidget *button;
 	

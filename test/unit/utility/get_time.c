@@ -45,7 +45,7 @@ char *get_time(const char* format)
 	time_t t;
 	size_t s;
 	struct tm *tm;
-	
+
 	t = time(NULL);			/* get the time in seconds */
 	tm = localtime(&t);		/* convert it into broken-down */
 	if (tm == NULL)
