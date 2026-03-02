@@ -31,7 +31,7 @@ gboolean timeout_device_node(gpointer data)
 	read_device_node(deviceFd);
 
 	/* Prepare the collected data for signal analysis. */
-	convert_payload_to_sample();
+	prepare_samples();
 
 	/* Extract the required calculations in here. */
 	max_freq = find_dominant_freq();
@@ -101,8 +101,8 @@ gboolean timeout_nav_update(gpointer data)
 	printLog("updated the navigation data correctly");
 
 	/* Select the direction and rotation for plot. */
-	navAccel = select_accel_direction();
-	navGyro = select_gyro_rotation();
+	navAccel = accel_direction();
+	navGyro = gyro_rotation();
 
 	/* Request redraw for navigation plot. */
 	gtk_widget_queue_draw(navPlotArea);

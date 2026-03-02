@@ -34,7 +34,7 @@ void logging(const char* buffer, size_t size)
 	/* Make sure that each log is explicitly written. */
 	if (fsync(fd) == -1)
 		syscallError();
-
+	
 	if (close(fd) == -1)
 		syscallError();
 }

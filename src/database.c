@@ -138,12 +138,12 @@ void db_query_data(sqlite3 *db, Database database)
 			
 		while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
 		{
-			printf("ID: %d, ", sqlite3_column_int(stmt, 0));
+			printf("%d, ", sqlite3_column_int(stmt, 0));
 			for (i = 1; i <= DATA_SIZE; i++)
 			{
-				printf("Data%d: %d, ", i, sqlite3_column_int(stmt, i));
+				printf("%d, ", sqlite3_column_int(stmt, i));
 			}
-			printf("Timestamp: %s\n", sqlite3_column_text(stmt, 513));
+			printf("%s\n", sqlite3_column_text(stmt, DATA_SIZE + 1));
 		}
 	}
 	/* Finalize the reading operations. */

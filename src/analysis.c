@@ -26,7 +26,7 @@ guint sigVolumest = 1;
 /**
  * Convert the payload mic data to 'DspTime' objects.
  */
-void convert_payload_to_sample(void)
+void prepare_samples(void)
 {
 	int i;
 
@@ -191,7 +191,7 @@ int select_sector(void)
 /**
  * Select the accelerometer direction to be drawed.
  */
-NavAccel select_accel_direction(void)
+NavAccel accel_direction(void)
 {
 	if ((payloadData.imuAccelX > payloadData.imuAccelY) &&
 		 (payloadData.imuAccelX > payloadData.imuAccelZ))
@@ -229,7 +229,7 @@ NavAccel select_accel_direction(void)
 /**
  * Select the gyroscope rotation to be drawed.
  */
-NavGyro select_gyro_rotation(void)
+NavGyro gyro_rotation(void)
 {
 	if ((payloadData.imuGyroX > payloadData.imuGyroY) &&
 		 (payloadData.imuGyroX > payloadData.imuGyroZ))

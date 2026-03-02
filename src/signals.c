@@ -17,6 +17,12 @@
 
 #include "main.h"
 
+/* General shared widgets and variables */
+
+HeaderButton headerButton;
+CurrentPage currentPage = PAGE_MICROPHONE;
+PayloadData payloadData = {0};
+
 void on_visible_page_changed(GObject *object, GParamSpec *pspec, gpointer data)
 {
 	AdwViewStack *stack;
@@ -354,7 +360,7 @@ void on_output_model_texted(GObject *gobject, GParamSpec *pspec, gpointer data)
 void on_mic_button_clicked(GtkButton *button, gpointer data)
 {
 	const char *label;
-	static struct sqlite3 *db = NULL;
+	static sqlite3 *db = NULL;
 	static int deviceFd = -1;
 
 	label = gtk_button_get_label(button);

@@ -17,11 +17,6 @@
 
 #include "main.h"
 
-/* General shared widgets and variables */
-
-HeaderButton headerButton;
-CurrentPage currentPage = PAGE_MICROPHONE;
-
 void on_activate(GtkApplication *app, gpointer user_data)
 {
 	GtkWidget *window, *headerBar;

@@ -64,7 +64,7 @@ extern "C" {
 #define SYSTEM_LOG_PATH						"./logs/system.log"
 #define MAGIC_WORD							0xDEADBEEF
 
-#define DB_SENSOR_DATA_PATH				"./db/sensor_data.db"
+#define DB_SENSOR_DATA_PATH				"./db/sensor-data.db"
 #define DB_SENSOR_DATA_TABLE				"SensorData"
 
 #define MAX_COMM_CHANNEL					3
@@ -562,14 +562,14 @@ extern GtkWidget *__generic_button_new(const char *label, const char *action);
 
 /* Signal analysis function prototypes */
 
-extern void convert_payload_to_sample(void);
+extern void prepare_samples(void);
 extern double find_dominant_freq(void);
 extern int calculate_arrival(double freq);
 extern DspTime do_beamforming(double freq, double arrival);
 extern void make_signal_analysis(const DspTime *beamformed, int arrival);
 extern int select_sector(void);
-extern NavAccel select_accel_direction(void);
-extern NavGyro select_gyro_rotation(void);
+extern NavAccel accel_direction(void);
+extern NavGyro gyro_rotation(void);
 extern void update_nav_data(void);
 extern void update_gps_data(void);
 

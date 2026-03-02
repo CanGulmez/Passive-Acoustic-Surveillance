@@ -36,7 +36,6 @@ MicFlowControl micFlowControl = MIC_FLOW_CONTROL_NONE;
 guint micTimeout = 0;
 guint recordTimeout = 0;
 MicButton micButton;
-PayloadData payloadData = {0};
 
 /**
  * Initialize the device node row.

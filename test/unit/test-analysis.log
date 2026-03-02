@@ -1,0 +1,18 @@
+Running suite Analysis
+./test-analysis.c:44:P:Core:test_prepare_samples:0: Passed
+./test-analysis.c:66:P:Core:test_select_sector_north:0: Passed
+./test-analysis.c:88:P:Core:test_select_sector_east:0: Passed
+./test-analysis.c:103:P:Core:test_accel_direction_x_plus:0: Passed
+./test-analysis.c:117:F:Core:test_accel_direction_z_minus:0: Assertion 'accel == NAV_ACCEL_Z_MINUS' failed: accel == 2, NAV_ACCEL_Z_MINUS == 5
+./test-analysis.c:147:P:Core:test_gyro_rotation_y_plus:0: Passed
+./test-analysis.c:132:P:EdgeCases:test_accel_direction_undef:0: Passed
+Running suite Analysis
+./test-analysis.c:44:P:Core:test_prepare_samples:0: Passed
+./test-analysis.c:66:P:Core:test_select_sector_north:0: Passed
+./test-analysis.c:88:P:Core:test_select_sector_east:0: Passed
+./test-analysis.c:103:P:Core:test_accel_direction_x_plus:0: Passed
+./test-analysis.c:117:F:Core:test_accel_direction_z_minus:0: Assertion 'accel == NAV_ACCEL_Z_MINUS' failed: accel == 2, NAV_ACCEL_Z_MINUS == 5
+./test-analysis.c:147:P:Core:test_gyro_rotation_y_plus:0: Passed
+./test-analysis.c:132:P:EdgeCases:test_accel_direction_undef:0: Passed
+Results for all suites run:
+85%: Checks: 14, Failures: 2, Errors: 0
