@@ -5,9 +5,9 @@ PIO			:= pio
 VALGRIND		:= valgrind
 CPPCHECK		:= cppcheck
 
-CFLAGS		:= -Wall -std=c17 -O3 -march=native
+CFLAGS		:= -Wall -std=gnu17 -O3 -march=native
 
-SRC			:= ./src/*.h ./src/*.c
+SRC			:= ./src/*.c
 DEPENDS		:= check sqlite3 gsl gtk4 libadwaita-1 shumate-1.0
 CONFIG		:= -ldsp -L./lib $(shell pkg-config --cflags --libs $(DEPENDS))
 
@@ -27,9 +27,9 @@ INTERFACE	:= interface/stlink.cfg
 TARGET		:= target/stm32h7x.cfg
 COMMAND		:= "program $(FIRMWARE) verify reset exit"
 
-.PHONY: firmware station memcheck analysis
+.PHONY: firmware station memcheck check
 
-# Building and flashing the firmware
+# Building and flashing the embedded firmware
 firmware:
 	@echo "Building embedded firmware..."
 	@cd ./firmware ; $(PIO) run ; cd ..
@@ -48,11 +48,11 @@ station:
 # Run the valgrind to check for memory leaks
 memcheck:
 	@echo "Checking for memory leaks...\n"
-	@$(VALGRIND) $(VAL_CONFIG) --log-file=$(VAL_OUTPUT) ./$(PROGRAM)
+	$(VALGRIND) $(VAL_CONFIG) --log-file=$(VAL_OUTPUT) ./$(PROGRAM)
 	@echo "Completed the memory leak check, look at $(VAL_OUTPUT)"
 
 # Analyze the program codebase with cppcheck
-analysis:
+check:
 	@echo "Running the static code analysis..."
-	@$(CPPCHECK) $(CPP_CONFIG) --output-file=$(CPP_OUTPUT) ./src
+	$(CPPCHECK) $(CPP_CONFIG) --output-file=$(CPP_OUTPUT) ./src
 	@echo "Completed the static code analysis, look at $(CPP_OUTPUT)"

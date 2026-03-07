@@ -75,7 +75,7 @@ void on_header_button_clicked(GtkButton *button, gpointer data)
 	}
 	else if (cmp(icon, "dialog-information-symbolic"))
 	{
-		headerButton = HEADER_BUTTON_INFO;
+		headerButton = HEADER_BUTTON_SYSTEM;
 	}
 	else if (cmp(icon, "preferences-system-symbolic"))
 	{
@@ -83,11 +83,17 @@ void on_header_button_clicked(GtkButton *button, gpointer data)
 	}
 	else if (cmp(icon, "avatar-default-symbolic"))
 	{
-		headerButton = HEADER_BUTTON_AVATAR;
+		headerButton = HEADER_BUTTON_ABOUT;
 	}
 	else
 	{
 		customError("Unknown header bar button: '%s'", icon);
+	}
+
+	/* Take the required actions for clicked header buttons. */
+	if (headerButton == HEADER_BUTTON_SYSTEM)
+	{
+		header_system_window();
 	}
 }
 
@@ -101,7 +107,7 @@ void on_comm_channel_selected(GObject *gobject, GParamSpec *pspec, gpointer data
 	GtkWidget *child;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __generic_row_selected(gobject, pspec, data, FUNC);
+	selected = __ui_row_selected(gobject, pspec, data, FUNC);
 
 	switch (selected)  
 	{
@@ -160,17 +166,15 @@ void on_baud_rate_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __generic_row_selected(gobject, pspec, data, FUNC);
+	selected = __ui_row_selected(gobject, pspec, data, FUNC);
 
 	switch (selected) 
 	{
 		case 0:	micBaudRate = MIC_BAUD_RATE_9600;		break;
-		case 1:  micBaudRate = MIC_BAUD_RATE_14400;		break;
-		case 2:	micBaudRate = MIC_BAUD_RATE_19200;		break;
-		case 3:	micBaudRate = MIC_BAUD_RATE_28800;		break;
-		case 4:	micBaudRate = MIC_BAUD_RATE_38400;		break;
-		case 5:	micBaudRate = MIC_BAUD_RATE_57600;		break;
-		case 6:	micBaudRate = MIC_BAUD_RATE_115200;		break;
+		case 1:	micBaudRate = MIC_BAUD_RATE_19200;		break;
+		case 2:	micBaudRate = MIC_BAUD_RATE_38400;		break;
+		case 3:	micBaudRate = MIC_BAUD_RATE_57600;		break;
+		case 4:	micBaudRate = MIC_BAUD_RATE_115200;		break;
 		default:	
 			customError("Unknown combo row selection");
 	}
@@ -181,7 +185,7 @@ void on_data_bits_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __generic_row_selected(gobject, pspec, data, FUNC);
+	selected = __ui_row_selected(gobject, pspec, data, FUNC);
 
 	switch (selected) 
 	{
@@ -199,15 +203,13 @@ void on_parity_bit_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __generic_row_selected(gobject, pspec, data, FUNC);
+	selected = __ui_row_selected(gobject, pspec, data, FUNC);
 
 	switch (selected) 
 	{
 		case 0:	micParityBit = MIC_PARITY_BIT_NONE;		break;
 		case 1:	micParityBit = MIC_PARITY_BIT_EVEN;		break;
 		case 2:	micParityBit = MIC_PARITY_BIT_ODD;		break;
-		case 3:	micParityBit = MIC_PARITY_BIT_MARK;		break;
-		case 4:	micParityBit = MIC_PARITY_BIT_SPACE;	break;
 		default:
 			customError("Unknown combo row selection");
 	}
@@ -218,7 +220,7 @@ void on_stop_bits_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __generic_row_selected(gobject, pspec, data, FUNC);
+	selected = __ui_row_selected(gobject, pspec, data, FUNC);
 
 	switch (selected) 
 	{
@@ -234,13 +236,13 @@ void on_flow_control_selected(GObject *gobject, GParamSpec *pspec, gpointer data
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __generic_row_selected(gobject, pspec, data, FUNC);
+	selected = __ui_row_selected(gobject, pspec, data, FUNC);
 
 	switch (selected) 
 	{
-		case 0:	micFlowControl = MIC_FLOW_CONTROL_NONE;		break;
-		case 1:	micFlowControl = MIC_FLOW_CONTROL_HARDWARE;	break;
-		case 2:	micFlowControl = MIC_FLOW_CONTROL_SOFTWARE;	break;
+		case 0:	micFlowCntl = MIC_FLOW_CNTL_NO;	break;
+		case 1:	micFlowCntl = MIC_FLOW_CNTL_HW;	break;
+		case 2:	micFlowCntl = MIC_FLOW_CNTL_SW;	break;
 		default:	
 			customError("Unknown combo row selection");	
 	}
@@ -271,7 +273,7 @@ void on_layer_type_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __generic_row_selected(gobject, pspec, data, FUNC);
+	selected = __ui_row_selected(gobject, pspec, data, FUNC);
 
 	switch (selected) 
 	{
@@ -297,13 +299,13 @@ void on_recurrent_dropout_changed(GObject *gobject, GParamSpec *pspec, gpointer 
 void on_units_changed(GObject *gobject, GParamSpec *pspec, gpointer data)
 {
 	/* Call the generic spin row signal and get the selected item. */
-	modelUnits = __generic_row_changed(gobject, pspec, data, FUNC);
+	modelUnits = __ui_row_changed(gobject, pspec, data, FUNC);
 }
 
 void on_layer_number_changed(GObject *gobject, GParamSpec *pspec, gpointer data)
 {
 	/* Call the generic spin row signal and get the selected item. */
-	modelLayerNumber = __generic_row_changed(gobject, pspec, data, FUNC);
+	modelLayerNumber = __ui_row_changed(gobject, pspec, data, FUNC);
 }
 
 void on_batch_size_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
@@ -311,7 +313,7 @@ void on_batch_size_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __generic_row_selected(gobject, pspec, data, FUNC);
+	selected = __ui_row_selected(gobject, pspec, data, FUNC);
 
 	switch (selected) 
 	{
@@ -329,7 +331,7 @@ void on_batch_size_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 void on_epochs_changed(GObject *gobject, GParamSpec *pspec, gpointer data)
 {
 	/* Call the generic spin row signal and get the selected item. */
-	modelEpochs = __generic_row_changed(gobject, pspec, data, FUNC);
+	modelEpochs = __ui_row_changed(gobject, pspec, data, FUNC);
 }
 
 void on_early_stop_switched(GObject *gobject, GParamSpec *pspec, gpointer data)
@@ -337,7 +339,7 @@ void on_early_stop_switched(GObject *gobject, GParamSpec *pspec, gpointer data)
 	gboolean isActive;
 
 	/* Call the generic switch row signal and get the active state. */
-	isActive = __generic_row_switched(gobject, pspec, data, FUNC);
+	isActive = __ui_row_switched(gobject, pspec, data, FUNC);
 
 	switch (isActive) 
 	{
@@ -351,7 +353,7 @@ void on_early_stop_switched(GObject *gobject, GParamSpec *pspec, gpointer data)
 void on_output_model_texted(GObject *gobject, GParamSpec *pspec, gpointer data)
 {
 	/* Call the generic entry row signal and then get the current text. */
-	modelOutputName = (char *) __generic_row_texted(gobject, pspec, data, FUNC);
+	modelOutputName = (char *) __ui_row_texted(gobject, pspec, data, FUNC);
 }
 
 /*****************************************************************************/
@@ -397,13 +399,13 @@ void on_mic_button_clicked(GtkButton *button, gpointer data)
 		if (!micTimeout) 
 		{
 			micTimeout = g_timeout_add(TIMEOUT_DEVICE_READ, 
-				timeout_device_node, GINT_TO_POINTER(deviceFd));
+				device_node_timeout, GINT_TO_POINTER(deviceFd));
 		}
 		/* Add the timeout for recording sensor data into database. */
 		if (!recordTimeout)
 		{
 			recordTimeout = g_timeout_add(TIMEOUT_DATA_RECORD,
-				timeout_db_record, (gpointer) db);
+				db_record_timeout, (gpointer) db);
 		}
 	} 
 	else if (micButton == MIC_BUTTON_STOP) 
@@ -479,7 +481,7 @@ void on_model_button_clicked(GtkButton *button, gpointer data)
 			if (!modelTimeout)
 			{
 				modelTimeout = g_timeout_add(TIMEOUT_MODEL_LOG, 
-					timeout_model_keras_log, NULL);	/* start timeout for model */
+					model_keras_log_timeout, NULL);	/* start timeout for model */
 			}
 		}
 	} 
@@ -526,7 +528,7 @@ void on_nav_button_clicked(GtkButton *button, gpointer data)
 		if (!navTimeout)
 		{
 			/* Start the timeout for real-time tracking. */
-			g_timeout_add(TIMEOUT_NAV_UPDATE, timeout_nav_update, NULL);
+			g_timeout_add(TIMEOUT_NAV_UPDATE, nav_update_timeout, NULL);
 		}
 	}
 }
@@ -549,7 +551,7 @@ void on_gps_button_clicked(GtkButton *button, gpointer data)
 		if (!gpsTimeout)
 		{
 			/* Start the timeout for real-time tracking. */
-			g_timeout_add(TIMEOUT_GPS_UPDATE, timeout_gps_update, NULL);
+			g_timeout_add(TIMEOUT_GPS_UPDATE, gps_update_timeout, NULL);
 		}
 	}
 }

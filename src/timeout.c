@@ -20,7 +20,7 @@
 /**
  * Set the timeout to get the device data simultenously.
  */
-gboolean timeout_device_node(gpointer data)
+gboolean device_node_timeout(gpointer data)
 {
 	double max_freq;
 	int arrival;
@@ -57,7 +57,7 @@ gboolean timeout_device_node(gpointer data)
 /**
  * Set the timeout to get the Keras logs into text view.
  */
-gboolean timeout_model_keras_log(gpointer data)
+gboolean model_keras_log_timeout(gpointer data)
 {
 	const char *kerasLog;
 
@@ -80,7 +80,7 @@ gboolean timeout_model_keras_log(gpointer data)
 /**
  * Set the timeout to record the sensor data into database.
  */
-gboolean timeout_db_record(gpointer data)
+gboolean db_record_timeout(gpointer data)
 {
 	sqlite3 *db;
 
@@ -94,7 +94,7 @@ gboolean timeout_db_record(gpointer data)
 /**
  * Set the timeout for navigation updates.
  */
-gboolean timeout_nav_update(gpointer data)
+gboolean nav_update_timeout(gpointer data)
 {
 	/* Update the navigation data. */
 	update_nav_data();
@@ -114,7 +114,7 @@ gboolean timeout_nav_update(gpointer data)
 /**
  * Set the timeout for GPS map updates.
  */
-gboolean timeout_gps_update(gpointer)
+gboolean gps_update_timeout(gpointer)
 {
 	static int i = 0;
 	double longitude, latitude;

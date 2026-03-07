@@ -1,8 +1,8 @@
 /**
  ******************************************************************************
- * @file 	__generic.c
+ * @file 	__ui.c
  * @author 	Ahmet Can GULMEZ
- * @brief 	Generic components of passive acoustic surveillance.
+ * @brief 	Generic UI components of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention
@@ -20,7 +20,7 @@
 /**
  * Generic main box creation
  */
-GtkWidget *__generic_page_box_new(void)
+GtkWidget *__ui_page_box_new(void)
 {
 	GtkWidget *pageBox;
 
@@ -36,7 +36,7 @@ GtkWidget *__generic_page_box_new(void)
 /**
  * Generic header button creation
  */
-GtkWidget *__generic_header_button_new(const char *icon, const char *tooltip)
+GtkWidget *__ui_header_button_new(const char *icon, const char *tooltip)
 {
 	GtkWidget *headerBtn;
 
@@ -53,7 +53,7 @@ GtkWidget *__generic_header_button_new(const char *icon, const char *tooltip)
 /**
  * Generic combo row signal handler to get the selected item
  */
-guint __generic_row_selected(GObject *gobject, GParamSpec *pspec, gpointer data, 
+guint __ui_row_selected(GObject *gobject, GParamSpec *pspec, gpointer data, 
 									  const char *func)
 {
 	AdwComboRow *comboRow;
@@ -73,7 +73,7 @@ guint __generic_row_selected(GObject *gobject, GParamSpec *pspec, gpointer data,
 /**
  * Generic spin row signal handler to get the value.
  */
-guint __generic_row_changed(GObject *gobject, GParamSpec *pspec, gpointer data, 
+guint __ui_row_changed(GObject *gobject, GParamSpec *pspec, gpointer data, 
 									 const char *func)
 {
 	guint value;
@@ -89,7 +89,7 @@ guint __generic_row_changed(GObject *gobject, GParamSpec *pspec, gpointer data,
 /**
  * Generic switch row signal handler to get active state.
  */
-gboolean __generic_row_switched(GObject *gobject, GParamSpec *pspec, gpointer data, 
+gboolean __ui_row_switched(GObject *gobject, GParamSpec *pspec, gpointer data, 
 										  const char *func)
 {
 	gboolean isActive;
@@ -105,7 +105,7 @@ gboolean __generic_row_switched(GObject *gobject, GParamSpec *pspec, gpointer da
 /**
  * Generic entry row signal handler to get current text.
  */
-const char *__generic_row_texted(GObject *gobject, GParamSpec *pspec, 
+const char *__ui_row_texted(GObject *gobject, GParamSpec *pspec, 
 											gpointer data, const char *func)
 {
 	const char *currentText;
@@ -122,7 +122,7 @@ const char *__generic_row_texted(GObject *gobject, GParamSpec *pspec,
 /**
  * Generic combo row creation
  */
-GtkWidget *__generic_combo_row_new(const char *title, const char **strings, 
+GtkWidget *__ui_combo_row_new(const char *title, const char **strings, 
 											  guint index)
 {
 	GtkWidget *comboRow;
@@ -141,7 +141,7 @@ GtkWidget *__generic_combo_row_new(const char *title, const char **strings,
 /**
  * Generic spin row creation
  */
-GtkWidget *__generic_spin_row_new(const char *title, double value, double lower,
+GtkWidget *__ui_spin_row_new(const char *title, double value, double lower,
 											 double upper, double increment, guint digits)
 {
 	GtkWidget *spinRow;
@@ -158,7 +158,7 @@ GtkWidget *__generic_spin_row_new(const char *title, double value, double lower,
 /**
  * Generic action row creation
  */
-GtkWidget *__generic_action_row_new(const char *title, const char *label)
+GtkWidget *__ui_action_row_new(const char *title, const char *label)
 {
 	GtkWidget *actionRow, *labelWid;
 
@@ -184,7 +184,7 @@ GtkWidget *__generic_action_row_new(const char *title, const char *label)
 /**
  * Generic action row label update
  */
-void __generic_action_row_update(GtkWidget *row, const char *label)
+void __ui_action_row_update(GtkWidget *row, const char *label)
 {
    GtkWidget *suffix;
 	
@@ -198,7 +198,7 @@ void __generic_action_row_update(GtkWidget *row, const char *label)
 /**
  * Generic switch row creation
  */
-GtkWidget *__generic_switch_row_new(const char *title)
+GtkWidget *__ui_switch_row_new(const char *title)
 {
 	GtkWidget *switchRow;
 
@@ -211,7 +211,7 @@ GtkWidget *__generic_switch_row_new(const char *title)
 /**
  * Generic entry row creation
  */
-GtkWidget *__generic_entry_row_new(const char *title)
+GtkWidget *__ui_entry_row_new(const char *title)
 {
 	GtkWidget *entryRow;
 
@@ -227,7 +227,7 @@ GtkWidget *__generic_entry_row_new(const char *title)
 /**
  * Generic group creation
  */
-GtkWidget *__generic_group_new(const char *title, const char *description)
+GtkWidget *__ui_group_new(const char *title, const char *description)
 {
 	GtkWidget *group;
 
@@ -242,7 +242,7 @@ GtkWidget *__generic_group_new(const char *title, const char *description)
 /**
  * Generic combo group add row
  */
-void __generic_group_add(GtkWidget *group, GtkWidget *row)
+void __ui_group_add(GtkWidget *group, GtkWidget *row)
 {
 	adw_preferences_group_add(ADW_PREFERENCES_GROUP(group), row);
 }
@@ -250,7 +250,7 @@ void __generic_group_add(GtkWidget *group, GtkWidget *row)
 /**
  * Generic combo group remove row
  */
-void __generic_group_remove(GtkWidget *group, GtkWidget *row)
+void __ui_group_remove(GtkWidget *group, GtkWidget *row)
 { 
 	adw_preferences_group_remove(ADW_PREFERENCES_GROUP(group), row);
 }
@@ -261,7 +261,7 @@ void __generic_group_remove(GtkWidget *group, GtkWidget *row)
 /**
  * Generic button
  */
-GtkWidget *__generic_button_new(const char *label, const char *action)
+GtkWidget *__ui_button_new(const char *label, const char *action)
 {
 	GtkWidget *button;
 	
@@ -275,3 +275,4 @@ GtkWidget *__generic_button_new(const char *label, const char *action)
 
 	return button;
 }
+

@@ -27,6 +27,10 @@ extern "C" {
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdalign.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdatomic.h>
 #include <unistd.h>
 #include <assert.h>
 #include <string.h>
@@ -44,7 +48,6 @@ extern "C" {
 #include <locale.h>
 #include <limits.h>
 #include <sys/types.h>
-#include <stdint.h>
 #include <check.h>
 #include <cairo/cairo.h>
 #include <adwaita.h>
@@ -122,6 +125,13 @@ extern "C" {
 #define TIMEOUT_NAV_UPDATE					5000		/* ms */ 
 #define TIMEOUT_GPS_UPDATE					5000		/* ms */
 
+#define HEADER_SYSTEM_DEVELOPER			"Can Gulmez"
+#define HEADER_SYSTEM_NAME					"Passive Acoustic Surveillance"
+#define HEADER_SYSTEM_VERSION				"1.0.0"
+#define HEADER_SYSTEM_LICENSE				GTK_LICENSE_MIT_X11
+#define HEADER_SYSTEM_WEBSITE				"https://github.com/CanGulmez/Passive-Acoustic-Surveillance"
+#define HEADER_SYSTEM_ICON					"weather-clear"
+
 /* Attribute and built-in macro definitions  */
 
 #define FILE									__FILE__
@@ -138,37 +148,36 @@ extern "C" {
 /* Maro function definitions */
 
 #define printLog(msg, ...)																	\
-{																									\
+do {																								\
 	char buffer[BUFFER_SIZE];																\
 																									\
 	memset(buffer, 0, BUFFER_SIZE);														\
-	sprintf(buffer, "[PID=%d][%s] " msg "\n", getpid(), 							\
-		get_time(TIME_FORMAT), ##__VA_ARGS__);											\
-																									\
+	snprintf(buffer, sizeof(buffer), "[PID=%d][%s] " msg "\n", getpid(), 	\
+				get_time(TIME_FORMAT), ##__VA_ARGS__);									\
 	logging(buffer, strlen(buffer));		/* write the logs */						\
 	printf("%s", buffer);		/* print the log buffer to "stdout" */			\
-}
+} while (0)
 
 #define syscallError()																		\
-{                                      												\
+do {                                      											\
 	fprintf(stderr, "\n*** %s (%s::%d in %s()) ***\n", strerror(errno),		\
 			  FILE, LINE, FUNC);		   	 												\
 	exit(EXIT_FAILURE);	/* exit with failure status */							\
-} 
+} while (0)
 
 #define customError(errmsg, ...) 														\
-{                            																\
+do {                            															\
 	fprintf(stderr, "\n*** " errmsg " (%s::%d in %s()) ***\n",					\
 			  ##__VA_ARGS__, FILE, LINE, FUNC);											\
 	exit(EXIT_FAILURE);	/* exit with failure status */							\
-} 
+} while (0)
 
 #define dbError(db)																			\
-{																									\
+do {																								\
 	fprintf(stderr, "\n*** %s (%s::%d in %s()) ***\n",								\
 			  sqlite3_errmsg(db), FILE, LINE, FUNC);									\
 	exit(EXIT_FAILURE);	/* exit with failure status */							\
-}
+} while (0)
 
 /* Shorthands for GTK objects */
 
@@ -196,7 +205,7 @@ extern "C" {
 
 typedef enum _CurrentPage 
 {
-	PAGE_MICROPHONE,
+	PAGE_MICROPHONE = 1,
 	PAGE_AI_MODEL,
 	PAGE_NAVIGATION,
 	PAGE_GPS_MAP
@@ -204,34 +213,32 @@ typedef enum _CurrentPage
 
 typedef enum _HeaderButton 
 {
-	HEADER_BUTTON_NEW,
+	HEADER_BUTTON_NEW = 1,
 	HEADER_BUTTON_SAVE_AS,
 	HEADER_BUTTON_TRASH,
-	HEADER_BUTTON_INFO,
+	HEADER_BUTTON_SYSTEM,
 	HEADER_BUTTON_PREFS,
-	HEADER_BUTTON_AVATAR
+	HEADER_BUTTON_ABOUT
 } HeaderButton;
 
 typedef enum _Database
 {
-	DATABASE_SENSOR_DATA,
+	DATABASE_SENSOR_DATA = 1,
 } Database;
 
 /* Microphone enumerations */
 
 typedef enum _MicChannel
 {
-	MIC_CHANNEL_UART,
+	MIC_CHANNEL_UART = 1,
 	MIC_CHANNEL_USB,
 	MIC_CHANNEL_WIFI
 } MicChannel;
 
 typedef enum _MicBaudRate
 {
-	MIC_BAUD_RATE_9600,
-	MIC_BAUD_RATE_14400,
+	MIC_BAUD_RATE_9600 = 1,
 	MIC_BAUD_RATE_19200,
-	MIC_BAUD_RATE_28800,
 	MIC_BAUD_RATE_38400,
 	MIC_BAUD_RATE_57600,
 	MIC_BAUD_RATE_115200
@@ -239,7 +246,7 @@ typedef enum _MicBaudRate
 
 typedef enum _MicDataBits
 {
-	MIC_DATA_BITS_5,
+	MIC_DATA_BITS_5 = 1,
 	MIC_DATA_BITS_6,
 	MIC_DATA_BITS_7,
 	MIC_DATA_BITS_8
@@ -247,29 +254,27 @@ typedef enum _MicDataBits
 
 typedef enum _MicParityBit
 {
-	MIC_PARITY_BIT_NONE,
+	MIC_PARITY_BIT_NONE = 1,
 	MIC_PARITY_BIT_EVEN,
-	MIC_PARITY_BIT_ODD,
-	MIC_PARITY_BIT_MARK,
-	MIC_PARITY_BIT_SPACE
+	MIC_PARITY_BIT_ODD
 } MicParityBit;
 
 typedef enum _MicStopBits
 {
-	MIC_STOP_BITS_1,
+	MIC_STOP_BITS_1 = 1,
 	MIC_STOP_BITS_2
 } MicStopBits;
 
 typedef enum _MicFlowControl
 {
-	MIC_FLOW_CONTROL_NONE,
-	MIC_FLOW_CONTROL_HARDWARE,
-	MIC_FLOW_CONTROL_SOFTWARE
-} MicFlowControl;
+	MIC_FLOW_CNTL_NO = 1,
+	MIC_FLOW_CNTL_HW,
+	MIC_FLOW_CNTL_SW
+} MicFlowCntl;
 
 typedef enum _MicButton
 {
-	MIC_BUTTON_START,
+	MIC_BUTTON_START = 1,
 	MIC_BUTTON_ANALYZE,
 	MIC_BUTTON_STOP
 } MicButton;
@@ -278,13 +283,13 @@ typedef enum _MicButton
 
 typedef enum _ModelLayerType
 {
-	MODEL_LAYER_TYPE_LSTM,
+	MODEL_LAYER_TYPE_LSTM = 1,
 	MODEL_LAYER_TYPE_GRU
 } ModelLayerType;
 
 typedef enum _ModelBatchSize
 {
-	MODEL_BATCH_SIZE_16,
+	MODEL_BATCH_SIZE_16 = 1,
 	MODEL_BATCH_SIZE_32,
 	MODEL_BATCH_SIZE_64,
 	MODEL_BATCH_SIZE_128,
@@ -294,13 +299,13 @@ typedef enum _ModelBatchSize
 
 typedef enum _ModelEarlyStop
 {
-	MODEL_EARLY_STOP_TRUE,
+	MODEL_EARLY_STOP_TRUE = 1,
 	MODEL_EARLY_STOP_FALSE
 } ModelEarlyStop;
 
 typedef enum _ModelButton
 {
-	MODEL_BUTTON_FIT,
+	MODEL_BUTTON_FIT = 1,
 	MODEL_BUTTON_ABORT,
 	MODEL_BUTTON_EVALUATE,
 	MODEL_BUTTON_PREDICT
@@ -310,7 +315,7 @@ typedef enum _ModelButton
 
 typedef enum _NavAccel
 {
-	NAV_ACCEL_X_PLUS,
+	NAV_ACCEL_X_PLUS = 1,
 	NAV_ACCEL_X_MINUS,
 	NAV_ACCEL_Y_PLUS,
 	NAV_ACCEL_Y_MINUS,
@@ -321,7 +326,7 @@ typedef enum _NavAccel
 
 typedef enum _NavGyro
 {
-	NAV_GYRO_X_PLUS,
+	NAV_GYRO_X_PLUS = 1,
 	NAV_GYRO_X_MINUS,
 	NAV_GYRO_Y_PLUS,
 	NAV_GYRO_Y_MINUS,
@@ -332,14 +337,14 @@ typedef enum _NavGyro
 
 typedef enum _NavButton
 {
-	NAV_BUTTON_START
+	NAV_BUTTON_START = 1
 } NavButton;
 
 /* GPS map enumerations */
 
 typedef enum _GPSButton
 {
-	GPS_BUTTON_START
+	GPS_BUTTON_START = 1
 } GPSButton;
 
 /*****************************************************************************/
@@ -408,7 +413,7 @@ extern MicBaudRate micBaudRate;
 extern MicDataBits micDataBits;
 extern MicParityBit micParityBit;
 extern MicStopBits micStopBits;
-extern MicFlowControl micFlowControl;
+extern MicFlowCntl micFlowCntl;
 extern guint micTimeout;
 extern guint recordTimeout;
 extern MicButton micButton;
@@ -535,30 +540,30 @@ extern const char *get_keras_script_logs(const char *logFile);
 
 /* Timeout utility function prototypes */
 
-extern gboolean timeout_device_node(gpointer data);
-extern gboolean timeout_model_keras_log(gpointer data);
-extern gboolean timeout_db_record(gpointer data);
-extern gboolean timeout_nav_update(gpointer data);
-extern gboolean timeout_gps_update(gpointer data);
+extern gboolean device_node_timeout(gpointer data);
+extern gboolean model_keras_log_timeout(gpointer data);
+extern gboolean db_record_timeout(gpointer data);
+extern gboolean nav_update_timeout(gpointer data);
+extern gboolean gps_update_timeout(gpointer data);
 
 /* Generic component function prototypes */
 
-extern GtkWidget *__generic_page_box_new(void);
-extern GtkWidget *__generic_header_button_new(const char *icon, const char *tooltip);
-extern guint __generic_row_selected(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
-extern guint __generic_row_changed(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
-extern gboolean __generic_row_switched(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
-extern const char *__generic_row_texted(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
-extern GtkWidget *__generic_action_row_new(const char *title, const char *label);
-extern void __generic_action_row_update(GtkWidget *row, const char *label);
-extern GtkWidget *__generic_combo_row_new(const char *title, const char **strings, guint index);
-extern GtkWidget *__generic_spin_row_new(const char *title, double value, double lower, double upper, double increment, guint digits);
-extern GtkWidget *__generic_switch_row_new(const char *title);
-extern GtkWidget *__generic_entry_row_new(const char *title);
-extern GtkWidget *__generic_group_new(const char *title, const char *description);
-extern void __generic_group_add(GtkWidget *group, GtkWidget *row);
-extern void __generic_group_remove(GtkWidget *group, GtkWidget *row);
-extern GtkWidget *__generic_button_new(const char *label, const char *action);
+extern GtkWidget *__ui_page_box_new(void);
+extern GtkWidget *__ui_header_button_new(const char *icon, const char *tooltip);
+extern guint __ui_row_selected(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
+extern guint __ui_row_changed(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
+extern gboolean __ui_row_switched(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
+extern const char *__ui_row_texted(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
+extern GtkWidget *__ui_action_row_new(const char *title, const char *label);
+extern void __ui_action_row_update(GtkWidget *row, const char *label);
+extern GtkWidget *__ui_combo_row_new(const char *title, const char **strings, guint index);
+extern GtkWidget *__ui_spin_row_new(const char *title, double value, double lower, double upper, double increment, guint digits);
+extern GtkWidget *__ui_switch_row_new(const char *title);
+extern GtkWidget *__ui_entry_row_new(const char *title);
+extern GtkWidget *__ui_group_new(const char *title, const char *description);
+extern void __ui_group_add(GtkWidget *group, GtkWidget *row);
+extern void __ui_group_remove(GtkWidget *group, GtkWidget *row);
+extern GtkWidget *__ui_button_new(const char *label, const char *action);
 
 /* Signal analysis function prototypes */
 
@@ -572,6 +577,11 @@ extern NavAccel accel_direction(void);
 extern NavGyro gyro_rotation(void);
 extern void update_nav_data(void);
 extern void update_gps_data(void);
+
+/* Header button function prototypes */
+extern void header_system_window(void);
+extern void header_preferences_window(void);
+extern void header_about_me_window(void);
 
 /*****************************************************************************/
 /*****************************************************************************/

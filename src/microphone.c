@@ -32,7 +32,7 @@ MicBaudRate micBaudRate = MIC_BAUD_RATE_115200;
 MicDataBits micDataBits = MIC_DATA_BITS_8;
 MicParityBit micParityBit = MIC_PARITY_BIT_NONE;
 MicStopBits micStopBits = MIC_STOP_BITS_1;
-MicFlowControl micFlowControl = MIC_FLOW_CONTROL_NONE;
+MicFlowCntl micFlowCntl = MIC_FLOW_CNTL_NO;
 guint micTimeout = 0;
 guint recordTimeout = 0;
 MicButton micButton;
@@ -44,10 +44,10 @@ void mic_row_device_node(GtkWidget *propertyGroup)
 {
 	GtkWidget *deviceNodeRow;
 
-	deviceNodeRow = __generic_combo_row_new(
+	deviceNodeRow = __ui_combo_row_new(
 		"Device Node", (const char **)micDeviceNodes, 0
 	);
-	__generic_group_add(propertyGroup, deviceNodeRow);
+	__ui_group_add(propertyGroup, deviceNodeRow);
 	realizeSig(deviceNodeRow, on_device_node_selected);
 	comboRowSig(deviceNodeRow, on_device_node_selected);
 }
@@ -59,11 +59,11 @@ void mic_row_baud_rate(GtkWidget *propertyGroup)
 {
 	GtkWidget *baudRateRow;
 
-	baudRateRow = __generic_combo_row_new(
-		"Baud Rate", (const char *[]) {"9600", "14400", "19200", "28800", 
-		"38400", "57600", "115200", NULL}, 6
+	baudRateRow = __ui_combo_row_new(
+		"Baud Rate", (const char *[]) {"9600", "19200", "38400", "57600", 
+		"115200", NULL}, 4
 	);
-	__generic_group_add(propertyGroup, baudRateRow);
+	__ui_group_add(propertyGroup, baudRateRow);
 	comboRowSig(baudRateRow, on_baud_rate_selected);
 }
 
@@ -74,10 +74,10 @@ void mic_row_data_bits(GtkWidget *propertyGroup)
 {
 	GtkWidget *dataBitsRow;
 
-	dataBitsRow = __generic_combo_row_new(
+	dataBitsRow = __ui_combo_row_new(
 		"Data Bits", (const char *[]) {"5", "6", "7", "8", NULL}, 3
 	);
-	__generic_group_add(propertyGroup, dataBitsRow);
+	__ui_group_add(propertyGroup, dataBitsRow);
 	comboRowSig(dataBitsRow, on_data_bits_selected);
 }
 
@@ -88,11 +88,10 @@ void mic_row_parity_bit(GtkWidget *propertyGroup)
 {
 	GtkWidget *parityBitRow;
 
-	parityBitRow = __generic_combo_row_new(
-		"Parity Bit", (const char *[]) {"None", "Even", "Odd", 
-		"Mark", "Space", NULL}, 0
+	parityBitRow = __ui_combo_row_new(
+		"Parity Bit", (const char *[]) {"None", "Even", "Odd", NULL}, 0
 	);
-	__generic_group_add(propertyGroup, parityBitRow);
+	__ui_group_add(propertyGroup, parityBitRow);
 	comboRowSig(parityBitRow, on_parity_bit_selected);
 }
 
@@ -103,10 +102,10 @@ void mic_row_stop_bits(GtkWidget *propertyGroup)
 {
 	GtkWidget *stopBitsRow;
 
-	stopBitsRow = __generic_combo_row_new(
+	stopBitsRow = __ui_combo_row_new(
 		"Stop Bits", (const char *[]) {"1", "2", NULL}, 0
 	);
-	__generic_group_add(propertyGroup, stopBitsRow);
+	__ui_group_add(propertyGroup, stopBitsRow);
 	comboRowSig(stopBitsRow, on_stop_bits_selected);
 }
 
@@ -117,11 +116,11 @@ void mic_row_flow_control(GtkWidget *propertyGroup)
 {
 	GtkWidget *flowControlRow;
 
-	flowControlRow = __generic_combo_row_new(
+	flowControlRow = __ui_combo_row_new(
 		"Flow Control", (const char *[]) {"None", "Hardware (RTS/CTS)", 
 		"Software (XON/XOFF)", NULL}, 0
 	);
-	__generic_group_add(propertyGroup, flowControlRow);
+	__ui_group_add(propertyGroup, flowControlRow);
 	comboRowSig(flowControlRow, on_flow_control_selected);
 }
 
@@ -131,7 +130,7 @@ void mic_row_flow_control(GtkWidget *propertyGroup)
 void mic_group_UART(gpointer data)
 {
 	/* Set the UART property group with default settings. */
-	micUARTGroup = __generic_group_new("UART Properties",
+	micUARTGroup = __ui_group_new("UART Properties",
 		"Select the UART channel properties");
 
 	mic_row_device_node(micUARTGroup);		/* Device Node */
@@ -148,7 +147,7 @@ void mic_group_UART(gpointer data)
 void mic_group_USB(gpointer data)
 {
 	/* Set the USB property group with default settings. */
-	micUSBGroup = __generic_group_new("USB Properties",
+	micUSBGroup = __ui_group_new("USB Properties",
 		"Select the USB channel properties");
 
 	mic_row_device_node(micUSBGroup);		/* Device Node */
@@ -165,7 +164,7 @@ void mic_group_USB(gpointer data)
 void mic_group_WiFi(gpointer data)
 {
 	/* Set the Wi-Fi property group with default settings. */
-	micWiFiGroup = __generic_group_new("Wi-Fi Properties",
+	micWiFiGroup = __ui_group_new("Wi-Fi Properties",
 		"Select the Wi-Fi channel properties");
 
 	mic_row_device_node(micWiFiGroup);		/* Device Node */
@@ -179,26 +178,26 @@ void mic_signal_analysis(GtkWidget *analysisGroup)
 	int i;
 
 	/* Create the predefined action rows with null labels. */
-	micSignalRows[0] = __generic_action_row_new("Maximum", "Null");
-	micSignalRows[1] = __generic_action_row_new("Minimum", "Null");
-	micSignalRows[2] = __generic_action_row_new("Mean", "Null");
-	micSignalRows[3] = __generic_action_row_new("Standard Deviation", "Null");
-	micSignalRows[4] = __generic_action_row_new("Energy", "Null");
-	micSignalRows[5] = __generic_action_row_new("RMS", "Null");
-	micSignalRows[6] = __generic_action_row_new("Power (dB)", "Null");
-	micSignalRows[7] = __generic_action_row_new("Crest Factor", "Null");
-	micSignalRows[8] = __generic_action_row_new("Skewness", "Null");
-	micSignalRows[9] = __generic_action_row_new("Kurtosis", "Null");
-	micSignalRows[10] = __generic_action_row_new("Variance", "Null");
-	micSignalRows[11] = __generic_action_row_new("Arrival of Angle", "Null");
-	micSignalRows[12] = __generic_action_row_new("Distance (m)", "Null");
-	micSignalRows[13] = __generic_action_row_new("Coordinate", "Null");
-	micSignalRows[14] = __generic_action_row_new("Estimated Target", "Null");
+	micSignalRows[0] = __ui_action_row_new("Maximum", "Null");
+	micSignalRows[1] = __ui_action_row_new("Minimum", "Null");
+	micSignalRows[2] = __ui_action_row_new("Mean", "Null");
+	micSignalRows[3] = __ui_action_row_new("Standard Deviation", "Null");
+	micSignalRows[4] = __ui_action_row_new("Energy", "Null");
+	micSignalRows[5] = __ui_action_row_new("RMS", "Null");
+	micSignalRows[6] = __ui_action_row_new("Power (dB)", "Null");
+	micSignalRows[7] = __ui_action_row_new("Crest Factor", "Null");
+	micSignalRows[8] = __ui_action_row_new("Skewness", "Null");
+	micSignalRows[9] = __ui_action_row_new("Kurtosis", "Null");
+	micSignalRows[10] = __ui_action_row_new("Variance", "Null");
+	micSignalRows[11] = __ui_action_row_new("Arrival of Angle", "Null");
+	micSignalRows[12] = __ui_action_row_new("Distance (m)", "Null");
+	micSignalRows[13] = __ui_action_row_new("Coordinate", "Null");
+	micSignalRows[14] = __ui_action_row_new("Estimated Target", "Null");
 
 	/* Put the analysis rows into the group. */
 	for (i = 0; i < MIC_SIGNAL_NUM; i++)
 	{
-		__generic_group_add(analysisGroup, micSignalRows[i]);
+		__ui_group_add(analysisGroup, micSignalRows[i]);
 	}
 }
 
@@ -252,13 +251,13 @@ void microphone(GtkBox *micBox, gpointer data)
 	 * to selected communication channel, related property group will 
 	 * be set as visible so that the settings can be selected.
 	 */
-	commGroup = __generic_group_new("Communication",
+	commGroup = __ui_group_new("Communication",
 		"Set communication channel for data transmission");
 
-	commRow = __generic_combo_row_new(
+	commRow = __ui_combo_row_new(
 		"Channel", (const char *[]){"UART", "USB", "Wi-Fi", NULL}, 0
 	);
-	__generic_group_add(commGroup, commRow);
+	__ui_group_add(commGroup, commRow);
 	comboRowSigWithData(commRow, on_comm_channel_selected, propertyBox);
 
 	/* Put the initial UART property box. */ 
@@ -268,14 +267,14 @@ void microphone(GtkBox *micBox, gpointer data)
 	gtk_box_append(GTK_BOX(propertyBox), micUARTGroup);
 
 	/* Put the signal analysis of the captured data at center. */
-	analysisGroup = __generic_group_new("Signal Analysis",
+	analysisGroup = __ui_group_new("Signal Analysis",
 		"Display the static signal analysis results");
 
 	mic_signal_analysis(analysisGroup);
 	
 	/* Put the buttons to manage the upper and lower plots. */
-	startBtn = __generic_button_new("Start", "suggested-action");
-	stopBtn = __generic_button_new("Stop", "destructive-action");
+	startBtn = __ui_button_new("Start", "suggested-action");
+	stopBtn = __ui_button_new("Stop", "destructive-action");
 	GtkWidget *buttons[2] = {startBtn, stopBtn};
 
 	for (i = 0; i < 2; i++) 

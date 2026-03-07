@@ -42,17 +42,17 @@
 #define CLOCK_APB4_DIV						RCC_APB4_DIV2
 
 /**
- * PLL1_M: 5					(25MHz / 5 = 5MHz)
- * PLL1_N: 80					(5MHz × 80 = 400MHz)
- * PLL1_P: 4					(400MHz / 4 = 100MHz) → SYSCLK
- * PLL1_Q: 8					(400MHz / 8 = 50MHz)  → For SDMMC, USB, RNG
- * PLL1_R: 8					(400MHz / 8 = 50MHz)  → For SPI, I2S
+ * PLL1_M: 5									(25MHz / 5 = 5MHz)
+ * PLL1_N: 80									(5MHz × 80 = 400MHz)
+ * PLL1_P: 4									(400MHz / 4 = 100MHz) -> SYSCLK
+ * PLL1_Q: 8									(400MHz / 8 = 50MHz)  -> For SDMMC, USB, RNG
+ * PLL1_R: 8									(400MHz / 8 = 50MHz)  -> For SPI, I2S
  * 
- * AHB Prescaler: 1			HCLK = 100MHz
- * APB1 Prescaler: 2			PCLK1 = 50MHz
- * APB2 Prescaler: 2			PCLK2 = 50MHz
- * APB3 Prescaler: 2			PCLK3 = 50MHz
- * APB4 Prescaler: 2			PCLK4 = 50MHz
+ * AHB Prescaler: 1							HCLK = 100MHz
+ * APB1 Prescaler: 2							PCLK1 = 50MHz
+ * APB2 Prescaler: 2							PCLK2 = 50MHz
+ * APB3 Prescaler: 2							PCLK3 = 50MHz
+ * APB4 Prescaler: 2							PCLK4 = 50MHz
  */
 
 /* Debug Port Definitions */

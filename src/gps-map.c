@@ -120,11 +120,11 @@ void gps_map(GtkBox *mapBox, gpointer data)
 		propertyBox);
 
 	/*	Show the used GPS module infomration */
-	GPSModuleGroup = __generic_group_new("GPS Module",
+	GPSModuleGroup = __ui_group_new("GPS Module",
 		"Show the used GPS module information");
 
-	gpsModuleRows[0] = __generic_action_row_new("Module Series", "Null");
-	__generic_group_add(GPSModuleGroup, gpsModuleRows[0]);
+	gpsModuleRows[0] = __ui_action_row_new("Module Series", "Null");
+	__ui_group_add(GPSModuleGroup, gpsModuleRows[0]);
 
 	/* GPS Data (NMEA 0183 sentences)
 	
@@ -145,29 +145,29 @@ void gps_map(GtkBox *mapBox, gpointer data)
 			+ 084.4			--> course over ground (degrees)
 			+ 230394			--> date (23 March 1994)
 	*/
-	GPSResGroup = __generic_group_new("GPS Data",
+	GPSResGroup = __ui_group_new("GPS Data",
 		"Show the GPS module data simultaneously");
 
 	/* Put the GPS module outputs. */
-	gpsModuleRows[1] = __generic_action_row_new("UTC Time", "Null");
-	gpsModuleRows[2] = __generic_action_row_new("Latitude", "Null");
-	gpsModuleRows[3] = __generic_action_row_new("Longitude", "Null");
-	gpsModuleRows[4] = __generic_action_row_new("Fix Quality", "Null");
-	gpsModuleRows[5] = __generic_action_row_new("Number of Sattelites", "Null");
-	gpsModuleRows[6] = __generic_action_row_new("Altitude", "Null");
-	gpsModuleRows[7] = __generic_action_row_new("Status", "Null");
-	gpsModuleRows[8] = __generic_action_row_new("Speed over Ground (knots)", "Null");
-	gpsModuleRows[9] = __generic_action_row_new("Course over Ground (degrees)", "Null");
-	gpsModuleRows[10] = __generic_action_row_new("Date", "Null");
+	gpsModuleRows[1] = __ui_action_row_new("UTC Time", "Null");
+	gpsModuleRows[2] = __ui_action_row_new("Latitude", "Null");
+	gpsModuleRows[3] = __ui_action_row_new("Longitude", "Null");
+	gpsModuleRows[4] = __ui_action_row_new("Fix Quality", "Null");
+	gpsModuleRows[5] = __ui_action_row_new("Number of Sattelites", "Null");
+	gpsModuleRows[6] = __ui_action_row_new("Altitude", "Null");
+	gpsModuleRows[7] = __ui_action_row_new("Status", "Null");
+	gpsModuleRows[8] = __ui_action_row_new("Speed over Ground (knots)", "Null");
+	gpsModuleRows[9] = __ui_action_row_new("Course over Ground (degrees)", "Null");
+	gpsModuleRows[10] = __ui_action_row_new("Date", "Null");
 
 	/* Put the outputs into group. */
 	for (i = 1; i < 11; i++)
 	{
-		__generic_group_add(GPSResGroup, gpsModuleRows[i]);
+		__ui_group_add(GPSResGroup, gpsModuleRows[i]);
 	}
 
 	/* Put the required buttons. */
-	startBtn = __generic_button_new("Start", "suggested-action");
+	startBtn = __ui_button_new("Start", "suggested-action");
 	buttonSig(startBtn, on_gps_button_clicked);
 	
 	/* Layout */

@@ -32,11 +32,11 @@ GtkWidget *nav_info_group(gpointer data)
 {
 	GtkWidget *infoGroup;
 
-	infoGroup = __generic_group_new(
+	infoGroup = __ui_group_new(
 		"IMU Sensor", "Show the used IMU sensor information"
 	);
-	navSensorRows[0] = __generic_action_row_new("Sensor Series", "Null");
-	__generic_group_add(infoGroup, navSensorRows[0]);
+	navSensorRows[0] = __ui_action_row_new("Sensor Series", "Null");
+	__ui_group_add(infoGroup, navSensorRows[0]);
 
 	return infoGroup;
 }
@@ -45,13 +45,13 @@ GtkWidget *nav_accel_group(gpointer data)
 {
 	GtkWidget *accelGroup;
 
-	accelGroup = __generic_group_new(
+	accelGroup = __ui_group_new(
 		"Accelerometer", "Show the accelerometer status and data (m/s^2)"
 	);
-	navSensorRows[1] = __generic_action_row_new("Status", "Not Running");
-	__generic_group_add(accelGroup, navSensorRows[1]);
-	navSensorRows[2] = __generic_action_row_new("Output", "[Null, Null, Null]");
-	__generic_group_add(accelGroup, navSensorRows[2]);
+	navSensorRows[1] = __ui_action_row_new("Status", "Not Running");
+	__ui_group_add(accelGroup, navSensorRows[1]);
+	navSensorRows[2] = __ui_action_row_new("Output", "[Null, Null, Null]");
+	__ui_group_add(accelGroup, navSensorRows[2]);
 
 	return accelGroup;
 }
@@ -60,13 +60,13 @@ GtkWidget *nav_gyro_group(gpointer data)
 {
 	GtkWidget *gyroGroup;
 
-	gyroGroup = __generic_group_new(
+	gyroGroup = __ui_group_new(
 		"Gyroscope", "Show the gyroscope status and data (dps)"
 	);
-	navSensorRows[3] = __generic_action_row_new("Status", "Not Running");
-	__generic_group_add(gyroGroup, navSensorRows[3]);
-	navSensorRows[4] = __generic_action_row_new("Output", "[Null, Null, Null]");
-	__generic_group_add(gyroGroup, navSensorRows[4]);
+	navSensorRows[3] = __ui_action_row_new("Status", "Not Running");
+	__ui_group_add(gyroGroup, navSensorRows[3]);
+	navSensorRows[4] = __ui_action_row_new("Output", "[Null, Null, Null]");
+	__ui_group_add(gyroGroup, navSensorRows[4]);
 
 	return gyroGroup;
 }
@@ -75,13 +75,13 @@ GtkWidget *nav_magnet_group(gpointer data)
 {
 	GtkWidget *magnetGroup;
 
-	magnetGroup = __generic_group_new(
+	magnetGroup = __ui_group_new(
 		"Magnetometer", "Show the magnetometer status and data"
 	);
-	navSensorRows[5] = __generic_action_row_new("Status", "Not Running");
-	__generic_group_add(magnetGroup, navSensorRows[5]);
-	navSensorRows[6] = __generic_action_row_new("Output", "[Null, Null, Null]");
-	__generic_group_add(magnetGroup, navSensorRows[6]);
+	navSensorRows[5] = __ui_action_row_new("Status", "Not Running");
+	__ui_group_add(magnetGroup, navSensorRows[5]);
+	navSensorRows[6] = __ui_action_row_new("Output", "[Null, Null, Null]");
+	__ui_group_add(magnetGroup, navSensorRows[6]);
 
 	return magnetGroup;
 }
@@ -90,11 +90,11 @@ GtkWidget *nav_temp_group(gpointer data)
 {
 	GtkWidget *tempGroup;
 
-	tempGroup = __generic_group_new(
+	tempGroup = __ui_group_new(
 		"Temperature", "Show the temperature data"
 	);
-	navSensorRows[7] = __generic_action_row_new("Output", "Null");
-	__generic_group_add(tempGroup, navSensorRows[7]);
+	navSensorRows[7] = __ui_action_row_new("Output", "Null");
+	__ui_group_add(tempGroup, navSensorRows[7]);
 
 	return tempGroup;
 }
@@ -135,7 +135,7 @@ void navigation(GtkBox *imuBox, gpointer data)
 	tempGroup = nav_temp_group(NULL);
 
 	/* Put the required buttons. */
-	startBtn = __generic_button_new("Start", "suggested-action");
+	startBtn = __ui_button_new("Start", "suggested-action");
 	buttonSig(startBtn, on_nav_button_clicked);
 
 	/* Put the plot areas. */

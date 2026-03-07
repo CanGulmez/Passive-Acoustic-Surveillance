@@ -23,7 +23,7 @@
 void logging(const char* buffer, size_t size)
 {
 	int fd;
-	
+		
 	fd = open(SYSTEM_LOG_PATH, O_WRONLY | O_APPEND);
 	if (fd == -1)
 		syscallError();
@@ -60,26 +60,73 @@ const char *get_time(const char *format)
 }
 
 /**
- * Set the 'termios' structure according to selected attributes.
+ * Set the 'termios' according to communication channel.
  */
 void set_serial_attrs(int fd, struct termios *tty)
 {
 	if (tcgetattr(fd, tty) == -1)
 		syscallError();
 	
-	cfsetispeed(tty, B115200);			/* Baud Rate - 115200 (most common) */
-	cfsetospeed(tty, B115200);
-	tty->c_cflag &= ~CSIZE;				/* Data Bits - 8 bits (most common) */
-	tty->c_cflag |= CS8;
-	tty->c_cflag &= ~PARENB;			/* Parity Bit - None (most common) */
-	tty->c_cflag &= ~CSTOPB;			/* Stop bits - 1 bit (most common) */
-   tty->c_cflag &= ~CRTSCTS;			/* Flow Control - None (most common) */
-   tty->c_iflag &= ~(IXON | IXOFF | IXANY);
-   tty->c_lflag &= ~(ICANON | ECHO | ECHOE | ECHONL | ISIG); 	/* Raw mode */
+	/* Set the baud rate of the channel. */
+	cfsetispeed(tty, 
+		(micBaudRate == MIC_BAUD_RATE_9600) ? B9600 :
+		(micBaudRate == MIC_BAUD_RATE_19200) ? B19200 :
+		(micBaudRate == MIC_BAUD_RATE_38400) ? B38400 :
+		(micBaudRate == MIC_BAUD_RATE_57600) ? B576000 :
+		(micBaudRate == MIC_BAUD_RATE_115200) ? B115200 : 0
+	);
+	cfsetospeed(tty,
+		(micBaudRate == MIC_BAUD_RATE_9600) ? B9600 :
+		(micBaudRate == MIC_BAUD_RATE_19200) ? B19200 :
+		(micBaudRate == MIC_BAUD_RATE_38400) ? B38400 :
+		(micBaudRate == MIC_BAUD_RATE_57600) ? B576000 :
+		(micBaudRate == MIC_BAUD_RATE_115200) ? B115200 : 0
+	);
+
+	/* Set the data bits (character size) of the channel. */
+	tty->c_cflag &= ~CSIZE;
+	tty->c_cflag |= (micDataBits == MIC_DATA_BITS_5) ? CS5 : 
+						 (micDataBits == MIC_DATA_BITS_6) ? CS6 :
+						 (micDataBits == MIC_DATA_BITS_7) ? CS7 :
+						 (micDataBits == MIC_DATA_BITS_8) ? CS8 : 0;
+
+	/* Set the parity bit of the channel. */
+	switch (micParityBit)
+	{
+		case MIC_PARITY_BIT_NONE:
+			tty->c_cflag &= ~PARENB; break;
+		case MIC_PARITY_BIT_EVEN:
+			tty->c_cflag |= PARENB; tty->c_cflag &= ~PARODD; break;
+		case MIC_PARITY_BIT_ODD:
+			tty->c_cflag |= PARENB; tty->c_cflag |= PARODD; break;
+	}
+	
+	/* Set the stop bits of the channel. */
+	switch (micStopBits)
+	{
+		case MIC_STOP_BITS_1: tty->c_cflag &= ~CSTOPB; break;
+		case MIC_STOP_BITS_2: tty->c_cflag |= CSTOPB; break;
+	}
+
+	/* Set the flow control of the channel. */
+	switch (micFlowCntl)
+	{
+		case MIC_FLOW_CNTL_NO:
+			tty->c_cflag &= ~CRTSCTS; tty->c_iflag &= ~(IXON | IXOFF | IXANY); break;
+		case MIC_FLOW_CNTL_HW:
+			tty->c_cflag |= CRTSCTS;  tty->c_iflag &= ~(IXON | IXOFF | IXANY); break;
+		case MIC_FLOW_CNTL_SW:
+			tty->c_cflag &= ~CRTSCTS; tty->c_iflag |= (IXON | IXOFF); break; 
+	}
+
+	/* Set the raw mode of the channel. */
+   tty->c_lflag &= ~(ICANON | ECHO | ECHOE | ECHONL | ISIG);
+
+	/* Set the other settings of the channel. */
    tty->c_oflag &= ~OPOST;
    tty->c_cc[VTIME] = 0;  				
    tty->c_cc[VMIN] = 0;
-   tty->c_cflag |= CREAD | CLOCAL;	/* Enable receiver */
+   tty->c_cflag |= CREAD | CLOCAL;
 
    if (tcsetattr(fd, TCSANOW, tty) == -1)
 		syscallError();
@@ -106,7 +153,7 @@ int get_device_nodes(MicChannel channel)
 	{
 		dir = opendir(MIC_SERIAL_PATH);	/* open the serial device folder */
 	}
-	if ( dir == NULL )
+	if (dir == NULL)
 		syscallError();
 
 	if (channel == MIC_CHANNEL_UART)
@@ -170,15 +217,12 @@ int open_device_node(MicChannel channel, const char *node)
 	pathSize += strlen(node);
 	devicePath[pathSize] = '\0';
 
-	fd = open(devicePath, O_RDONLY | O_NONBLOCK);	/* read-only channel */	
+	fd = open(devicePath, O_RDONLY | O_NONBLOCK); /* read-only channel */	
 	if (fd == -1)
-	{
 		syscallError();
-	}
 	else
-	{
 		printLog("opened the '%s' device node", devicePath);
-	}
+
 	/* Set serial terminal attributes. */
 	set_serial_attrs(fd, &tty);
 
@@ -194,10 +238,10 @@ void read_device_node(int fd)
 	uint8_t *payloadPtr;
 	uint32_t magicNum;
 	long payloadSize;
-
+	
 	/* Initialize with 0s. */
 	memset(&payloadData, 0, sizeof(payloadData));
-
+	
 	/* Firstly, find the magic number to synchronize the stream. */
 	while (TRUE)
 	{

@@ -14,5 +14,5 @@ ANALYSIS_OUT	:= ./test-analysis
 .PHONY			: test-analysis
 
 test-analysis:
-	$(CC) $(CFLAGS) $(ANALYSIS_SRC) -o $(ANALYSIS_OUT) $(CONFIG)
+	$(CC) $(ANALYSIS_SRC) -o $(ANALYSIS_OUT) $(CFLAGS) $(CONFIG)
 

@@ -151,7 +151,7 @@ void make_signal_analysis(const DspTime *beamformed, int arrival)
 	/* Update the signal analysis rows. */
 	for (i = 0; i < 12; i++)
 	{
-		__generic_action_row_update(micSignalRows[i], buffer[i]);
+		__ui_action_row_update(micSignalRows[i], buffer[i]);
 	}
 }
 
@@ -272,29 +272,29 @@ void update_nav_data(void)
 	char buffer[BUFFER_SIZE];
 
 	/* Update the sensor series and information. */
-	__generic_action_row_update(navSensorRows[0], NAV_IMU_SENSOR);
+	__ui_action_row_update(navSensorRows[0], NAV_IMU_SENSOR);
 
 	/* Update the acceloremeter output. */
 	snprintf(
 		buffer, BUFFER_SIZE, "[%.2f, %.2f, %.2f]", 
 		payloadData.imuAccelX, payloadData.imuAccelY, payloadData.imuAccelZ
 	);
-	__generic_action_row_update(navSensorRows[1], "Running");
-	__generic_action_row_update(navSensorRows[2], buffer);
+	__ui_action_row_update(navSensorRows[1], "Running");
+	__ui_action_row_update(navSensorRows[2], buffer);
 
 	/* Update the gyroscope output. */
 	snprintf(
 		buffer, BUFFER_SIZE, "[%.2f, %.2f, %.2f]", 
 		payloadData.imuGyroX, payloadData.imuGyroY, payloadData.imuGyroZ
 	);	
-	__generic_action_row_update(navSensorRows[3], "Running");
-	__generic_action_row_update(navSensorRows[4], buffer);
+	__ui_action_row_update(navSensorRows[3], "Running");
+	__ui_action_row_update(navSensorRows[4], buffer);
 
 	/* Update the temperature output. */
 	snprintf(
 		buffer, BUFFER_SIZE, "%.3f", payloadData.imuTemp
 	);	
-	__generic_action_row_update(navSensorRows[7], buffer);
+	__ui_action_row_update(navSensorRows[7], buffer);
 }
 
 /**
@@ -303,18 +303,18 @@ void update_nav_data(void)
 void update_gps_data(void)
 {
 	/* Update the GPS module information. */
-	__generic_action_row_update(gpsModuleRows[0], GPS_MODULE);
+	__ui_action_row_update(gpsModuleRows[0], GPS_MODULE);
 
 	/* Update the GPS module outputs. */
-	__generic_action_row_update(gpsModuleRows[1], payloadData.gpsUTCTime);
-	__generic_action_row_update(gpsModuleRows[2], payloadData.gpsLatitude);
-	__generic_action_row_update(gpsModuleRows[3], payloadData.gpsLongitude);
-	__generic_action_row_update(gpsModuleRows[4], payloadData.gpsQuality);
-	__generic_action_row_update(gpsModuleRows[5], payloadData.gpsNumSat);
-	__generic_action_row_update(gpsModuleRows[6], payloadData.gpsAltitude);
-	__generic_action_row_update(gpsModuleRows[7], payloadData.gpsStatus);
-	__generic_action_row_update(gpsModuleRows[8], payloadData.gpsSpeed);
-	__generic_action_row_update(gpsModuleRows[9], payloadData.gpsCourse);
-	__generic_action_row_update(gpsModuleRows[10], payloadData.gpsDate);
+	__ui_action_row_update(gpsModuleRows[1], payloadData.gpsUTCTime);
+	__ui_action_row_update(gpsModuleRows[2], payloadData.gpsLatitude);
+	__ui_action_row_update(gpsModuleRows[3], payloadData.gpsLongitude);
+	__ui_action_row_update(gpsModuleRows[4], payloadData.gpsQuality);
+	__ui_action_row_update(gpsModuleRows[5], payloadData.gpsNumSat);
+	__ui_action_row_update(gpsModuleRows[6], payloadData.gpsAltitude);
+	__ui_action_row_update(gpsModuleRows[7], payloadData.gpsStatus);
+	__ui_action_row_update(gpsModuleRows[8], payloadData.gpsSpeed);
+	__ui_action_row_update(gpsModuleRows[9], payloadData.gpsCourse);
+	__ui_action_row_update(gpsModuleRows[10], payloadData.gpsDate);
 }
  

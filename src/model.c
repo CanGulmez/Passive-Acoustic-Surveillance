@@ -46,10 +46,10 @@ void model_group_dataset(GtkWidget *datasetGroup)
 	/* Get datasets */
 	get_model_datasets();	/* datasets from host */
 
-	datasetRow = __generic_combo_row_new(
+	datasetRow = __ui_combo_row_new(
 		"Dataset", (const char **)modelDatasets, -1
 	);
-	__generic_group_add(datasetGroup, datasetRow);
+	__ui_group_add(datasetGroup, datasetRow);
 	comboRowSig(datasetRow, on_dataset_selected);
 }
 
@@ -63,55 +63,55 @@ void model_group_model(GtkWidget *modelGroup)
 		*outputModelRow, *layerNumberRow;
 
 	/* Output Model Name */
-	outputModelRow = __generic_entry_row_new("Output Model");
-	__generic_group_add(modelGroup, outputModelRow);
+	outputModelRow = __ui_entry_row_new("Output Model");
+	__ui_group_add(modelGroup, outputModelRow);
 	entryRowSig(outputModelRow, on_output_model_texted);
 	
 	/* Layer Type */
-	layerTypeRow = __generic_combo_row_new(
+	layerTypeRow = __ui_combo_row_new(
 		"Layer Type", (const char *[]) {"LSTM", "GRU", NULL}, 0
 	);
-	__generic_group_add(modelGroup, layerTypeRow);
+	__ui_group_add(modelGroup, layerTypeRow);
 	comboRowSig(layerTypeRow, on_layer_type_selected);
 
 	/* Layer Number */
-	layerNumberRow = __generic_spin_row_new(
+	layerNumberRow = __ui_spin_row_new(
 		"Layer Number", 2, 2, MAX_MODEL_LAYER_NUMBER, 1, 0
 	);
-	__generic_group_add(modelGroup, layerNumberRow);
+	__ui_group_add(modelGroup, layerNumberRow);
 	spinRowSig(layerNumberRow, on_layer_number_changed);
 
 	/* Units */  
-	unitsRow = __generic_spin_row_new(
+	unitsRow = __ui_spin_row_new(
 		"Units", 1, 1, MAX_MODEL_UNITS, 1, 0
 	);
-	__generic_group_add(modelGroup, unitsRow);
+	__ui_group_add(modelGroup, unitsRow);
 	spinRowSig(unitsRow, on_units_changed);
 
 	/* Epochs */
-	epochsRow = __generic_spin_row_new(
+	epochsRow = __ui_spin_row_new(
 		"Epochs", 1, 1, MAX_MODEL_EPOCHS, 1, 0
 	);
-	__generic_group_add(modelGroup, epochsRow);
+	__ui_group_add(modelGroup, epochsRow);
 	spinRowSig(epochsRow, on_epochs_changed);
 
 	/* Batch Size */
-	batchSizeRow = __generic_combo_row_new(
+	batchSizeRow = __ui_combo_row_new(
 		"Batch Size", (const char *[]) {"16", "32", "64", "128", "256", "512", NULL}, 0
 	);
-	__generic_group_add(modelGroup, batchSizeRow);
+	__ui_group_add(modelGroup, batchSizeRow);
 	comboRowSig(batchSizeRow, on_batch_size_selected);
 
 	/* Early Stopping */ 
-	earlyStopRow = __generic_switch_row_new("Early Stop");
-	__generic_group_add(modelGroup, earlyStopRow);
+	earlyStopRow = __ui_switch_row_new("Early Stop");
+	__ui_group_add(modelGroup, earlyStopRow);
 	switchRowSig(earlyStopRow, on_early_stop_switched);
 
 	/* Recurrent Dropout */
-	dropoutRow = __generic_spin_row_new(
+	dropoutRow = __ui_spin_row_new(
 		"Dropout", 0.1, 0.1, 1.0, 0.01, 2
 	);
-	__generic_group_add(modelGroup, dropoutRow);
+	__ui_group_add(modelGroup, dropoutRow);
 	spinRowSig(dropoutRow, on_recurrent_dropout_changed);
 }
 
@@ -147,14 +147,14 @@ void model(GtkBox *modelBox, gpointer data)
 	gtk_widget_set_margin_start(rightBox, BOX_INNER_MARGIN);
 
 	/* Put the dataset selection group. */
-	datasetGroup = __generic_group_new(
+	datasetGroup = __ui_group_new(
 		"Dataset Selection", "Select the appropriate dataset (.csv)"
 	);
 	model_group_dataset(datasetGroup);
 	gtk_box_append(GTK_BOX(settingsBox), datasetGroup);
 	
 	/* Put the model parameter rows. */
-	modelGroup = __generic_group_new(
+	modelGroup = __ui_group_new(
 		"Model Parameters", "Set the model parameters"
 	);
 	model_group_model(modelGroup);
@@ -181,8 +181,8 @@ void model(GtkBox *modelBox, gpointer data)
 		modelTextView);	
 	
 	/* Put the fit, evaluate, and predict buttons. */
-	fitBtn = __generic_button_new("Fit", "suggested-action");
-	abortBtn = __generic_button_new("Abort", "destructive-action");
+	fitBtn = __ui_button_new("Fit", "suggested-action");
+	abortBtn = __ui_button_new("Abort", "destructive-action");
 	GtkWidget *buttons[2] = {fitBtn, abortBtn};
 
 	for (i = 0; i < 2; i++) 
