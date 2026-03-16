@@ -27,12 +27,11 @@ extern "C" {
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdalign.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdatomic.h>
 #include <unistd.h>
 #include <assert.h>
+#include <limits.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
@@ -43,16 +42,14 @@ extern "C" {
 #include <dirent.h>
 #include <errno.h>
 #include <sys/stat.h>
-#include <signal.h>
 #include <termios.h>
-#include <locale.h>
-#include <limits.h>
 #include <sys/types.h>
 #include <check.h>
-#include <cairo/cairo.h>
-#include <adwaita.h>
 #include <shumate/shumate.h>
 #include <sqlite3.h>
+#include <cairo/cairo.h>
+#include <adwaita.h>
+
 // #include "../lib/include/alat.h"
 #include "../lib/include/dsp.h"
 
@@ -145,6 +142,26 @@ extern "C" {
 #define ADDRESS0								__builtin_return_address(0)
 #define UNREACHABLE							__builtin_unreachable()
 
+/* Shorthands for GTK objects */
+
+#define activateSig(app, callback) (g_signal_connect(app, "activate", G_CALLBACK(callback), NULL))
+#define visiblePageSig(page, callback) (g_signal_connect(page, "notify::visible-child", G_CALLBACK(callback), NULL))
+#define comboRowSig(row, callback) (g_signal_connect(row, "notify::selected", G_CALLBACK(callback), NULL))
+#define spinRowSig(row, callback) (g_signal_connect(row, "notify::value", G_CALLBACK(callback), NULL))
+#define switchRowSig(row, callback) (g_signal_connect(row, "notify::active", G_CALLBACK(callback), NULL))
+#define entryRowSig(row, callback) (g_signal_connect(row, "notify::text", G_CALLBACK(callback), NULL))
+#define buttonSig(button, callback) (g_signal_connect(button, "clicked", G_CALLBACK(callback), NULL))
+#define comboRowSigWithData(row, callback, data) (g_signal_connect(row, "notify::selected", G_CALLBACK(callback), data))
+#define spinRowSigWithData(row, callback, data) (g_signal_connect(row, "notify::value", G_CALLBACK(callback), data))
+#define buttonSigWithData(button, callback, data) (g_signal_connect(button, "clicked", G_CALLBACK(callback), data))
+#define realizeSig(widget, callback) (g_signal_connect(widget, "realize", G_CALLBACK(callback), NULL))
+#define renderSig(widget, callback) (g_signal_connect(widget, "render", G_CALLBACK(callback), NULL))
+#define pressedSig(widget, callback) (g_signal_connect(widget, "pressed", G_CALLBACK(callback), NULL))
+#define releasedSig(widget, callback) (g_signal_connect(widget, "released", G_CALLBACK(callback), NULL))
+#define motionSig(widget, callback) (g_signal_connect(widget, "motion", G_CALLBACK(callback), NULL))
+
+#define cmp(fstring, sstring) (strcmp(fstring, sstring) == 0)
+
 /* Maro function definitions */
 
 #define printLog(msg, ...)																	\
@@ -178,25 +195,6 @@ do {																								\
 			  sqlite3_errmsg(db), FILE, LINE, FUNC);									\
 	exit(EXIT_FAILURE);	/* exit with failure status */							\
 } while (0)
-
-/* Shorthands for GTK objects */
-
-#define visiblePageSig(page, callback) (g_signal_connect(page, "notify::visible-child", G_CALLBACK(callback), NULL))
-#define comboRowSig(row, callback) (g_signal_connect(row, "notify::selected", G_CALLBACK(callback), NULL))
-#define spinRowSig(row, callback) (g_signal_connect(row, "notify::value", G_CALLBACK(callback), NULL))
-#define switchRowSig(row, callback) (g_signal_connect(row, "notify::active", G_CALLBACK(callback), NULL))
-#define entryRowSig(row, callback) (g_signal_connect(row, "notify::text", G_CALLBACK(callback), NULL))
-#define buttonSig(button, callback) (g_signal_connect(button, "clicked", G_CALLBACK(callback), NULL))
-#define comboRowSigWithData(row, callback, data) (g_signal_connect(row, "notify::selected", G_CALLBACK(callback), data))
-#define spinRowSigWithData(row, callback, data) (g_signal_connect(row, "notify::value", G_CALLBACK(callback), data))
-#define buttonSigWithData(button, callback, data) (g_signal_connect(button, "clicked", G_CALLBACK(callback), data))
-#define realizeSig(widget, callback) (g_signal_connect(widget, "realize", G_CALLBACK(callback), NULL))
-#define renderSig(widget, callback) (g_signal_connect(widget, "render", G_CALLBACK(callback), NULL))
-#define pressedSig(widget, callback) (g_signal_connect(widget, "pressed", G_CALLBACK(callback), NULL))
-#define releasedSig(widget, callback) (g_signal_connect(widget, "released", G_CALLBACK(callback), NULL))
-#define motionSig(widget, callback) (g_signal_connect(widget, "motion", G_CALLBACK(callback), NULL))
-
-#define cmp(fstring, sstring)	(strcmp(fstring, sstring) == 0)
 
 /*****************************************************************************/
 /*****************************************************************************/
@@ -536,7 +534,7 @@ extern int get_model_datasets(void);
 extern int run_keras_script(const char *script);
 extern void abort_keras_script(int childPid);
 extern int is_keras_script_running(int childPid);
-extern const char *get_keras_script_logs(const char *logFile);
+extern const char *get_keras_script_log(const char *logFile);
 
 /* Timeout utility function prototypes */
 

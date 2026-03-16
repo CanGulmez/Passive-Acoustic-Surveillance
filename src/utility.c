@@ -5,7 +5,7 @@
  * @brief 	Common utilities of passive acoustic surveillance.
  * 
  ******************************************************************************
- * @attention 
+ * @attention
  * 
  * Copyright (c) 2026 Ahmet Can GULMEZ.
  * All rights reserved.
@@ -15,7 +15,7 @@
  ******************************************************************************
  */
 
-#include "main.h"
+#include "./main.h"
 
 /**
  * Write the system logs into associated .log file.
@@ -23,7 +23,7 @@
 void logging(const char* buffer, size_t size)
 {
 	int fd;
-		
+	
 	fd = open(SYSTEM_LOG_PATH, O_WRONLY | O_APPEND);
 	if (fd == -1)
 		syscallError();
@@ -79,7 +79,7 @@ void set_serial_attrs(int fd, struct termios *tty)
 		(micBaudRate == MIC_BAUD_RATE_9600) ? B9600 :
 		(micBaudRate == MIC_BAUD_RATE_19200) ? B19200 :
 		(micBaudRate == MIC_BAUD_RATE_38400) ? B38400 :
-		(micBaudRate == MIC_BAUD_RATE_57600) ? B576000 :
+		(micBaudRate == MIC_BAUD_RATE_57600) ? B57600 :
 		(micBaudRate == MIC_BAUD_RATE_115200) ? B115200 : 0
 	);
 
@@ -440,7 +440,7 @@ int is_keras_script_running(int childPid)
 /**
  * Get the Keras script outputs from the its log file.
  */
-const char *get_keras_script_logs(const char *logFile)
+const char *get_keras_script_log(const char *logFile)
 {
 	int fd;
 	struct stat st;

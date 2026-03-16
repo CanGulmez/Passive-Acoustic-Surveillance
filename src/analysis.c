@@ -122,7 +122,7 @@ DspTime do_beamforming(double freq, double arrival)
 		beamform.samples[i] = &sigSamples[i];	/* samples itself */
 	}
 	dsp_beamform_delay_sum(&beamform, &sample);
-
+	
 	return sample;
 }
 

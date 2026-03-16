@@ -36,9 +36,7 @@ void taskMicSensorNorth(void *pvParams)
 	/* Start the regular DFSDM filter conversion. */
 	status = HAL_DFSDM_FilterRegularStart(&hdfsdm1f[0]);
 	if (status != HAL_OK)
-	{
 		printError(status, "Failed to start DFSDM conversion!");
-	}
 
 	for (;;)
 	{
@@ -47,9 +45,8 @@ void taskMicSensorNorth(void *pvParams)
 		{
 			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[0], HAL_MAX_DELAY);
 			if (status != HAL_OK)
-			{
 				printError(status, "Failed to poll DFSDM conversion!");
-			}
+
 			/* Get the digital MEMS mic data and then shift it. */
 			samples[i] = HAL_DFSDM_FilterGetRegularValue(&hdfsdm1f[0], 0);
 			samples[i] = samples[i] >> 24;	/* 8-bit MSB */
@@ -84,9 +81,7 @@ void taskMicSensorEast(void *pvParams)
 	/* Start the regular DFSDM filter conversion. */
 	status = HAL_DFSDM_FilterRegularStart(&hdfsdm1f[1]);
 	if (status != HAL_OK)
-	{
 		printError(status, "Failed to start DFSDM conversion!");
-	}
 
 	for (;;)
 	{
@@ -95,9 +90,8 @@ void taskMicSensorEast(void *pvParams)
 		{
 			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[1], HAL_MAX_DELAY);
 			if (status != HAL_OK)
-			{
 				printError(status, "Failed to poll DFSDM conversion!");
-			}
+
 			/* Get the digital MEMS mic data and then shift it. */
 			samples[i] = HAL_DFSDM_FilterGetRegularValue(&hdfsdm1f[1], 1);
 			samples[i] = samples[i] >> 24;	/* 8-bit MSB */
@@ -132,9 +126,7 @@ void taskMicSensorSouth(void *pvParams)
 	/* Start the regular DFSDM filter conversion. */
 	status = HAL_DFSDM_FilterRegularStart(&hdfsdm1f[2]);
 	if (status != HAL_OK)
-	{
 		printError(status, "Failed to start DFSDM conversion!");
-	}
 
 	for (;;)
 	{
@@ -143,9 +135,8 @@ void taskMicSensorSouth(void *pvParams)
 		{
 			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[2], HAL_MAX_DELAY);
 			if (status != HAL_OK)
-			{
 				printError(status, "Failed to poll DFSDM conversion!");
-			}
+
 			/* Get the digital MEMS mic data and then shift it. */
 			samples[i] = HAL_DFSDM_FilterGetRegularValue(&hdfsdm1f[2], 2);
 			samples[i] = samples[i] >> 24;	/* 8-bit MSB */
@@ -180,9 +171,7 @@ void taskMicSensorWest(void *pvParams)
 	/* Start the regular DFSDM filter conversion. */
 	status = HAL_DFSDM_FilterRegularStart(&hdfsdm1f[3]);
 	if (status != HAL_OK)
-	{
 		printError(status, "Failed to start DFSDM conversion!");
-	}
 
 	for (;;)
 	{
@@ -191,9 +180,8 @@ void taskMicSensorWest(void *pvParams)
 		{
 			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[3], HAL_MAX_DELAY);
 			if (status != HAL_OK)
-			{
 				printError(status, "Failed to poll DFSDM conversion!");
-			}
+
 			/* Get the digital MEMS mic data and then shift it. */
 			samples[i] = HAL_DFSDM_FilterGetRegularValue(&hdfsdm1f[3], 3);
 			samples[i] = samples[i] >> 24;	/* 8-bit MSB */
@@ -229,9 +217,8 @@ void taskGPSModule(void *pvParams)
 		/* Recieve the GPS sentences over serial line. */
 		status = HAL_UART_Receive(&huart7, buffer, DATA_SIZE, HAL_MAX_DELAY);
 		if (status != HAL_OK)
-		{
 			printError(status, "Failed to receive GPS sentences!\n");
-		}
+
 		/* Take the mutex to update shared variable. */
 		if (xSemaphoreTake(payloadMutex, portMAX_DELAY) == pdPASS)
 		{
@@ -259,9 +246,8 @@ void taskIMUSensor(void *pvParams)
 	/* Confirm that IMU sensor is registered. */
 	whoami = __read_reg_from_imu(IMU_REG_WHO_AM_I);
 	if (whoami != 0x6A)
-	{
 		printLog("Failed to confirm the IMU sensor!");
-	}
+
 	printLog("Confirmed the existing of IMU sensor.");
 
 	/* Configure the accelerometer and gyroscope. */
@@ -305,9 +291,8 @@ void taskSDCard(void *pvParams)
 	/* Initialize the SD card handler. */
 	status = HAL_SD_Init(&hsdmmc1);
 	if (status != HAL_OK)
-	{
 		printError(status, "Failed to initialize SD card!");
-	}
+
 	/* Get the SD card information. */
 	__get_sd_card_info();
 
@@ -325,10 +310,9 @@ void taskSDCard(void *pvParams)
 			HAL_MAX_DELAY		/* give some time */
 		);
 		if (status != HAL_OK)
-		{
 			printError(status, "Failed to write data blocks to "
 				"SD Card at sector %lu!", csector);
-		}
+				
 		csector++;
 
 		/* Give some delay. */

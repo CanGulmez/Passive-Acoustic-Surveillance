@@ -15,7 +15,7 @@
  ******************************************************************************
  */
 
-#include "main.h"
+#include "./main.h"
 
 /**
  * Open the SQLite3 database.
@@ -105,7 +105,6 @@ void db_bind_data(sqlite3 *db, Database database)
 		sqlite3_bind_text(stmt, DATA_SIZE + 1, 
 			get_time(TIME_FORMAT), -1, SQLITE_STATIC);
 	}
-	printLog("recorded the sensor data into '%s'", DB_SENSOR_DATA_PATH);
 
 	/* Step and finalize the current insertion. */
 	rc = sqlite3_step(stmt);

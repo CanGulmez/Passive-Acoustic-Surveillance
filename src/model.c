@@ -15,7 +15,7 @@
  ******************************************************************************
  */
 
-#include "main.h"
+#include "./main.h"
 
 /* Shared widgets and variables */
 

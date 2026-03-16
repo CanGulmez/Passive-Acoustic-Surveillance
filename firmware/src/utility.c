@@ -93,9 +93,8 @@ void __write_to_imu_reg(uint8_t reg, uint8_t data)
 	IMU_NSS_LOW();
 	status = HAL_SPI_Transmit(&hspi1, tx_data, 2, HAL_MAX_DELAY);
 	if (status != HAL_OK)
-	{
 		printError(status, "Failed to write to the IMU register!");
-	}
+
 	/* Pull the NSS to high to stop the transmission. */
 	IMU_NSS_HIGH();
 }
@@ -114,9 +113,8 @@ uint8_t __read_reg_from_imu(uint8_t reg)
 	
 	status = HAL_SPI_TransmitReceive(&hspi1, tx_data, rx_data, 2, HAL_MAX_DELAY);
 	if (status != HAL_OK)
-	{
 		printError(status, "Failed to read the IMU register!");
-	}
+
 	/* Pull the NSS to high to stop the transmission. */
 	IMU_NSS_HIGH();
 
@@ -185,9 +183,7 @@ void __get_sd_card_info(void)
 	/* Get the card information. */
 	status = HAL_SD_GetCardInfo(&hsdmmc1, &info);
 	if (status != HAL_OK)
-	{
 		printError(status, "Failed to get SD Card information!");
-	}
 
 	/* Print the required card information. */
 	printLog("SD Card Info:");
@@ -197,8 +193,7 @@ void __get_sd_card_info(void)
 		((info.BlockNbr * info.BlockSize) / (1024 * 1024)));
 	printLog("	Card Type	: %s",
 		(info.CardType == CARD_SDSC) ? "SDSC" :
-		(info.CardType == CARD_SDHC_SDXC) ? "SDHC/SDXC" :
-		"UNKNOWN");
+		(info.CardType == CARD_SDHC_SDXC) ? "SDHC/SDXC" : "UNKNOWN");
 	printLog("	Speed			: %.2f Mo/s",
 		(info.CardSpeed == CARD_NORMAL_SPEED) ? 12.5 :
 		(info.CardSpeed == CARD_HIGH_SPEED) ? 25.0 : 0.0);

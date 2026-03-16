@@ -15,7 +15,7 @@
  ******************************************************************************
  */
 
-#include "main.h"
+#include "./main.h"
 
 /* GPS map shared widgets and variables */
 

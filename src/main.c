@@ -15,12 +15,12 @@
  ******************************************************************************
  */
 
-#include "main.h"
+#include "./main.h"
 
 void on_activate(GtkApplication *app, gpointer user_data)
 {
 	GtkWidget *window, *headerBar;
-	GtkWidget *mainBox, *micBox, *modelBox, *imuBox, *gpsBox;
+	GtkWidget *mainBox, *micBox, *modelBox, *navBox, *gpsBox;
 	GtkWidget *viewSwitcher, *viewStack;
 	GtkWidget *newBtn, *saveAsBtn, *trashBtn, *prefsBtn, *infoBtn, *avatarBtn;
 
@@ -34,7 +34,7 @@ void on_activate(GtkApplication *app, gpointer user_data)
 	mainBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	micBox = __ui_page_box_new();
 	modelBox = __ui_page_box_new();
-	imuBox = __ui_page_box_new();
+	navBox = __ui_page_box_new();
 	gpsBox = __ui_page_box_new();
 
 	/* View Switchers */
@@ -71,23 +71,19 @@ void on_activate(GtkApplication *app, gpointer user_data)
 
 	/* View Stackes */
 
-	adw_view_stack_add_titled(ADW_VIEW_STACK(viewStack), micBox, "microphone", 
-		"Microphone");
+	adw_view_stack_add_titled(ADW_VIEW_STACK(viewStack), micBox, "microphone", "Microphone");
 	adw_view_stack_page_set_icon_name(adw_view_stack_get_page(
 		ADW_VIEW_STACK(viewStack), micBox), "audio-input-microphone-symbolic");
 	
-	adw_view_stack_add_titled(ADW_VIEW_STACK(viewStack), modelBox, "ai_model", 
-		"AI Model");
+	adw_view_stack_add_titled(ADW_VIEW_STACK(viewStack), modelBox, "ai_model", "AI Model");
 	adw_view_stack_page_set_icon_name(adw_view_stack_get_page(
 		ADW_VIEW_STACK(viewStack), modelBox), "application-x-addon-symbolic");
 
-	adw_view_stack_add_titled(ADW_VIEW_STACK(viewStack), imuBox, "navigation", 
-		"Navigation");
+	adw_view_stack_add_titled(ADW_VIEW_STACK(viewStack), navBox, "navigation", "Navigation");
 	adw_view_stack_page_set_icon_name(adw_view_stack_get_page(
-		ADW_VIEW_STACK(viewStack), imuBox), "find-location-symbolic");
+		ADW_VIEW_STACK(viewStack), navBox), "find-location-symbolic");
 	
-	adw_view_stack_add_titled(ADW_VIEW_STACK(viewStack), gpsBox, "gps_map", 
-		"GPS Map");
+	adw_view_stack_add_titled(ADW_VIEW_STACK(viewStack), gpsBox, "gps_map", "GPS Map");
 	adw_view_stack_page_set_icon_name(adw_view_stack_get_page(
 		ADW_VIEW_STACK(viewStack), gpsBox), "applications-internet-symbolic");
 
@@ -97,7 +93,7 @@ void on_activate(GtkApplication *app, gpointer user_data)
 
 	microphone(GTK_BOX(micBox), NULL);
 	model(GTK_BOX(modelBox), NULL);
-	navigation(GTK_BOX(imuBox), NULL);
+	navigation(GTK_BOX(navBox), NULL);
 	gps_map(GTK_BOX(gpsBox), NULL);
 
 	/* Presentation */
@@ -110,13 +106,14 @@ int main(int argc, char *argv[])
 {
 	int status;
 	GtkApplication *app;
-
+	
 	adw_init();
-	app = gtk_application_new("com.example.SmartBP", G_APPLICATION_DEFAULT_FLAGS);
-	g_signal_connect(app, "activate", G_CALLBACK(on_activate), NULL);
+	app = gtk_application_new("com.example.SONAR", G_APPLICATION_DEFAULT_FLAGS);
+	activateSig(app, on_activate);
 
 	status = g_application_run(G_APPLICATION(app), argc, argv);
 	g_object_unref(app);
 
 	return status;
 }
+ 

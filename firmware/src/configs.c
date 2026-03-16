@@ -115,9 +115,7 @@ void configIMUSensor(void)
 	);
 	status = HAL_SPI_Init(&hspi1);
 	if (status != HAL_OK)
-	{
 		printError(status, "Failed to initialize SPI1 peripheral!");
-	}
 }
 
 /**
@@ -151,26 +149,20 @@ void configMicSensors(void)
 		
 		status = HAL_DFSDM_ChannelInit(&hdfsdm1c[i]);
 		if (status != HAL_OK)
-		{
 			printError(status, "Failed to initialize DFSDM channel!");
-		}
 
 		/* Initialize the filter. */
 		initDFSDMFilter(hdfsdm1f, i, MIC_SINC_ORDER, MIC_OVERSAMPLING);
 
 		status = HAL_DFSDM_FilterInit(&hdfsdm1f[i]);
 		if (status != HAL_OK)
-		{
 			printError(status, "Failed to initialize DFSDM filter!");
-		}
-		
+
 		/* Assign the the filter to the channel. */
 		status = HAL_DFSDM_FilterConfigRegChannel(&hdfsdm1f[i], i, 
 			DFSDM_CONTINUOUS_CONV_ON);
 		if (status != HAL_OK)
-		{
 			printError(status, "Failed to assign the filter to channel!");
-		}
 	}
 }
 
@@ -195,9 +187,7 @@ void configGPSModule(void)
 	);
 	status = HAL_UART_Init(&huart7);
 	if (status != HAL_OK)
-	{
 		printError(status, "Failied to initialize UART7 peripheral!");
-	}
 }
 
 /**
@@ -233,9 +223,7 @@ void configSDCard(void)
 	);
 	status = HAL_SD_Init(&hsdmmc1);
 	if (status != HAL_OK)
-	{
 		printError(status, "Failed to initialize SDMMC1 peripheral!");
-	}
 }
 
 /**
@@ -271,9 +259,7 @@ void configLoRaModule(void)
 	);
 	status = HAL_UART_Init(&huart5);
 	if (status != HAL_OK)
-	{
 		printError(status, "Failed to initialize UART5 peripheral!");
-	}
 }
 
 /**

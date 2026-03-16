@@ -7,7 +7,7 @@ CPPCHECK		:= cppcheck
 
 CFLAGS		:= -Wall -std=gnu17 -O3 -march=native
 
-SRC			:= ./src/*.c
+SRC			:= $(wildcard ./src/*.c)
 DEPENDS		:= check sqlite3 gsl gtk4 libadwaita-1 shumate-1.0
 CONFIG		:= -ldsp -L./lib $(shell pkg-config --cflags --libs $(DEPENDS))
 
@@ -27,7 +27,7 @@ INTERFACE	:= interface/stlink.cfg
 TARGET		:= target/stm32h7x.cfg
 COMMAND		:= "program $(FIRMWARE) verify reset exit"
 
-.PHONY: firmware station memcheck check
+.PHONY: firmware station memcheck analysis
 
 # Building and flashing the embedded firmware
 firmware:
@@ -52,7 +52,8 @@ memcheck:
 	@echo "Completed the memory leak check, look at $(VAL_OUTPUT)"
 
 # Analyze the program codebase with cppcheck
-check:
+analysis:
 	@echo "Running the static code analysis..."
 	$(CPPCHECK) $(CPP_CONFIG) --output-file=$(CPP_OUTPUT) ./src
 	@echo "Completed the static code analysis, look at $(CPP_OUTPUT)"
+ 

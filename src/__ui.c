@@ -15,7 +15,7 @@
  ******************************************************************************
  */
 
-#include "main.h"
+#include "./main.h"
 
 /**
  * Generic main box creation
@@ -106,7 +106,7 @@ gboolean __ui_row_switched(GObject *gobject, GParamSpec *pspec, gpointer data,
  * Generic entry row signal handler to get current text.
  */
 const char *__ui_row_texted(GObject *gobject, GParamSpec *pspec, 
-											gpointer data, const char *func)
+									 gpointer data, const char *func)
 {
 	const char *currentText;
 
@@ -123,7 +123,7 @@ const char *__ui_row_texted(GObject *gobject, GParamSpec *pspec,
  * Generic combo row creation
  */
 GtkWidget *__ui_combo_row_new(const char *title, const char **strings, 
-											  guint index)
+										guint index)
 {
 	GtkWidget *comboRow;
 	GtkStringList *stringList;
@@ -142,7 +142,7 @@ GtkWidget *__ui_combo_row_new(const char *title, const char **strings,
  * Generic spin row creation
  */
 GtkWidget *__ui_spin_row_new(const char *title, double value, double lower,
-											 double upper, double increment, guint digits)
+									  double upper, double increment, guint digits)
 {
 	GtkWidget *spinRow;
 	GtkAdjustment *adjustment;

@@ -15,7 +15,7 @@
  ******************************************************************************
  */
 
-#include "main.h"
+#include "./main.h"
 
 /**
  * Set the timeout to get the device data simultenously.
@@ -62,11 +62,13 @@ gboolean model_keras_log_timeout(gpointer data)
 	const char *kerasLog;
 
 	/* Get the current text view and then update it. */
-	modelTextBuffer = gtk_text_view_get_buffer(
-									GTK_TEXT_VIEW(modelTextView));
-	kerasLog = get_keras_script_logs(MODEL_LOG_PATH);
+	modelTextBuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(modelTextView));
+	kerasLog = get_keras_script_log(MODEL_LOG_PATH);
+	printLog("fetched the keras script log from related file");
 
 	gtk_text_buffer_set_text(modelTextBuffer, kerasLog, -1);
+	printLog("printed the keras script log within text view");
+
 	if ( is_keras_script_running(modelFitPid) )
 	{
 		return G_SOURCE_CONTINUE;
@@ -87,6 +89,7 @@ gboolean db_record_timeout(gpointer data)
 	db = (sqlite3 *) data;
 	/* Bind the last sensor data. */
 	db_bind_data(db, DATABASE_SENSOR_DATA);
+	printLog("recorded the sensor data into '%s'", DB_SENSOR_DATA_PATH);
 
 	return G_SOURCE_CONTINUE;
 }

@@ -135,36 +135,36 @@ extern PayloadData payloadData;
  * Transmit the logs from MCU to PC over serial UART line.
  */
 #define printLog(format, ...)																	\
-{																										\
+do {																									\
 	char buffer[BUFFER_SIZE];																	\
 																										\
 	snprintf(buffer, BUFFER_SIZE, format "\r\n", ##__VA_ARGS__);					\
 	HAL_UART_Transmit(&huart4, buffer, strlen(buffer), HAL_MAX_DELAY);			\
-}
+} while (0)
 
 /**
  * Transmit the HAL error from MCU to PC over serial UART line.
  */
 #define printError(status, format, ...)													\
-{																										\
+do {																									\
 	char buffer[BUFFER_SIZE];																	\
 																										\
 	snprintf(buffer, BUFFER_SIZE, "*** " format 	" (STATUS = %s) " 				\
 		"(%s::%d) ***\r\n", ##__VA_ARGS__, STATUS(status), FILE, LINE);			\
 	HAL_UART_Transmit(&huart4, buffer, strlen(buffer), HAL_MAX_DELAY);			\
-}
+} while(0)
 
 /**
  * Transmit the kernel error from MCU to PC over serial UART line.
  */
 #define printKernel(format, ...)																\
-{																										\
+do {																									\
 	char buffer[BUFFER_SIZE];																	\
 																										\
 	snprintf(buffer, BUFFER_SIZE, "*** " format 	" (%s::%d) ***\r\n", 			\
 		##__VA_ARGS__, FILE, LINE);															\
 	HAL_UART_Transmit(&huart4, buffer, strlen(buffer), HAL_MAX_DELAY);			\
-}
+} while (0)
 
 /*****************************************************************************/
 /*****************************************************************************/
