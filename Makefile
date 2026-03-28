@@ -19,24 +19,8 @@ CPP_OUTPUT	:= ./logs/cppcheck.log
 
 PROGRAM		:= SONAR
 
-FIRMWARE		:= firmware.elf
-FRM_DIR		:= ./firmware/.pio/build/genericSTM32H750VB
+.PHONY: station memcheck analysis
 
-OPENOCD		:= openocd 
-INTERFACE	:= interface/stlink.cfg
-TARGET		:= target/stm32h7x.cfg
-COMMAND		:= "program $(FIRMWARE) verify reset exit"
-
-.PHONY: firmware station memcheck analysis
-
-# Building and flashing the embedded firmware
-firmware:
-	@echo "Building embedded firmware..."
-	@cd ./firmware ; $(PIO) run ; cd ..
-	@echo " "
-	@echo "Uploading embedded firmware..."
-	@cd $(FRM_DIR) ; openocd -f $(INTERFACE) -f $(TARGET) -c $(COMMAND)
-	
 # Building and running the ground station program
 station:
 	@echo "Building ground station..."

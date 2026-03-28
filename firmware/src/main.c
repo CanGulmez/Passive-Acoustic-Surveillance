@@ -46,7 +46,7 @@ int main(void)
 	configLoRaModule();
 	configLEDs();
 	configWatchdog();
-
+	
 	/* Create the mutex for the payload data. */
 	payloadMutex = xSemaphoreCreateMutex();
 	if (payloadMutex == NULL)

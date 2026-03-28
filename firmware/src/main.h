@@ -27,14 +27,18 @@
 #include <ctype.h>
 #include <math.h>
 
-#include <FreeRTOS.h>
-#include <task.h>
-#include <list.h>
-#include <queue.h>
-#include <semphr.h>
-#include <timers.h>
+#include "../driver/CMSIS/Device/ST/STM32H7xx/Include/stm32h750xx.h"
+#include "../driver/CMSIS/Device/ST/STM32H7xx/Include/system_stm32h7xx.h"
+#include "../driver/CMSIS/Include/core_cm7.h"
 
-#include <stm32h7xx_hal.h>
+#include "../driver/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h"
+
+#include "../driver/FreeRTOS/include/FreeRTOS.h"
+#include "../driver/FreeRTOS/include/task.h"
+#include "../driver/FreeRTOS/include/queue.h"
+#include "../driver/FreeRTOS/include/timers.h"
+#include "../driver/FreeRTOS/include/semphr.h"
+#include "../driver/FreeRTOS/include/event_groups.h"
 
 #include "./kernel.h"
 #include "./peripheral.h"
@@ -139,7 +143,8 @@ do {																									\
 	char buffer[BUFFER_SIZE];																	\
 																										\
 	snprintf(buffer, BUFFER_SIZE, format "\r\n", ##__VA_ARGS__);					\
-	HAL_UART_Transmit(&huart4, buffer, strlen(buffer), HAL_MAX_DELAY);			\
+	HAL_UART_Transmit(&huart4, (uint8_t *) buffer, strlen(buffer), 				\
+		HAL_MAX_DELAY);																			\
 } while (0)
 
 /**
@@ -149,9 +154,10 @@ do {																									\
 do {																									\
 	char buffer[BUFFER_SIZE];																	\
 																										\
-	snprintf(buffer, BUFFER_SIZE, "*** " format 	" (STATUS = %s) " 				\
+	snprintf(buffer, BUFFER_SIZE, "*** " format " (STATUS = %s) " 					\
 		"(%s::%d) ***\r\n", ##__VA_ARGS__, STATUS(status), FILE, LINE);			\
-	HAL_UART_Transmit(&huart4, buffer, strlen(buffer), HAL_MAX_DELAY);			\
+	HAL_UART_Transmit(&huart4, (uint8_t *) buffer, strlen(buffer), 				\
+		HAL_MAX_DELAY);																			\
 } while(0)
 
 /**
@@ -161,9 +167,10 @@ do {																									\
 do {																									\
 	char buffer[BUFFER_SIZE];																	\
 																										\
-	snprintf(buffer, BUFFER_SIZE, "*** " format 	" (%s::%d) ***\r\n", 			\
+	snprintf(buffer, BUFFER_SIZE, "*** " format " (%s::%d) ***\r\n", 				\
 		##__VA_ARGS__, FILE, LINE);															\
-	HAL_UART_Transmit(&huart4, buffer, strlen(buffer), HAL_MAX_DELAY);			\
+	HAL_UART_Transmit(&huart4, (uint8_t *) buffer, strlen(buffer), 				\
+		HAL_MAX_DELAY);																			\
 } while (0)
 
 /*****************************************************************************/
