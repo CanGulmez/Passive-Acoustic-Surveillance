@@ -1,13 +1,13 @@
 /**
  ******************************************************************************
  * @file 	main.c
- * @author 	Ahmet Can GULMEZ
- * @brief 	Passive acoustic surveillance system primarily designed for drones.
+ * @author 	Can GULMEZ
+ * @brief 	Passive acoustic surveillance primarily designed for drones.
  * 
  ******************************************************************************
  * @attention
  * 
- * Copyright (c) 2026 Ahmet Can GULMEZ.
+ * Copyright (c) 2026 Can GULMEZ.
  * All rights reserved.
  * 
  * This software is licensed under the MIT License.

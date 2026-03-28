@@ -1,13 +1,13 @@
 /**
  ******************************************************************************
  * @file 	signals.c
- * @author 	Ahmet Can GULMEZ
+ * @author 	Can GULMEZ
  * @brief 	Signal handlers of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention
  * 
- * Copyright (c) 2026 Ahmet Can GULMEZ.
+ * Copyright (c) 2026 Can GULMEZ.
  * All rights reserved.
  * 
  * This software is licensed under the MIT License.

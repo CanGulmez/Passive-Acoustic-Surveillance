@@ -1,13 +1,13 @@
 /**
  ******************************************************************************
  * @file 	main.h
- * @author 	Ahmet Can GULMEZ
- * @brief 	Passive acoustic surveillance system primarily designed for drones.
+ * @author 	Can GULMEZ
+ * @brief 	Passive acoustic surveillance primarily designed for drones.
  * 
  ******************************************************************************
  * @attention
  * 
- * Copyright (c) 2026 Ahmet Can GULMEZ.
+ * Copyright (c) 2026 Can GULMEZ.
  * All rights reserved.
  * 
  * This software is licensed under the MIT License.
@@ -116,11 +116,11 @@ extern "C" {
 #define GPS_INIT_LONG						28.9784
 #define GPS_MODULE							"GY-NEO6MV2"
 
-#define TIMEOUT_DEVICE_READ				5000		/* ms */
-#define TIMEOUT_MODEL_LOG					5000		/* ms */
-#define TIMEOUT_DATA_RECORD				15000		/* ms */
-#define TIMEOUT_NAV_UPDATE					5000		/* ms */ 
-#define TIMEOUT_GPS_UPDATE					5000		/* ms */
+#define TIMEOUT_DEVICE_READ				2000		/* ms */
+#define TIMEOUT_MODEL_LOG					2000		/* ms */
+#define TIMEOUT_DATA_RECORD				8000		/* ms */
+#define TIMEOUT_NAV_UPDATE					2000		/* ms */ 
+#define TIMEOUT_GPS_UPDATE					2000		/* ms */
 
 #define HEADER_SYSTEM_DEVELOPER			"Can Gulmez"
 #define HEADER_SYSTEM_NAME					"Passive Acoustic Surveillance"
@@ -139,8 +139,8 @@ extern "C" {
 #define DEPRECATED							__attribute__((deprecated))
 #define ALIGNED(n)							__attribute__((aligned(n)))
 #define SECTION(s)							__attribute__((section(s)))
-#define ADDRESS0								__builtin_return_address(0)
-#define UNREACHABLE							__builtin_unreachable()
+#define ADDRESS0()							__builtin_return_address(0)
+#define UNREACHABLE()						__builtin_unreachable()
 
 /* Shorthands for GTK objects */
 
