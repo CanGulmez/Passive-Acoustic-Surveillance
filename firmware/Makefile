@@ -58,7 +58,7 @@ FIRMWARE_ELF	:= ./bin/firmware.elf
 FIRMWARE_BIN	:= ./bin/firmware.bin
 LIBRARY			:= ./lib/lib$(DEVICE_FAMILY).a
 
-.PHONY: lib firmware
+.PHONY: lib bin
 
 lib:
 	@echo "Compiling the source files..."
@@ -71,7 +71,7 @@ lib:
 	@echo "\nRemoving the object files..."
 	$(RM) $(DRIVER_OBJS)
 
-firmware:
+bin:
 	@echo "Compiling the source files..."
 	$(CC) -g3 $(CFLAGS) -c $(MAIN_SRC)
 
