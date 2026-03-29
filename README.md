@@ -20,36 +20,6 @@ $ git clone https://github.com/CanGulmez/Digital-Signal-Processing.git
 
 Also I put the library and header file in the **./lib** directory.
 
-Embedded firmware was made with PlatformIO library. So please make sure that you
-have it. It's Python 3 package. If you don't have it, get it with this command:
-
-```bash
-$ python3 install platformio --break-system-packages
-```
-
-PlatformIO project inherits the required CMSIS/HAL libraries defaulty. But you need
-to install FreeRTOS kernel externally and put the **./lib** directory as I did. For
-all settings including **platformio.ini** and **FreeRTOSConfig.h**, you can follow 
-my specifications.
-
-Embedded firmware was written for STM32H750x microcontroller. 
-
-To build the firmware, use this command:
-
-```bash
-$ make firmware
-```
-
-This command will compile the firmware codebase and then flash it into the embedded
-board. So connect the embedded board into your PC firstly. Another important point
-is that this command use the  **openocd** command with st-link configuration. If you
-have the another port like JTAG, edit the **Makefile**. If you don't have **openocd**,
-install it with this command:
-
-```bash
-$ sudo apt install openocd		# there is no need any st-link driver for GNU/Linux.
-```
-
 At ground station side, it is done on the Linux machine so that the all codebase is
 writting with POSIX standards. To build and then run the ground station, use this 
 command:
@@ -84,7 +54,6 @@ or Wayland) you will use from the Docker image. I'm gonna use the X11 server for
 image. Firstly, enable it for Docker with this command:
 
 ```bash
-$ xhost +local:docker
 $ xhost +SI:localuser:root
 ```
 
