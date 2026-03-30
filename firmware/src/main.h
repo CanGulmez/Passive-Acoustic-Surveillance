@@ -28,21 +28,16 @@
 #include <math.h>
 #include <sys/stat.h>
 
-#include "../driver/CMSIS/Device/ST/STM32H7xx/Include/stm32h750xx.h"
-#include "../driver/CMSIS/Device/ST/STM32H7xx/Include/system_stm32h7xx.h"
-#include "../driver/CMSIS/Include/core_cm7.h"
+#include "stm32h7xx_hal.h"
 
-#include "../driver/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "timers.h"
+#include "semphr.h"
 
-#include "../driver/FreeRTOS/include/FreeRTOS.h"
-#include "../driver/FreeRTOS/include/task.h"
-#include "../driver/FreeRTOS/include/queue.h"
-#include "../driver/FreeRTOS/include/timers.h"
-#include "../driver/FreeRTOS/include/semphr.h"
-#include "../driver/FreeRTOS/include/event_groups.h"
-
-#include "./kernel.h"
-#include "./peripheral.h"
+#include "kernel.h"
+#include "peripheral.h"
 
 /* Global and General Definitions */
 

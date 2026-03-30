@@ -43,7 +43,8 @@ void taskMicSensorNorth(void *pvParams)
 		/* Poll the regular conversion simultaneously. */
 		for (i = 0; i < SAMPLE_SIZE; i++)
 		{
-			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[0], HAL_MAX_DELAY);
+			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[0], 
+				HAL_MAX_DELAY);
 			if (status != HAL_OK)
 				printError(status, "Failed to poll DFSDM conversion!");
 
@@ -88,7 +89,8 @@ void taskMicSensorEast(void *pvParams)
 		/* Poll the regular conversion simultaneously. */
 		for (i = 0; i < SAMPLE_SIZE; i++)
 		{
-			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[1], HAL_MAX_DELAY);
+			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[1], 
+				HAL_MAX_DELAY);
 			if (status != HAL_OK)
 				printError(status, "Failed to poll DFSDM conversion!");
 
@@ -133,7 +135,8 @@ void taskMicSensorSouth(void *pvParams)
 		/* Poll the regular conversion simultaneously. */
 		for (i = 0; i < SAMPLE_SIZE; i++)
 		{
-			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[2], HAL_MAX_DELAY);
+			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[2], 
+				HAL_MAX_DELAY);
 			if (status != HAL_OK)
 				printError(status, "Failed to poll DFSDM conversion!");
 
@@ -178,7 +181,8 @@ void taskMicSensorWest(void *pvParams)
 		/* Poll the regular conversion simultaneously. */
 		for (i = 0; i < SAMPLE_SIZE; i++)
 		{
-			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[3], HAL_MAX_DELAY);
+			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[3], 
+				HAL_MAX_DELAY);
 			if (status != HAL_OK)
 				printError(status, "Failed to poll DFSDM conversion!");
 

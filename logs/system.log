@@ -90,3 +90,8 @@
 [PID=243309][2026-03-28 17:58:30] aborted the running Keras script (243464)
 [PID=8357][2026-03-29 11:00:30] on_visible_page_changed(): 'microphone'
 [PID=8357][2026-03-29 11:00:31] on_device_node_selected(): 'ttyS31'
+[PID=42808][2026-03-29 21:02:10] on_visible_page_changed(): 'microphone'
+[PID=42808][2026-03-29 21:02:14] on_device_node_selected(): 'ttyS31'
+[PID=42808][2026-03-29 21:02:19] on_visible_page_changed(): 'ai_model'
+[PID=42808][2026-03-29 21:02:19] on_visible_page_changed(): 'navigation'
+[PID=42808][2026-03-29 21:02:21] on_visible_page_changed(): 'gps_map'

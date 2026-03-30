@@ -20,7 +20,7 @@ It must be done after the any changes were being made.
 
 ```bash
 $ make lib					# build the static library
-$ make bin					$ build the firmware program
+$ make bin					# build the firmware program
 ```
 
 Lastly, the firmware is flashed into the microcontroller in a way. Makefile currently
