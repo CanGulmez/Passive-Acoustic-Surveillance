@@ -15,62 +15,10 @@
  ******************************************************************************
  */
 
-/* Oscillator and Clock Definitions */
-
-#define OSC_TYPE								RCC_OSCILLATORTYPE_HSE
-#define OSC_HSE_STATE						RCC_HSE_ON
-#define OSC_PLL_STATE						RCC_PLL_ON
-#define OSC_PLL_SRC							RCC_PLLSOURCE_HSE
-#define OSC_PLLM								5
-#define OSC_PLLN								80
-#define OSC_PLLP								4
-#define OSC_PLLQ								8
-#define OSC_PLLR								8
-#define OSC_PLLRGE							RCC_PLL1VCIRANGE_2
-#define OSC_PLLVCOSEL						RCC_PLL1VCOWIDE
-#define OSC_PLLFRACN							0
-
-#define CLOCK_TYPE							RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | \
-													RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2 | \
-													RCC_CLOCKTYPE_D1PCLK1 | RCC_CLOCKTYPE_D3PCLK1
-#define CLOCK_SOURCE							RCC_SYSCLKSOURCE_PLLCLK
-#define CLOCK_SYS_DIV						RCC_SYSCLK_DIV1
-#define CLOCK_AHB_DIV						RCC_HCLK_DIV1
-#define CLOCK_APB1_DIV						RCC_APB1_DIV2
-#define CLOCK_APB2_DIV						RCC_APB2_DIV2
-#define CLOCK_APB3_DIV						RCC_APB3_DIV2
-#define CLOCK_APB4_DIV						RCC_APB4_DIV2
-
-/**
- * PLL1_M: 5									(25MHz / 5 = 5MHz)
- * PLL1_N: 80									(5MHz × 80 = 400MHz)
- * PLL1_P: 4									(400MHz / 4 = 100MHz) -> SYSCLK
- * PLL1_Q: 8									(400MHz / 8 = 50MHz)  -> For SDMMC, USB, RNG
- * PLL1_R: 8									(400MHz / 8 = 50MHz)  -> For SPI, I2S
- * 
- * AHB Prescaler: 1							HCLK = 100MHz
- * APB1 Prescaler: 2							PCLK1 = 50MHz
- * APB2 Prescaler: 2							PCLK2 = 50MHz
- * APB3 Prescaler: 2							PCLK3 = 50MHz
- * APB4 Prescaler: 2							PCLK4 = 50MHz
- */
-
 /* Debug Port Definitions */
 
 #define DEBUG_PIN_TX							GPIO_PIN_0	/* GPIOA - UART4 */
 #define DEBUG_PIN_RX							GPIO_PIN_1	/* GPIOA - UART4 */
-#define DEBUG_PORT							GPIOA
-#define DEBUG_PULL							GPIO_NOPULL
-#define DEBUG_GPIO_MODE						GPIO_MODE_AF_PP
-#define DEBUG_ALTERNATE						GPIO_AF6_UART4
-#define DEBUG_INSTANCE						UART4
-#define DEBUG_UART_MODE						UART_MODE_RX | UART_MODE_TX								
-#define DEBUG_BAUDRATE						115200
-#define DEBUG_WORDLEN						UART_WORDLENGTH_8B
-#define DEBUG_STOPBITS						UART_STOPBITS_1
-#define DEBUG_PARITY							UART_PARITY_NONE
-#define DEBUG_HWCONTROL						UART_HWCONTROL_NONE
-#define DEBUG_SAMPLING						UART_OVERSAMPLING_16
 
 /* LoRa Module Definitions */
 
@@ -79,38 +27,11 @@
 #define LORA_PIN_AUX							GPIO_PIN_3	/* GPIOD - Input */
 #define LORA_PIN_M0							GPIO_PIN_5	/* GPIOD - Output */
 #define LORA_PIN_M1							GPIO_PIN_4	/* GPIOD - Output */
-#define LORA_PORTB							GPIOB
-#define LORA_PORTD							GPIOD
-#define LORA_GPIO_MODE_O					GPIO_MODE_OUTPUT_PP
-#define LORA_GPIO_MODE_I					GPIO_MODE_INPUT
-#define LORA_GPIO_MODE_AF					GPIO_MODE_AF_PP
-#define LORA_PULL								GPIO_NOPULL
-#define LORA_ALTERNATE						GPIO_AF8_UART5
-#define LORA_INSTANCE						UART5
-#define LORA_MODE								UART_MODE_RX | UART_MODE_TX
-#define LORA_BAUDRATE						115200
-#define LORA_WORDLEN							UART_WORDLENGTH_8B
-#define LORA_STOPBITS						UART_STOPBITS_1
-#define LORA_PARITY							UART_PARITY_NONE
-#define LORA_HWCONTROL						UART_HWCONTROL_NONE
-#define LORA_SAMPLING						UART_OVERSAMPLING_16
 
 /* GPS Module Definitions */
 
 #define GPS_PIN_RX							GPIO_PIN_7	/* GPIOE - UART7 */
 #define GPS_PIN_TX							GPIO_PIN_8	/* GPIOE - UART7 */
-#define GPS_PORT								GPIOE
-#define GPS_GPIO_MODE						GPIO_MODE_AF_PP
-#define GPS_PULL								GPIO_NOPULL
-#define GPS_ALTERNATE						GPIO_AF7_UART7
-#define GPS_INSTANCE							UART7
-#define GPS_UART_MODE						UART_MODE_RX | UART_MODE_TX							
-#define GPS_BAUDRATE							9600
-#define GPS_WORDLEN							UART_WORDLENGTH_8B
-#define GPS_STOPBITS							UART_STOPBITS_1
-#define GPS_PARITY							UART_PARITY_NONE
-#define GPS_HWCONTROL						UART_HWCONTROL_NONE
-#define GPS_SAMPLING							UART_OVERSAMPLING_16
 
 /* SD Card Definitions */
 
@@ -121,19 +42,6 @@
 #define SD_PIN_DAT3							GPIO_PIN_11	/* GPIOC - SDMMC1 */
 #define SD_PIN_CMD							GPIO_PIN_2	/* GPIOD - SDMMC1 */
 #define SD_PIN_CLK							GPIO_PIN_12	/* GPIOC - SDMMC1 */
-#define SD_PORTA								GPIOA
-#define SD_PORTC								GPIOC
-#define SD_PORTD								GPIOD
-#define SD_GPIO_MODE_AF						GPIO_MODE_AF_PP
-#define SD_GPIO_MODE_O						GPIO_MODE_OUTPUT_PP
-#define SD_PULL								GPIO_NOPULL
-#define SD_ALTERNATE							GPIO_AF12_SDMMC1
-#define SD_INSTANCE							SDMMC1
-#define SD_BUS_WIDE							SDMMC_BUS_WIDE_4B
-#define SD_CLOCK_EDGE						SDMMC_CLOCK_EDGE_RISING
-#define SD_POWER_SAVE						SDMMC_CLOCK_POWER_SAVE_DISABLE
-#define SD_CLOCKDIV							1
-#define SD_HWCONTROL							SDMMC_HARDWARE_FLOW_CONTROL_DISABLE
 
 /* IMU Sensor Definitions */
 
@@ -143,23 +51,6 @@
 #define IMU_PIN_MOSI							GPIO_PIN_7	/* GPIOA - SPI1 */
 #define IMU_PIN_INT1							GPIO_PIN_2	/* GPIOB - Input */
 #define IMU_PIN_INT2							GPIO_PIN_3	/* GPIOA - Input */
-#define IMU_PORTA								GPIOA
-#define IMU_PORTB								GPIOB
-#define IMU_GPIO_MODE_I						GPIO_MODE_INPUT
-#define IMU_GPIO_MODE_O						GPIO_MODE_OUTPUT_PP
-#define IMU_GPIO_MODE_AF					GPIO_MODE_AF_PP
-#define IMU_PULL								GPIO_NOPULL
-#define IMU_ALTERNATE						GPIO_AF5_SPI1
-#define IMU_INSTANCE							SPI1
-#define IMU_SPI_MODE							SPI_MODE_MASTER
-#define IMU_DIRECTION						SPI_DIRECTION_2LINES
-#define IMU_DATASIZE							SPI_DATASIZE_8BIT
-#define IMU_POLARITY							SPI_POLARITY_LOW
-#define IMU_PHASE								SPI_PHASE_1EDGE
-#define IMU_NSS								SPI_NSS_SOFT
-#define IMU_PRESCALER						SPI_BAUDRATEPRESCALER_8
-#define IMU_FIRSTBIT							SPI_FIRSTBIT_MSB
-#define IMU_TIMODE							SPI_TIMODE_DISABLE
 
 #define IMU_REG_FUNC_CFG_ACCESS			0x01
 #define IMU_REG_SENSOR_SYNC_TIME			0x04
@@ -256,31 +147,16 @@
 #define IMU_REG_Y_OFS_USR					0x74
 #define IMU_REG_Z_OFS_USR					0x75
 
-/* Microhone Sensor Definitions */
+#define IMU_NSS_LOW()						(HAL_GPIO_WritePin(GPIOA, IMU_PIN_NSS, RESET))
+#define IMU_NSS_HIGH()						(HAL_GPIO_WritePin(GPIOA, IMU_PIN_NSS, SET))
 
-/**
- * System Clock:								100 MHz
- * DFSDM Clock:								100 MHz / DIVIDER = 3.125 MHz
- * Filter Output Rate:						3.125 MHz / OVERSAMPLING = 48.828 kHz
- * Actual Audio Rate:						48.828 kHz / (ORDER + 1) = 12.207 kHz
- */
+/* Microhone Sensor Definitions */
 
 #define MIC_PIN_DATAIN0						GPIO_PIN_1	/* GPIOC - DFSDM1 */ 
 #define MIC_PIN_DATAIN1						GPIO_PIN_1	/* GPIOB - DFSDM1 */
 #define MIC_PIN_DATAIN2						GPIO_PIN_5	/* GPIOC - DFSDM1 */
 #define MIC_PIN_DATAIN3						GPIO_PIN_7	/* GPIOC - DFSDM1 */
 #define MIC_PIN_CKOUT						GPIO_PIN_0	/* GPIOB - DFSDM1 */
-#define MIC_PORTB								GPIOB
-#define MIC_PORTC								GPIOC
-#define MIC_GPIO_MODE						GPIO_MODE_AF_PP
-#define MIC_PULL								GPIO_NOPULL
-#define MIC_ALTERNATE						GPIO_AF3_DFSDM1
-#define MIC_DIVIDER							32
-#define MIC_FILTER_TYPE						DFSDM_CHANNEL_FASTSINC_ORDER
-#define MIC_OFFSET							0
-#define MIC_RIGHT_SHIFT						0
-#define MIC_SINC_ORDER						DFSDM_FILTER_SINC3_ORDER
-#define MIC_OVERSAMPLING					64
 
 /* LED Definitions */
 

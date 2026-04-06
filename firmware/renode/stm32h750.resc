@@ -1,0 +1,11 @@
+# Renode script for STM32H750 FreeRTOS simulation
+
+using sysbus
+mach create "stm32h750"
+
+machine LoadPlatformDescription @/home/can/MyDrive/programming/projects/SONAR/firmware/renode/stm32h750.repl
+
+emulation CreateUartPtyTerminal "uart4" "/tmp/uart4" true
+connector Connect sysbus.uart4 uart4
+
+sysbus LoadELF @/home/can/MyDrive/programming/projects/SONAR/firmware/bin/firmware.elf

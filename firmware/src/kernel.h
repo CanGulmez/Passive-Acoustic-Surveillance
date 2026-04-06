@@ -32,32 +32,32 @@
 
 /* Task Stacks in Words (1 Word = 4 Bytes) */
 
-#define TASK_MIC_STACK				1024
-#define TASK_GPS_STACK				1024
-#define TASK_IMU_STACK				1024
-#define TASK_SD_STACK				1024
-#define TASK_SERVO_STACK			1024
-#define TASK_LORA_STACK				1024
-#define TASK_SYSTEM_STACK			1024
-#define TASK_LED_STACK				1024
-#define TASK_WATCHDOG_STACK		1024
+#define TASK_MIC_STACK				2048
+#define TASK_GPS_STACK				2048
+#define TASK_IMU_STACK				2048
+#define TASK_SD_STACK				2048
+#define TASK_SERVO_STACK			2048
+#define TASK_LORA_STACK				2048
+#define TASK_SYSTEM_STACK			2048
+#define TASK_LED_STACK				2048
+#define TASK_WATCHDOG_STACK		2048
 
 /* Task Piriorities */
 
-#define TASK_MIC_PRIORITY			3
-#define TASK_GPS_PRIORITY			3
-#define TASK_IMU_PRIORITY			3
-#define TASK_SD_PRIORITY			3
-#define TASK_SERVO_PRIORITY		2
-#define TASK_LORA_PRIORITY			2
+#define TASK_MIC_PRIORITY			1
+#define TASK_GPS_PRIORITY			1
+#define TASK_IMU_PRIORITY			1
+#define TASK_SD_PRIORITY			1
+#define TASK_SERVO_PRIORITY		1
+#define TASK_LORA_PRIORITY			1
 #define TASK_SYSTEM_PRIORITY		1
 #define TASK_LED_PRIORITY			1
 #define TASK_WATCHDOG_PRIORITY	1
 
 /* Task Delays */
  
-#define TASK_MIC_DELAY				pdMS_TO_TICKS(1000)	/* 1 ms */
-#define TASK_GPS_DELAY				pdMS_TO_TICKS(2000)	/* 2 ms */
-#define TASK_IMU_DELAY				pdMS_TO_TICKS(2000)	/* 2 ms */
-#define TASK_LORA_DELAY				pdMS_TO_TICKS(2000)	/* 2 ms */
-#define TASK_SD_DELAY				pdMS_TO_TICKS(5000)	/* 5 ms */
+// #define TASK_MIC_DELAY				pdMS_TO_TICKS(1000)	/* 1 ms */
+// #define TASK_GPS_DELAY				pdMS_TO_TICKS(2000)	/* 2 ms */
+// #define TASK_IMU_DELAY				pdMS_TO_TICKS(2000)	/* 2 ms */
+// #define TASK_LORA_DELAY				pdMS_TO_TICKS(2000)	/* 2 ms */
+// #define TASK_SD_DELAY				pdMS_TO_TICKS(5000)	/* 5 ms */

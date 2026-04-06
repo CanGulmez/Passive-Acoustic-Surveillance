@@ -29,25 +29,37 @@ SPI_HandleTypeDef	hspi1 = {0};	/* IMU Sensor Port */
 SD_HandleTypeDef hsdmmc1 = {0};	/* SD Card Port */
 DFSDM_Channel_HandleTypeDef hdfsdm1c[CHANNEL_COUNT] = {0};
 DFSDM_Filter_HandleTypeDef hdfsdm1f[CHANNEL_COUNT] = {0};
+DMA_HandleTypeDef hdfsdm1dma[CHANNEL_COUNT] = {0};
 
 /**
  * Configurate the oscillator and clock sources.
  */
 void configOscClk(void)
 {
+	/**
+	 * PLL1_M: 5									(25MHz / 5 = 5MHz)
+	 * PLL1_N: 80									(5MHz × 80 = 400MHz)
+	 * PLL1_P: 4									(400MHz / 4 = 100MHz) -> SYSCLK
+	 * PLL1_Q: 8									(400MHz / 8 = 50MHz)  -> For SDMMC, USB, RNG
+	 * PLL1_R: 8									(400MHz / 8 = 50MHz)  -> For SPI, I2S
+	 * 
+	 * AHB Prescaler: 1							HCLK = 100MHz
+	 * APB1 Prescaler: 2							PCLK1 = 50MHz
+	 * APB2 Prescaler: 2							PCLK2 = 50MHz
+	 * APB3 Prescaler: 2							PCLK3 = 50MHz
+	 * APB4 Prescaler: 2							PCLK4 = 50MHz
+	 */
+
 	/* Initialize the system oscillator. */
-	initOscillator(
-		iosc, OSC_TYPE, OSC_HSE_STATE, OSC_PLL_STATE, OSC_PLL_SRC, 
-		OSC_PLLM, OSC_PLLN, OSC_PLLP, OSC_PLLQ, OSC_PLLR, OSC_PLLRGE, 
-		OSC_PLLVCOSEL, OSC_PLLFRACN
-	);
+	initOscillator(iosc, RCC_OSCILLATORTYPE_HSE, RCC_HSE_ON, RCC_PLL_ON, 
+		RCC_PLLSOURCE_HSE, 5, 80, 4, 8, 8, RCC_PLL1VCIRANGE_2, RCC_PLL1VCOWIDE, 0);
 	HAL_RCC_OscConfig(&iosc); 
 
 	/* Initialize the system clock. */
-	initClock(
-		iclk, CLOCK_TYPE, CLOCK_SOURCE, CLOCK_SYS_DIV, CLOCK_AHB_DIV, 
-		CLOCK_APB1_DIV, CLOCK_APB2_DIV, CLOCK_APB3_DIV, CLOCK_APB4_DIV
-	);
+	initClock(iclk, RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | 
+		RCC_CLOCKTYPE_PCLK2 | RCC_CLOCKTYPE_D1PCLK1 | RCC_CLOCKTYPE_D3PCLK1, 
+		RCC_SYSCLKSOURCE_PLLCLK, RCC_SYSCLK_DIV1, RCC_HCLK_DIV1, RCC_APB1_DIV2, 
+		RCC_APB2_DIV2, RCC_APB3_DIV2, RCC_APB4_DIV2);
 	HAL_RCC_ClockConfig(&iclk, FLASH_LATENCY_3);
 
 	/* Enable data and instruction caches. */
@@ -61,18 +73,13 @@ void configOscClk(void)
 void configDebugPort(void)
 {
 	/* Initialize the GPIOA peripheral. */
-	initGPIO(
-		igpio, DEBUG_PIN_TX | DEBUG_PIN_RX, DEBUG_GPIO_MODE, DEBUG_PULL, 
-		DEBUG_ALTERNATE
-	);
-	HAL_GPIO_Init(DEBUG_PORT, &igpio);
+	initGPIO(igpio, DEBUG_PIN_TX | DEBUG_PIN_RX, GPIO_MODE_AF_PP, GPIO_NOPULL, 
+		GPIO_AF6_UART4);
+	HAL_GPIO_Init(GPIOA, &igpio);
 
 	/* Initialize the UART4 peripheral. */
-	initUART(
-		huart4, DEBUG_INSTANCE, DEBUG_BAUDRATE, DEBUG_UART_MODE, 
-		DEBUG_WORDLEN, DEBUG_STOPBITS, DEBUG_PARITY, DEBUG_HWCONTROL, 
-		DEBUG_SAMPLING
-	);
+	initUART(huart4, UART4, 115200, UART_MODE_TX, UART_WORDLENGTH_8B, 
+		UART_STOPBITS_1, UART_PARITY_NONE, UART_HWCONTROL_NONE, UART_OVERSAMPLING_16);
 	HAL_UART_Init(&huart4);
 }
 
@@ -84,35 +91,25 @@ void configIMUSensor(void)
 	HAL_StatusTypeDef status;
 
 	/* Initialize the GPIOA peripheral. */
-	initGPIO(
-		igpio, IMU_PIN_NSS, IMU_GPIO_MODE_O, IMU_PULL, NULL
-	);
-	HAL_GPIO_Init(IMU_PORTA, &igpio);
+	initGPIO(igpio, IMU_PIN_NSS, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, -1);
+	HAL_GPIO_Init(GPIOA, &igpio);
 	IMU_NSS_HIGH();
 
-	initGPIO(
-		igpio, IMU_PIN_INT2, IMU_GPIO_MODE_I, IMU_PULL, NULL
-	);
-	HAL_GPIO_Init(IMU_PORTA, &igpio);
+	initGPIO(igpio, IMU_PIN_INT2, GPIO_MODE_INPUT, GPIO_NOPULL, -1);
+	HAL_GPIO_Init(GPIOA, &igpio);
 
-	initGPIO(
-		igpio, IMU_PIN_SCK | IMU_PIN_MISO | IMU_PIN_MOSI, 
-		IMU_GPIO_MODE_AF, IMU_PULL, IMU_ALTERNATE
-	);
-	HAL_GPIO_Init(IMU_PORTA, &igpio);
+	initGPIO(igpio, IMU_PIN_SCK | IMU_PIN_MISO | IMU_PIN_MOSI, GPIO_MODE_AF_PP,
+		GPIO_NOPULL, GPIO_AF5_SPI1);
+	HAL_GPIO_Init(GPIOA, &igpio);
 
 	/* Initialize the GPIOB peripheral. */
-	initGPIO(
-		igpio, IMU_PIN_INT1, IMU_GPIO_MODE_I, IMU_PULL, NULL
-	);
-	HAL_GPIO_Init(IMU_PORTB, &igpio);
+	initGPIO(igpio, IMU_PIN_INT1, GPIO_MODE_INPUT, GPIO_NOPULL, -1);
+	HAL_GPIO_Init(GPIOB, &igpio);
 
 	/* Initialize the SPI1 peripheral. */
-	initSPI(
-		hspi1, IMU_INSTANCE, IMU_SPI_MODE, IMU_DIRECTION, IMU_DATASIZE, 
-		IMU_POLARITY, IMU_PHASE, IMU_NSS, IMU_PRESCALER, IMU_FIRSTBIT, 
-		IMU_TIMODE
-	);
+	initSPI(hspi1, SPI1, SPI_MODE_MASTER, SPI_DIRECTION_2LINES, SPI_DATASIZE_8BIT, 
+		SPI_POLARITY_LOW, SPI_PHASE_1EDGE, SPI_NSS_SOFT, SPI_BAUDRATEPRESCALER_8, 
+		SPI_FIRSTBIT_MSB, SPI_TIMODE_DISABLE);
 	status = HAL_SPI_Init(&hspi1);
 	if (status != HAL_OK)
 		printError(status, "Failed to initialize SPI1 peripheral!");
@@ -126,43 +123,60 @@ void configMicSensors(void)
 	int i;
 	HAL_StatusTypeDef status;
 
+	/**
+ 	 * System Clock:								100 MHz
+ 	 * DFSDM Clock:								100 MHz / DIVIDER = 3.125 MHz
+ 	 * Filter Output Rate:						3.125 MHz / OVERSAMPLING = 48.828 kHz
+ 	 * Actual Audio Rate:						48.828 kHz / (ORDER + 1) = 12.207 kHz
+ 	 */
+
 	/* Initialize the GPIOB peripheral. */
-	initGPIO(
-		igpio, MIC_PIN_DATAIN1 | MIC_PIN_CKOUT, MIC_GPIO_MODE, MIC_PULL, 
-		MIC_ALTERNATE
-	);
-	HAL_GPIO_Init(MIC_PORTB, &igpio);
+	initGPIO(igpio, MIC_PIN_DATAIN1 | MIC_PIN_CKOUT, GPIO_MODE_AF_PP, 
+		GPIO_NOPULL, GPIO_AF3_DFSDM1);
+	HAL_GPIO_Init(GPIOB, &igpio);
 
 	/* Initialize the GPIOC peripheral. */
-	initGPIO(
-		igpio, MIC_PIN_DATAIN0 | MIC_PIN_DATAIN2 | MIC_PIN_DATAIN3, 
-		MIC_GPIO_MODE, MIC_PULL, MIC_ALTERNATE
-	);
-	HAL_GPIO_Init(MIC_PORTC, &igpio);
+	initGPIO(igpio, MIC_PIN_DATAIN0 | MIC_PIN_DATAIN2 | MIC_PIN_DATAIN3, 
+		GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF3_DFSDM1);
+	HAL_GPIO_Init(GPIOC, &igpio);
 
 	/* Initialize the DFSDM1 peripheral. */
 	for (i = 0; i < CHANNEL_COUNT; i++)
 	{
 		/* Initialize the channel. */
-		initDFSDMChannel(hdfsdm1c, i, MIC_DIVIDER, MIC_FILTER_TYPE, 
-			MIC_OFFSET, MIC_RIGHT_SHIFT);
-		
+		initDFSDMChannel(hdfsdm1c, i, 32, DFSDM_CHANNEL_FASTSINC_ORDER, 
+			0, 0);
 		status = HAL_DFSDM_ChannelInit(&hdfsdm1c[i]);
 		if (status != HAL_OK)
 			printError(status, "Failed to initialize DFSDM channel!");
 
 		/* Initialize the filter. */
-		initDFSDMFilter(hdfsdm1f, i, MIC_SINC_ORDER, MIC_OVERSAMPLING);
-
+		initDFSDMFilter(hdfsdm1f, i, DFSDM_FILTER_SINC3_ORDER, 64);
 		status = HAL_DFSDM_FilterInit(&hdfsdm1f[i]);
 		if (status != HAL_OK)
 			printError(status, "Failed to initialize DFSDM filter!");
 
-		/* Assign the the filter to the channel. */
+		/* Assign the the channel to the filter. */
 		status = HAL_DFSDM_FilterConfigRegChannel(&hdfsdm1f[i], i, 
 			DFSDM_CONTINUOUS_CONV_ON);
 		if (status != HAL_OK)
 			printError(status, "Failed to assign the filter to channel!");
+
+		/* Initialize the DMA. */
+		initDFSDMDMA(hdfsdm1dma, i, DMA1_Stream0 + i, DMA_REQUEST_DFSDM1_FLT0 + i, 
+			DMA_PERIPH_TO_MEMORY, DMA_PINC_DISABLE, DMA_MINC_ENABLE, 
+			DMA_PDATAALIGN_BYTE, DMA_MDATAALIGN_BYTE, DMA_CIRCULAR, DMA_PRIORITY_HIGH, 
+			DMA_FIFOMODE_DISABLE);
+		status = HAL_DMA_Init(&hdfsdm1dma[i]);
+		if (status != HAL_OK)
+			printError(status, "Failed to initialize the DMA for DFSDM!");
+
+		/* Link DMA to DFSDM filter. */
+		__HAL_LINKDMA(&hdfsdm1f[i], hdmaReg, hdfsdm1dma[i]);
+		
+		/* Configure the DMA interrupts. */
+		HAL_NVIC_SetPriority(DMA1_Stream0_IRQn + i, 1, 0);
+		HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn + i);
 	}
 }
 
@@ -174,17 +188,14 @@ void configGPSModule(void)
 	HAL_StatusTypeDef status;
 
 	/* Initialize the GPIOE peripheral. */
-	initGPIO(
-		igpio, GPS_PIN_RX | GPS_PIN_TX, GPS_GPIO_MODE, GPS_PULL, 
-		GPS_ALTERNATE
-	);
-	HAL_GPIO_Init(GPS_PORT, &igpio);
+	initGPIO(igpio, GPS_PIN_RX | GPS_PIN_TX, GPIO_MODE_AF_PP, GPIO_NOPULL, 
+		GPIO_AF7_UART7);
+	HAL_GPIO_Init(GPIOE, &igpio);
 	
 	/* Initialize the UART7 peripheral. */
-	initUART(
-		huart7, GPS_INSTANCE, GPS_BAUDRATE, GPS_UART_MODE, GPS_WORDLEN, 
-		GPS_STOPBITS, GPS_PARITY, GPS_HWCONTROL, GPS_SAMPLING
-	);
+	initUART(huart7, UART7, 9600, UART_MODE_RX, UART_WORDLENGTH_8B, 
+		UART_STOPBITS_1, UART_PARITY_NONE, UART_HWCONTROL_NONE, 
+		UART_OVERSAMPLING_16);
 	status = HAL_UART_Init(&huart7);
 	if (status != HAL_OK)
 		printError(status, "Failied to initialize UART7 peripheral!");
@@ -198,29 +209,21 @@ void configSDCard(void)
 	HAL_StatusTypeDef status;
 
 	/* Initialize the GPIOA peripheral. */
-	initGPIO(
-		igpio, SD_PIN_CD, SD_GPIO_MODE_O, SD_PULL, NULL
-	);
-	HAL_GPIO_Init(SD_PORTA, &igpio);
+	initGPIO(igpio, SD_PIN_CD, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, -1);
+	HAL_GPIO_Init(GPIOA, &igpio);
 
 	/* Initialize the GPIOC peripheral. */
-	initGPIO(
-		igpio, SD_PIN_DAT0 | SD_PIN_DAT1 | SD_PIN_DAT2 | SD_PIN_DAT3 | 
-		SD_PIN_CLK, SD_GPIO_MODE_AF, SD_PULL, SD_ALTERNATE
-	);
-	HAL_GPIO_Init(SD_PORTC, &igpio);
+	initGPIO(igpio, SD_PIN_DAT0 | SD_PIN_DAT1 | SD_PIN_DAT2 | SD_PIN_DAT3 | 
+		SD_PIN_CLK, GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF12_SDMMC1);
+	HAL_GPIO_Init(GPIOC, &igpio);
 
 	/* Initialize the GPIOD peripheral. */
-	initGPIO(
-		igpio, SD_PIN_CMD, SD_GPIO_MODE_AF, SD_PULL, SD_ALTERNATE
-	);
-	HAL_GPIO_Init(SD_PORTD, &igpio);
+	initGPIO(igpio, SD_PIN_CMD, GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF12_SDMMC1);
+	HAL_GPIO_Init(GPIOD, &igpio);
 
 	/* Initialize the SDMMC1 peripheral. */
-	initSDMMC(
-		hsdmmc1, SD_INSTANCE, SD_BUS_WIDE, SD_CLOCK_EDGE, SD_POWER_SAVE, 
-		SD_CLOCKDIV, SD_HWCONTROL
-	);
+	initSDMMC(hsdmmc1, SDMMC1, SDMMC_BUS_WIDE_4B, SDMMC_CLOCK_EDGE_RISING, 
+		SDMMC_CLOCK_POWER_SAVE_DISABLE, 1, SDMMC_HARDWARE_FLOW_CONTROL_DISABLE);
 	status = HAL_SD_Init(&hsdmmc1);
 	if (status != HAL_OK)
 		printError(status, "Failed to initialize SDMMC1 peripheral!");
@@ -234,29 +237,22 @@ void configLoRaModule(void)
 	HAL_StatusTypeDef status;
 
 	/* Initialize the GPIOD peripheral. */
-	initGPIO(
-		igpio, LORA_PIN_M0 | LORA_PIN_M1, LORA_GPIO_MODE_O, LORA_PULL, 
-		NULL
-	);
-	HAL_GPIO_Init(LORA_PORTD, &igpio);
+	initGPIO(igpio, LORA_PIN_M0 | LORA_PIN_M1, GPIO_MODE_OUTPUT_PP, 
+		GPIO_NOPULL, -1);
+	HAL_GPIO_Init(GPIOD, &igpio);
 
-	initGPIO(
-		igpio, LORA_PIN_AUX, LORA_GPIO_MODE_I, LORA_PULL, NULL
-	);
-	HAL_GPIO_Init(LORA_PORTD, &igpio);
+	initGPIO(igpio, LORA_PIN_AUX, GPIO_MODE_INPUT, GPIO_NOPULL, -1);
+	HAL_GPIO_Init(GPIOD, &igpio);
 
 	/* Initialize the GPIOB peripheral. */
-	initGPIO(
-		igpio, LORA_PIN_TX | LORA_PIN_RX, LORA_GPIO_MODE_AF, LORA_PULL, 
-		LORA_ALTERNATE
-	);
-	HAL_GPIO_Init(LORA_PORTB, &igpio);
+	initGPIO(igpio, LORA_PIN_TX | LORA_PIN_RX, GPIO_MODE_AF_PP, 
+		GPIO_NOPULL, GPIO_AF8_UART5);
+	HAL_GPIO_Init(GPIOB, &igpio);
 
 	/* Initialize the UART5 peripheral. */
-	initUART(
-		huart5, LORA_INSTANCE, LORA_BAUDRATE, LORA_MODE, LORA_WORDLEN, 
-		LORA_STOPBITS, LORA_PARITY, LORA_HWCONTROL, LORA_SAMPLING
-	);
+	initUART(huart5, UART5, 115200, UART_MODE_TX, UART_WORDLENGTH_8B, 
+		UART_STOPBITS_1, UART_PARITY_NONE, UART_HWCONTROL_NONE, 
+		UART_OVERSAMPLING_16);
 	status = HAL_UART_Init(&huart5);
 	if (status != HAL_OK)
 		printError(status, "Failed to initialize UART5 peripheral!");
@@ -268,11 +264,9 @@ void configLoRaModule(void)
 void configLEDs(void)
 {
 	/* Initialize the GPIOE peripheral. */
-	initGPIO(
-		igpio, LED_PIN_HEARTBEAT | LED_PIN_ERROR | LED_PIN_DETECT, 
-		LED_MODE, LED_PULL, NULL
-	);
-	HAL_GPIO_Init(LED_PORT, &igpio);
+	initGPIO(igpio, LED_PIN_HEARTBEAT | LED_PIN_ERROR | LED_PIN_DETECT, 
+		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, -1);
+	HAL_GPIO_Init(GPIOE, &igpio);
 }
 
 /**

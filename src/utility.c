@@ -23,7 +23,7 @@
 void logging(const char* buffer, size_t size)
 {
 	int fd;
-	
+
 	fd = open(SYSTEM_LOG_PATH, O_WRONLY | O_APPEND);
 	if (fd == -1)
 		syscallError();

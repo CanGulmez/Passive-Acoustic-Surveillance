@@ -22,8 +22,7 @@
  */
 void __parse_nmea_sentences(uint8_t *buffer, PayloadData *payloadData)
 {
-	int length;
-	uint8_t *sentence, *token;
+	char *sentence, *token;
 
 	/* GPS Data (NMEA 0183 sentences)
 	
@@ -46,7 +45,7 @@ void __parse_nmea_sentences(uint8_t *buffer, PayloadData *payloadData)
 	*/
 	
 	/* Tokenize the each sentence in buffer. */
-	sentence = strtok(buffer, "\n");
+	sentence = strtok((char *) buffer, "\n");
 	while (sentence != NULL)
 	{
 		if (strncmp(sentence, "$GPGGA", 6) == 0)
@@ -54,7 +53,7 @@ void __parse_nmea_sentences(uint8_t *buffer, PayloadData *payloadData)
 			token = strchr(sentence, sentence[7]);
 
 			/* Get the UTC time (123519 --> 12:35:19). */
-			strncpy(payloadData->gpsUTCTime, token, 6);
+			strncpy((char *) payloadData->gpsUTCTime, token, 6);
 			
 			/* Get the latitude (4807.038 --> 48^ 07.038' N). */
 			/* Get the longitude (01131.000 --> 11^ 31.000' E). */
@@ -105,8 +104,8 @@ void __write_to_imu_reg(uint8_t reg, uint8_t data)
 uint8_t __read_reg_from_imu(uint8_t reg)
 {
 	HAL_StatusTypeDef status;
-	const uint8_t tx_data[2] = {reg | 0x80, 0x00};	/* address then data */
-	const uint8_t rx_data[2] = {0};
+	uint8_t tx_data[2] = {reg | 0x80, 0x00};	/* address then data */
+	uint8_t rx_data[2] = {0};
 
 	/* Pull the NNS to low to start the transmission. */
 	IMU_NSS_LOW();

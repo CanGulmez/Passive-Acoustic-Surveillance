@@ -17,52 +17,43 @@
 
 #include "main.h"
 
-/* Global and shared variables. */
-
-PayloadData payloadData = {0};
-SemaphoreHandle_t payloadMutex;
-
 /**
  * Read microphone data from the north channel.
  */
 void taskMicSensorNorth(void *pvParams)
 {
-	int32_t i;
+	int32_t i, notified;
 	int32_t samples[SAMPLE_SIZE] = {0};
 	HAL_StatusTypeDef status;
 	
 	printLog("I'm taskMicSensorNorth() task!");
 
-	/* Start the regular DFSDM filter conversion. */
-	status = HAL_DFSDM_FilterRegularStart(&hdfsdm1f[0]);
+	/* Start the DFSDM1 filter 1 in DMA mode. */
+	status = HAL_DFSDM_FilterRegularStart_DMA(&hdfsdm1f[0], samples, SAMPLE_SIZE);
 	if (status != HAL_OK)
-		printError(status, "Failed to start DFSDM conversion!");
+		printError(status, "Failed to start DFSDM filter 1 DMA conversion!");
 
 	for (;;)
 	{
-		/* Poll the regular conversion simultaneously. */
-		for (i = 0; i < SAMPLE_SIZE; i++)
+		/* Wait the full conversion is complete by the its callback. */
+		notified = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+		if (notified != 0)
 		{
-			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[0], 
-				HAL_MAX_DELAY);
-			if (status != HAL_OK)
-				printError(status, "Failed to poll DFSDM conversion!");
-
-			/* Get the digital MEMS mic data and then shift it. */
-			samples[i] = HAL_DFSDM_FilterGetRegularValue(&hdfsdm1f[0], 0);
-			samples[i] = samples[i] >> 24;	/* 8-bit MSB */
-		}
-		/* Take the mutex to update shared variable. */
-		if (xSemaphoreTake(payloadMutex, portMAX_DELAY) == pdTRUE)
-		{
-			/* Split the samples as left and right channels. */
-			for (i = 0; i < DATA_SIZE; i++)
+			for (i = 0; i < SAMPLE_SIZE; i++)
 			{
-				payloadData.micNorth[i] = samples[i * 2];
-				payloadData.micNorthEast[i] = samples[i * 2 + 1];
+				samples[i] = samples[i] >> 24;	/* 8-bit MSB */
 			}
-			/* Give up the mutex. */
-			xSemaphoreGive(payloadMutex);
+			/* Take the mutex to update global payload object. */
+			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
+			{
+				for (i = 0; i < DATA_SIZE; i++)
+				{
+					payloadData.micNorth[i] = samples[i * 2];
+					payloadData.micNorthEast[i] = samples[i * 2 + 1];
+				}
+				/* Give up the mutex. */
+				xSemaphoreGive(payloadMutex);
+			}
 		}
 	}	
 	vTaskDelete(NULL);
@@ -73,42 +64,38 @@ void taskMicSensorNorth(void *pvParams)
  */
 void taskMicSensorEast(void *pvParams)
 {
-	int32_t i;
+	int32_t i, notified;
 	int32_t samples[SAMPLE_SIZE] = {0};
 	HAL_StatusTypeDef status;
 
 	printLog("I'm taskMicSensorEast() task!");
 
-	/* Start the regular DFSDM filter conversion. */
-	status = HAL_DFSDM_FilterRegularStart(&hdfsdm1f[1]);
+	/* Start the DFSDM1 filter 2 in DMA mode. */
+	status = HAL_DFSDM_FilterRegularStart_DMA(&hdfsdm1f[1], samples, SAMPLE_SIZE);
 	if (status != HAL_OK)
-		printError(status, "Failed to start DFSDM conversion!");
+		printError(status, "Failed to start DFSDM filter 2 DMA conversion!");
 
 	for (;;)
 	{
-		/* Poll the regular conversion simultaneously. */
-		for (i = 0; i < SAMPLE_SIZE; i++)
+		/* Wait the full conversion is complete by the its callback. */	
+		notified = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+		if (notified != 0)
 		{
-			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[1], 
-				HAL_MAX_DELAY);
-			if (status != HAL_OK)
-				printError(status, "Failed to poll DFSDM conversion!");
-
-			/* Get the digital MEMS mic data and then shift it. */
-			samples[i] = HAL_DFSDM_FilterGetRegularValue(&hdfsdm1f[1], 1);
-			samples[i] = samples[i] >> 24;	/* 8-bit MSB */
-		}
-		/* Take the mutex to update shared variable. */
-		if (xSemaphoreTake(payloadMutex, portMAX_DELAY) == pdTRUE)
-		{
-			/* Split the samples as left and right channels. */
-			for (i = 0; i < DATA_SIZE; i++)
+			for (i = 0; i < SAMPLE_SIZE; i++)
 			{
-				payloadData.micEast[i] = samples[i * 2];
-				payloadData.micSouthEast[i] = samples[i * 2 + 1];
+				samples[i] = samples[i] >> 24;	/* 8-bit MSB */
 			}
-			/* Give up the mutex. */
-			xSemaphoreGive(payloadMutex);
+			/* Take the mutex to update global payload object. */
+			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
+			{
+				for (i = 0; i < DATA_SIZE; i++)
+				{
+					payloadData.micEast[i] = samples[i * 2];
+					payloadData.micSouthEast[i] = samples[i * 2 + 1];
+				}
+				/* Give up the mutex. */
+				xSemaphoreGive(payloadMutex);
+			}
 		}
 	}	
 	vTaskDelete(NULL);
@@ -119,42 +106,38 @@ void taskMicSensorEast(void *pvParams)
  */
 void taskMicSensorSouth(void *pvParams)
 {
-	int32_t i;
+	int32_t i, notified;
 	int32_t samples[SAMPLE_SIZE] = {0};
 	HAL_StatusTypeDef status;
 
 	printLog("I'm taskMicSensorSouth() task!");
 
-	/* Start the regular DFSDM filter conversion. */
-	status = HAL_DFSDM_FilterRegularStart(&hdfsdm1f[2]);
+	/* Start the DFSDM1 filter 3 in DMA mode. */
+	status = HAL_DFSDM_FilterRegularStart_DMA(&hdfsdm1f[2], samples, SAMPLE_SIZE);
 	if (status != HAL_OK)
-		printError(status, "Failed to start DFSDM conversion!");
+		printError(status, "Failed to start DFSDM filter 3 DMA conversion!");
 
 	for (;;)
 	{
-		/* Poll the regular conversion simultaneously. */
-		for (i = 0; i < SAMPLE_SIZE; i++)
+		/* Wait the full conversion is complete by the its callback. */
+		notified = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+		if (notified != 0)
 		{
-			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[2], 
-				HAL_MAX_DELAY);
-			if (status != HAL_OK)
-				printError(status, "Failed to poll DFSDM conversion!");
-
-			/* Get the digital MEMS mic data and then shift it. */
-			samples[i] = HAL_DFSDM_FilterGetRegularValue(&hdfsdm1f[2], 2);
-			samples[i] = samples[i] >> 24;	/* 8-bit MSB */
-		}
-		/* Take the mutex to update shared variable. */
-		if (xSemaphoreTake(payloadMutex, portMAX_DELAY) == pdTRUE)
-		{
-			/* Split the samples as left and right channels. */
-			for (i = 0; i < DATA_SIZE; i++)
+			for (i = 0; i < SAMPLE_SIZE; i++)
 			{
-				payloadData.micSouth[i] = samples[i * 2];
-				payloadData.micSouthWest[i] = samples[i * 2 + 1];
+				samples[i] = samples[i] >> 24;	/* 8-bit MSB */
 			}
-			/* Give up the mutex. */
-			xSemaphoreGive(payloadMutex);
+			/* Take the mutex to update global payload object. */
+			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
+			{
+				for (i = 0; i < DATA_SIZE; i++)
+				{
+					payloadData.micSouth[i] = samples[i * 2];
+					payloadData.micSouthWest[i] = samples[i * 2 + 1];
+				}
+				/* Give up the mutex. */
+				xSemaphoreGive(payloadMutex);
+			}
 		}
 	}	
 	vTaskDelete(NULL);
@@ -165,42 +148,38 @@ void taskMicSensorSouth(void *pvParams)
  */
 void taskMicSensorWest(void *pvParams)
 {
-	int32_t i;
+	int32_t i, notified;
 	int32_t samples[SAMPLE_SIZE] = {0};
 	HAL_StatusTypeDef status;
 
 	printLog("I'm taskMicSensorWest() task!");
 
-	/* Start the regular DFSDM filter conversion. */
-	status = HAL_DFSDM_FilterRegularStart(&hdfsdm1f[3]);
+	/* Start the DFSDM1 filter 4 in DMA mode. */
+	status = HAL_DFSDM_FilterRegularStart_DMA(&hdfsdm1f[3], samples, SAMPLE_SIZE);
 	if (status != HAL_OK)
-		printError(status, "Failed to start DFSDM conversion!");
+		printError(status, "Failed to start DFSDM filter 4 DMA conversion!");
 
 	for (;;)
 	{
-		/* Poll the regular conversion simultaneously. */
-		for (i = 0; i < SAMPLE_SIZE; i++)
+		/* Wait the full conversion is complete by the its callback. */
+		notified = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+		if (notified != 0)
 		{
-			status = HAL_DFSDM_FilterPollForRegConversion(&hdfsdm1f[3], 
-				HAL_MAX_DELAY);
-			if (status != HAL_OK)
-				printError(status, "Failed to poll DFSDM conversion!");
-
-			/* Get the digital MEMS mic data and then shift it. */
-			samples[i] = HAL_DFSDM_FilterGetRegularValue(&hdfsdm1f[3], 3);
-			samples[i] = samples[i] >> 24;	/* 8-bit MSB */
-		}
-		/* Take the mutex to update shared variable. */
-		if (xSemaphoreTake(payloadMutex, portMAX_DELAY) == pdPASS)
-		{
-			/* Split the samples as left and right channels. */
-			for (i = 0; i < DATA_SIZE; i++)
+			for (i = 0; i < SAMPLE_SIZE; i++)
 			{
-				payloadData.micWest[i] = samples[i * 2];
-				payloadData.micNorthWest[i] = samples[i * 2 + 1];
+				samples[i] = samples[i] >> 24;	/* 8-bit MSB */
 			}
-			/* Give up the mutex. */
-			xSemaphoreGive(payloadMutex);
+			/* Take the mutex to update global payload object. */
+			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
+			{
+				for (i = 0; i < DATA_SIZE; i++)
+				{
+					payloadData.micWest[i] = samples[i * 2];
+					payloadData.micNorthWest[i] = samples[i * 2 + 1];
+				}
+				/* Give up the mutex. */
+				xSemaphoreGive(payloadMutex);
+			}
 		}
 	}	
 	vTaskDelete(NULL);
@@ -215,16 +194,17 @@ void taskGPSModule(void *pvParams)
 	HAL_StatusTypeDef status;
 
 	printLog("I'm taskGPSModule() task!");
-	
+
 	for (;;)
 	{
 		/* Recieve the GPS sentences over serial line. */
-		status = HAL_UART_Receive(&huart7, buffer, DATA_SIZE, HAL_MAX_DELAY);
+		status = HAL_UART_Receive(&huart7, buffer, DATA_SIZE, 
+			HAL_MAX_DELAY);
 		if (status != HAL_OK)
 			printError(status, "Failed to receive GPS sentences!\n");
-
+		
 		/* Take the mutex to update shared variable. */
-		if (xSemaphoreTake(payloadMutex, portMAX_DELAY) == pdPASS)
+		if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 		{
 			/* Parse the NMEA sentences. */
 			__parse_nmea_sentences(buffer, &payloadData);
@@ -232,8 +212,6 @@ void taskGPSModule(void *pvParams)
 			/* Give up the mutex. */
 			xSemaphoreGive(payloadMutex);
 		}
-		/* Give some delay. */
-		vTaskDelay(TASK_GPS_DELAY);
 	}	
 	vTaskDelete(NULL);
 }
@@ -258,13 +236,14 @@ void taskIMUSensor(void *pvParams)
 	__write_to_imu_reg(IMU_REG_CTRL1_XL, 0x6C);	/* 416Hz, 16g */
 	__write_to_imu_reg(IMU_REG_CTRL2_G, 0x6C);	/* 416Hz, 2000dps */
 	__write_to_imu_reg(IMU_REG_CTRL3_C, 0x44);	/* BDU and IF_INC */
-	
+
 	printLog("Configured the accelerometer (416Hz, 16g) "
 				"and gyroscope (416Hz, 2000dps).");
+
 	for (;;)
 	{
-		/* Take the mutex to update shared variable. */
-		if (xSemaphoreTake(payloadMutex, portMAX_DELAY) == pdTRUE)
+		/* Take the mutex to update global payload object. */
+		if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 		{
 			/* Read the acceleromenter, gyroscope and temperature. */
 			__read_accel_from_imu(&payloadData);
@@ -274,8 +253,6 @@ void taskIMUSensor(void *pvParams)
 			/* Give up the mutex. */
 			xSemaphoreGive(payloadMutex);
 		}
-		/* Give some delay. */
-		vTaskDelay(TASK_IMU_DELAY);
 	}	
 	vTaskDelete(NULL);
 }
@@ -285,9 +262,8 @@ void taskIMUSensor(void *pvParams)
  */
 void taskSDCard(void *pvParams)
 {
-	uint8_t buffer[DATA_SIZE]= {0};
+	uint8_t buffer[DATA_SIZE] = {0};
 	HAL_StatusTypeDef status;
-	HAL_SD_CardInfoTypeDef info;
 	static uint32_t csector = START_SECTOR;
 
 	printLog("I'm taskSDCard() task!");
@@ -302,9 +278,8 @@ void taskSDCard(void *pvParams)
 
 	for (;;)
 	{
-		/* Fill the backup buffer. */
-		memcpy(buffer, "will be implemented later", 50);
-
+		/* Fill the backup buffer (will be implemented later). */
+		
 		/* Write the backup data blocks to SD card. */
 		status = HAL_SD_WriteBlocks(
 			&hsdmmc1,			/* SD card interface */
@@ -316,26 +291,9 @@ void taskSDCard(void *pvParams)
 		if (status != HAL_OK)
 			printError(status, "Failed to write data blocks to "
 				"SD Card at sector %lu!", csector);
-				
+
 		csector++;
-
-		/* Give some delay. */
-		vTaskDelay(TASK_SD_DELAY);
 	}
-	vTaskDelete(NULL);
-}
-
-/**
- * Drive the servo motors to vectorize system.
- */
-void taskServoMotors(void *pvParams)
-{
-	printLog("I'm taskServoMotors() task!");
-
-	for (;;)
-	{
-		
-	}	
 	vTaskDelete(NULL);
 }
 
@@ -350,8 +308,8 @@ void taskLoRaModule(void *pvParams)
 
 	for (;;)
 	{
-		/* Take the mutex to update shared variable. */
-		if (xSemaphoreTake(payloadMutex, portMAX_DELAY) == pdPASS)
+		/* Take the mutex to update global payload object. */
+		if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 		{
 			memcpy(&temp, &payloadData, sizeof(payloadData));	/* for debugging */
 			
@@ -359,10 +317,7 @@ void taskLoRaModule(void *pvParams)
 			xSemaphoreGive(payloadMutex);
 		}
 		/* Transmit the packed structure to ground station. */
-			HAL_UART_Transmit(&huart5, (uint8_t *) &temp, sizeof(temp), HAL_MAX_DELAY);
-
-		/* Give some delay. */
-		vTaskDelay(TASK_LORA_DELAY);
+		HAL_UART_Transmit(&huart5, (uint8_t *) &temp, sizeof(temp), HAL_MAX_DELAY);
 	}	
 	vTaskDelete(NULL);
 }

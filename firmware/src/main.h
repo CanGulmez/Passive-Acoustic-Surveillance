@@ -44,7 +44,7 @@
 #define BUFFER_SIZE			256
 #define DATA_SIZE				512
 #define GPS_SIZE				64
-#define SAMPLE_SIZE			(DATA_SIZE * 2)	
+#define SAMPLE_SIZE			(DATA_SIZE * 2)
 #define CHANNEL_COUNT		4
 #define MIC_COUNT				(CHANNEL_COUNT * 2)
 #define START_SECTOR			0x1000	/* 4096 bytes, after 2MB of FAT/reserved */
@@ -62,11 +62,6 @@
 									 (status == HAL_TIMEOUT)	? "TIMEOUT" :	\
 									  "UNDEFINED")
 
-/* Some Useful Shorthands */
-
-#define IMU_NSS_LOW()		(HAL_GPIO_WritePin(IMU_PORTA, IMU_PIN_NSS, RESET))
-#define IMU_NSS_HIGH()		(HAL_GPIO_WritePin(IMU_PORTA, IMU_PIN_NSS, SET))
-
 /*****************************************************************************/
 /*****************************************************************************/
 
@@ -82,8 +77,11 @@ extern SPI_HandleTypeDef hspi1;										/* IMU Sensor */
 extern SD_HandleTypeDef	hsdmmc1;										/* SD Card */
 extern DFSDM_Channel_HandleTypeDef hdfsdm1c[CHANNEL_COUNT];	/* Mic Sensor */
 extern DFSDM_Filter_HandleTypeDef hdfsdm1f[CHANNEL_COUNT];	/* Mic Sensor */
+extern DMA_HandleTypeDef hdfsdm1dma[CHANNEL_COUNT];			/* Mic Sensor */
 
 extern SemaphoreHandle_t payloadMutex;	/* Mutex for payload data */
+
+extern TaskHandle_t micTaskHandlers[CHANNEL_COUNT];
 
 /*****************************************************************************/
 /*****************************************************************************/
@@ -217,7 +215,7 @@ do {																									\
 	handle.Mode = mode;																			\
 	handle.Pull = pull;																			\
 	handle.Speed = GPIO_SPEED_FREQ_HIGH;													\
-	if (alternate != NULL)																		\
+	if (alternate != -1)																			\
 	{																									\
 		handle.Alternate = alternate;															\
 	}																									\
@@ -237,38 +235,6 @@ do {																									\
 	handle.Init.Parity = parity;																\
 	handle.Init.HwFlowCtl = hwcontrol;														\
 	handle.Init.OverSampling = sampling;													\
-}
-
-/**
- * Initialize base TIM peripheral with given parameters.
- */
-#define initBaseTIM(handle, instance, prescaler, period, clockdiv, 				\
-						  countermode, repitation, autoreload)								\
-{																										\
-	handle.Instance = instance;																\
-	handle.Init.Prescaler = prescaler;														\
-	handle.Init.CounterMode = countermode;													\
-	handle.Init.Period = period;																\
-	handle.Init.ClockDivision = clockdiv;													\
-	handle.Init.RepetitionCounter = repitation;											\
-	handle.Init.AutoReloadPreload = autoreload;											\
-}
-
-/**
- * Initialize DMA peripheral with given parameters.
- */
-#define initDMA(handle, instance, stream, direction, periphinc, meminc, 		\
-					 periphdataalign, memdataalign, mode, priority)						\
-{																										\
-	handle.Instance = instance;																\
-	handle.Init.Request = stream;																\
-	handle.Init.Direction = direction;														\
-	handle.Init.PeriphInc = periphinc;														\
-	handle.Init.MemInc = meminc;																\
-	handle.Init.PeriphDataAlignment = periphdataalign;									\
-	handle.Init.MemDataAlignment = memdataalign;											\
-	handle.Init.Mode = mode;																	\
-	handle.Init.Priority = priority;															\
 }
 
 /**
@@ -327,11 +293,29 @@ do {																									\
 {																										\
 	handle[i].Instance = DFSDM1_Filter0 + i;												\
 	handle[i].Init.RegularParam.Trigger = DFSDM_FILTER_SW_TRIGGER;					\
-	handle[i].Init.RegularParam.FastMode = ENABLE;										\
-	handle[i].Init.RegularParam.DmaMode = DISABLE;										\
+	handle[i].Init.RegularParam.FastMode = DISABLE;										\
+	handle[i].Init.RegularParam.DmaMode = ENABLE;										\
 	handle[i].Init.FilterParam.SincOrder = sincorder;									\
 	handle[i].Init.FilterParam.Oversampling = oversampling;							\
 	handle[i].Init.FilterParam.IntOversampling = 1;										\
+}
+
+/**
+ * Initialize DFSDM DMA peripheral with given parameters.
+ */
+#define initDFSDMDMA(handle, i, instance, request, direct, periphinc, meminc, \
+					 		pdataalign, mdataalign, mode, priority, fifomode)			\
+{																										\
+	handle[i].Instance = instance;															\
+	handle[i].Init.Request = request;														\
+	handle[i].Init.Direction = direct;														\
+	handle[i].Init.PeriphInc = periphinc;													\
+	handle[i].Init.MemInc = meminc;															\
+	handle[i].Init.PeriphDataAlignment = pdataalign;									\
+	handle[i].Init.MemDataAlignment = mdataalign;										\
+	handle[i].Init.Mode = mode;																\
+	handle[i].Init.Priority = priority;														\
+	handle[i].Init.FIFOMode = fifomode;														\
 }
 
 /*****************************************************************************/
@@ -368,7 +352,6 @@ extern void taskIMUSensor(void *);
 extern void taskSDCard(void *);
 extern void taskLoRaModule(void *);
 extern void taskSystemCheck(void *);
-extern void taskServoMotors(void *);
 extern void taskLEDs(void *);
 extern void taskWatchdog(void *);
 
