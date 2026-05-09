@@ -1,13 +1,13 @@
 /**
  ******************************************************************************
- * @file 	dsp.c
- * @author 	Ahmet Can GULMEZ
- * @brief 	Main headers of Digital Signal Processing.
+ * @file 	dsp.h
+ * @author 	Can GULMEZ
+ * @brief 	Main header of Digital Signal Processing.
  * 
  ******************************************************************************
  * @attention
  * 
- * Copyright (c) 2026 Ahmet Can GULMEZ.
+ * Copyright (c) 2026 Can GULMEZ.
  * All rights reserved.
  * 
  * This software is licensed under the MIT License.
@@ -119,7 +119,7 @@ typedef struct _DspFreq
 typedef struct _DspBeamform
 {
    mics_t mics;							/* mics in phased array */
-   double freq;                     /* signal frequency in Hz */
+   double fs;                     	/* sampling frequency in Hz */
    double radius;                   /* radius in meter */
    double theta;                    /* arrival angle in degrees */
    DspTime *samples[MAX_MICS];

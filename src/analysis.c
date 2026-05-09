@@ -72,7 +72,7 @@ double find_dominant_freq(void)
 		dsp_freq_magnitude(&outputs[i], &magnitudes[i]);
 		magnitudes[i].data[0] = 0.0;	/* pass the DC bias */
 		indexes[i] = dsp_time_argmax(&magnitudes[i]);
-		frequencies[i] = (MIC_SAMPLE_FREQ / DATA_SIZE) * indexes[i];
+		frequencies[i] = (MIC_SAMPLING_FREQ / DATA_SIZE) * indexes[i];
 	}
 	/* Compare the frequencies to find the maximum. */
 	for (i = 0; i < MIC_COUNT; i++)
@@ -114,7 +114,7 @@ DspTime do_beamforming(double freq, double arrival)
 	DspTime sample;
 
 	beamform.mics = MIC_COUNT;	
-	beamform.freq = freq;	
+	beamform.fs = MIC_SAMPLING_FREQ;
 	beamform.radius = MIC_RADIUS;	
 	beamform.theta = arrival;
 	for (i = 0; i < MIC_COUNT; i++)	

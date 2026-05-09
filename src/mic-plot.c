@@ -1,13 +1,13 @@
 /**
  ******************************************************************************
- * @file 	mic_plot.c
- * @author 	Ahmet Can GULMEZ
+ * @file 	mic-plot.c
+ * @author 	Can GULMEZ
  * @brief 	Microphone plot integrations of passive acoustic surveillance. 
  * 
  ******************************************************************************
  * @attention
  * 
- * Copyright (c) 2026 Ahmet Can GULMEZ.
+ * Copyright (c) 2026 Can GULMEZ.
  * All rights reserved.
  * 
  * This software is licensed under the MIT License.

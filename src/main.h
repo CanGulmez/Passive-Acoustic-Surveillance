@@ -94,8 +94,8 @@ extern "C" {
 #define MIC_PLOT_GRID						20 	/* pixel */
 #define MIC_SIGNAL_NUM						15
 #define MIC_COUNT								8
-#define MIC_RADIUS							0.1		/* 0.1 meter */
-#define MIC_SAMPLE_FREQ						12000		/* 12kHz */
+#define MIC_RADIUS							0.1		/* meter */
+#define MIC_SAMPLING_FREQ					12000		/* Hz */
 
 #define MODEL_DATASET_PATH					"./datasets/"
 #define MODEL_DATASET_SUFFIX				".csv"

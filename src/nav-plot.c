@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file 	nav_plot.c
+ * @file 	nav-plot.c
  * @author 	Can GULMEZ
  * @brief 	Navigation plotting of passive acoustic surveillance.
  * 

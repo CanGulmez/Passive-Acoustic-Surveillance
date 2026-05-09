@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file 	gps_map.c
+ * @file 	gps-map.c
  * @author 	Can GULMEZ
  * @brief 	GPS map interation of passive acoustic surveillance.
  * 

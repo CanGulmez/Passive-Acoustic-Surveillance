@@ -24,12 +24,19 @@ RCC_ClkInitTypeDef iclk	= {0};	/* Clk */
 GPIO_InitTypeDef igpio = {0};		/* Generic IO */
 UART_HandleTypeDef huart4 = {0};	/* Debug Port */
 UART_HandleTypeDef huart5 = {0};	/* LoRa Module Port */
-UART_HandleTypeDef huart7 = {0};	/* GPS ModulePort */
-SPI_HandleTypeDef	hspi1 = {0};	/* IMU Sensor Port */
-SD_HandleTypeDef hsdmmc1 = {0};	/* SD Card Port */
-DFSDM_Channel_HandleTypeDef hdfsdm1c[CHANNEL_COUNT] = {0};
-DFSDM_Filter_HandleTypeDef hdfsdm1f[CHANNEL_COUNT] = {0};
-DMA_HandleTypeDef hdfsdm1dma[CHANNEL_COUNT] = {0};
+
+UART_HandleTypeDef huart7 = {0};		/* GPS Module */
+DMA_HandleTypeDef huart7dma = {0};	/* GPS Module */
+
+SPI_HandleTypeDef	hspi1 = {0};		/* IMU Sensor */
+DMA_HandleTypeDef hspi1dma = {0};	/* IMU Sensor */
+
+SD_HandleTypeDef hsdmmc1 = {0};		/* SD Card */
+DMA_HandleTypeDef hsdmmc1dma = {0};	/* SD Card */
+
+DFSDM_Channel_HandleTypeDef hdfsdm1c[CHANNEL_COUNT] = {0};	/* Mic Sensor */
+DFSDM_Filter_HandleTypeDef hdfsdm1f[CHANNEL_COUNT] = {0};	/* Mic Sensor */
+DMA_HandleTypeDef hdfsdm1dma[CHANNEL_COUNT] = {0};				/* Mic Sensor */
 
 /**
  * Configurate the oscillator and clock sources.
@@ -84,6 +91,71 @@ void configDebugPort(void)
 }
 
 /**
+ * Configure the microphone sensors.
+ */
+void configMicSensors(void)
+{
+	int i;
+	HAL_StatusTypeDef status;
+
+	/**
+ 	 * System Clock:								100 MHz
+ 	 * DFSDM Clock:								100 MHz / DIVIDER = 3.125 MHz
+ 	 * Filter Output Rate:						3.125 MHz / OVERSAMPLING = 97.656 kHz
+ 	 * Actual Audio Rate:						48.828 kHz / (ORDER + 1) = 24.414 kHz
+ 	 */
+
+	/* Initialize the GPIOB peripheral. */
+	initGPIO(igpio, MIC_PIN_DATAIN1 | MIC_PIN_CKOUT, GPIO_MODE_AF_PP, 
+		GPIO_NOPULL, GPIO_AF3_DFSDM1);
+	HAL_GPIO_Init(GPIOB, &igpio);
+
+	/* Initialize the GPIOC peripheral. */
+	initGPIO(igpio, MIC_PIN_DATAIN0 | MIC_PIN_DATAIN2 | MIC_PIN_DATAIN3, 
+		GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF3_DFSDM1);
+	HAL_GPIO_Init(GPIOC, &igpio);
+
+	/* Initialize the DFSDM1 peripheral. */
+	for (i = 0; i < CHANNEL_COUNT; i++)
+	{
+		/* Initialize the channel. */
+		initDFSDMChannel(hdfsdm1c, i, 32, DFSDM_CHANNEL_FASTSINC_ORDER, 
+			0, 0);
+		status = HAL_DFSDM_ChannelInit(&hdfsdm1c[i]);
+		if (status != HAL_OK)
+			printError(status, "Failed to initialize DFSDM channel!");
+
+		/* Initialize the filter. */
+		initDFSDMFilter(hdfsdm1f, i, DFSDM_FILTER_SINC3_ORDER, 32);
+		status = HAL_DFSDM_FilterInit(&hdfsdm1f[i]);
+		if (status != HAL_OK)
+			printError(status, "Failed to initialize DFSDM filter!");
+
+		/* Assign the the channel to the filter. */
+		status = HAL_DFSDM_FilterConfigRegChannel(&hdfsdm1f[i], i, 
+			DFSDM_CONTINUOUS_CONV_ON);
+		if (status != HAL_OK)
+			printError(status, "Failed to assign the filter to channel!");
+		
+		/* Initialize the DMA1_Stream0-3 for DFSDM1. */
+		initDFSDMDMA(hdfsdm1dma, i, DMA1_Stream0 + i, DMA_REQUEST_DFSDM1_FLT0 + i, 
+			DMA_PERIPH_TO_MEMORY, DMA_PINC_DISABLE, DMA_MINC_ENABLE, 
+			DMA_PDATAALIGN_WORD, DMA_MDATAALIGN_WORD, DMA_CIRCULAR, DMA_PRIORITY_HIGH, 
+			DMA_FIFOMODE_DISABLE);
+		status = HAL_DMA_Init(&hdfsdm1dma[i]);
+		if (status != HAL_OK)
+			printError(status, "Failed to initialize the DMA for DFSDM!");
+	
+		/* Link DMA1_Stream0-3 to DFSDM1 filter. */
+		__HAL_LINKDMA(&hdfsdm1f[i], hdmaReg, hdfsdm1dma[i]);
+		
+		/* Configure the DMA1_Stream0-3 interrupts. */
+		HAL_NVIC_SetPriority(DMA1_Stream0_IRQn + i, 1, 0);
+		HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn + i);
+	}
+}
+
+/**
  * Configure the IMU sensor.
  */
 void configIMUSensor(void)
@@ -113,71 +185,21 @@ void configIMUSensor(void)
 	status = HAL_SPI_Init(&hspi1);
 	if (status != HAL_OK)
 		printError(status, "Failed to initialize SPI1 peripheral!");
-}
 
-/**
- * Configure the microphone sensors.
- */
-void configMicSensors(void)
-{
-	int i;
-	HAL_StatusTypeDef status;
+	/* Initialize the DMA1_Stream4 for SPI. */
+	// initDMA(hspi1dma, DMA1_Stream4, DMA_REQUEST_SPI1_RX, DMA_PERIPH_TO_MEMORY,
+	// 	DMA_PINC_DISABLE, DMA_MINC_ENABLE, DMA_PDATAALIGN_WORD, DMA_MDATAALIGN_WORD,
+	// 	DMA_CIRCULAR, DMA_PRIORITY_HIGH, DMA_FIFOMODE_DISABLE);
+	// status = HAL_DMA_Init(&hspi1dma);
+	// if (status != HAL_OK)
+	// 	printError(status, "Failed to initialize DMA for SPI1!");
 
-	/**
- 	 * System Clock:								100 MHz
- 	 * DFSDM Clock:								100 MHz / DIVIDER = 3.125 MHz
- 	 * Filter Output Rate:						3.125 MHz / OVERSAMPLING = 48.828 kHz
- 	 * Actual Audio Rate:						48.828 kHz / (ORDER + 1) = 12.207 kHz
- 	 */
+	/* Link the DMA1_Stream4 to SPI1 peripheral. */
+	// __HAL_LINKDMA(&hspi1, hdmarx, hspi1dma);
 
-	/* Initialize the GPIOB peripheral. */
-	initGPIO(igpio, MIC_PIN_DATAIN1 | MIC_PIN_CKOUT, GPIO_MODE_AF_PP, 
-		GPIO_NOPULL, GPIO_AF3_DFSDM1);
-	HAL_GPIO_Init(GPIOB, &igpio);
-
-	/* Initialize the GPIOC peripheral. */
-	initGPIO(igpio, MIC_PIN_DATAIN0 | MIC_PIN_DATAIN2 | MIC_PIN_DATAIN3, 
-		GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF3_DFSDM1);
-	HAL_GPIO_Init(GPIOC, &igpio);
-
-	/* Initialize the DFSDM1 peripheral. */
-	for (i = 0; i < CHANNEL_COUNT; i++)
-	{
-		/* Initialize the channel. */
-		initDFSDMChannel(hdfsdm1c, i, 32, DFSDM_CHANNEL_FASTSINC_ORDER, 
-			0, 0);
-		status = HAL_DFSDM_ChannelInit(&hdfsdm1c[i]);
-		if (status != HAL_OK)
-			printError(status, "Failed to initialize DFSDM channel!");
-
-		/* Initialize the filter. */
-		initDFSDMFilter(hdfsdm1f, i, DFSDM_FILTER_SINC3_ORDER, 64);
-		status = HAL_DFSDM_FilterInit(&hdfsdm1f[i]);
-		if (status != HAL_OK)
-			printError(status, "Failed to initialize DFSDM filter!");
-
-		/* Assign the the channel to the filter. */
-		status = HAL_DFSDM_FilterConfigRegChannel(&hdfsdm1f[i], i, 
-			DFSDM_CONTINUOUS_CONV_ON);
-		if (status != HAL_OK)
-			printError(status, "Failed to assign the filter to channel!");
-
-		/* Initialize the DMA. */
-		initDFSDMDMA(hdfsdm1dma, i, DMA1_Stream0 + i, DMA_REQUEST_DFSDM1_FLT0 + i, 
-			DMA_PERIPH_TO_MEMORY, DMA_PINC_DISABLE, DMA_MINC_ENABLE, 
-			DMA_PDATAALIGN_BYTE, DMA_MDATAALIGN_BYTE, DMA_CIRCULAR, DMA_PRIORITY_HIGH, 
-			DMA_FIFOMODE_DISABLE);
-		status = HAL_DMA_Init(&hdfsdm1dma[i]);
-		if (status != HAL_OK)
-			printError(status, "Failed to initialize the DMA for DFSDM!");
-
-		/* Link DMA to DFSDM filter. */
-		__HAL_LINKDMA(&hdfsdm1f[i], hdmaReg, hdfsdm1dma[i]);
-		
-		/* Configure the DMA interrupts. */
-		HAL_NVIC_SetPriority(DMA1_Stream0_IRQn + i, 1, 0);
-		HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn + i);
-	}
+	/* Configure the DMA1_Stream4 interrupts. */
+	// HAL_NVIC_EnableIRQ(DMA1_Stream4_IRQn);
+	// HAL_NVIC_SetPriority(DMA1_Stream4_IRQn, 2, 0);
 }
 
 /**

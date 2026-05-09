@@ -65,16 +65,23 @@
 /*****************************************************************************/
 /*****************************************************************************/
 
-/* Peripheral Handlers */
+/* Global Handlers */
 
 extern RCC_OscInitTypeDef iosc;										/* Oscillator */
 extern RCC_ClkInitTypeDef iclk;										/* Clock */
 extern GPIO_InitTypeDef	igpio;										/* Generic IO */
 extern UART_HandleTypeDef huart4;									/* Debug Port */
 extern UART_HandleTypeDef huart5;									/* LoRa Module */
+
 extern UART_HandleTypeDef huart7;									/* GPS Module */
+extern DMA_HandleTypeDef huart7dma;									/* GPS Module */
+
 extern SPI_HandleTypeDef hspi1;										/* IMU Sensor */
+extern DMA_HandleTypeDef hspi1dma;									/* IMU Sensor */
+
 extern SD_HandleTypeDef	hsdmmc1;										/* SD Card */
+extern DMA_HandleTypeDef hsdmmc1dma;								/* SD Card */
+
 extern DFSDM_Channel_HandleTypeDef hdfsdm1c[CHANNEL_COUNT];	/* Mic Sensor */
 extern DFSDM_Filter_HandleTypeDef hdfsdm1f[CHANNEL_COUNT];	/* Mic Sensor */
 extern DMA_HandleTypeDef hdfsdm1dma[CHANNEL_COUNT];			/* Mic Sensor */
@@ -87,6 +94,7 @@ extern TaskHandle_t micTaskHandlers[CHANNEL_COUNT];
 /*****************************************************************************/
 
 /* Data Structures and Enumerations */
+
 typedef struct PACKED _PayloadData
 {
 	/* The microphone sensors payload data  */
@@ -267,6 +275,24 @@ do {																									\
 	handle.Init.ClockPowerSave = powersave;												\
 	handle.Init.ClockDiv = clockdiv;															\
 	handle.Init.HardwareFlowControl = hwcontrol;											\
+}
+
+/**
+ * Initialize DMA peripheral with given parameters.
+ */
+#define initDMA(handle, instance, request, direct, periphinc, meminc, 			\
+					 		pdataalign, mdataalign, mode, priority, fifomode)			\
+{																										\
+	handle.Instance = instance;																\
+	handle.Init.Request = request;															\
+	handle.Init.Direction = direct;															\
+	handle.Init.PeriphInc = periphinc;														\
+	handle.Init.MemInc = meminc;																\
+	handle.Init.PeriphDataAlignment = pdataalign;										\
+	handle.Init.MemDataAlignment = mdataalign;											\
+	handle.Init.Mode = mode;																	\
+	handle.Init.Priority = priority;															\
+	handle.Init.FIFOMode = fifomode;															\
 }
 
 /**

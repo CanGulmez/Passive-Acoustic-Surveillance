@@ -23,7 +23,7 @@
 void taskMicSensorNorth(void *pvParams)
 {
 	int32_t i, notified;
-	int32_t samples[SAMPLE_SIZE] = {0};
+	static int32_t samples[SAMPLE_SIZE] = {0};
 	HAL_StatusTypeDef status;
 	
 	printLog("I'm taskMicSensorNorth() task!");
@@ -65,7 +65,7 @@ void taskMicSensorNorth(void *pvParams)
 void taskMicSensorEast(void *pvParams)
 {
 	int32_t i, notified;
-	int32_t samples[SAMPLE_SIZE] = {0};
+	static int32_t samples[SAMPLE_SIZE] = {0};
 	HAL_StatusTypeDef status;
 
 	printLog("I'm taskMicSensorEast() task!");
@@ -107,7 +107,7 @@ void taskMicSensorEast(void *pvParams)
 void taskMicSensorSouth(void *pvParams)
 {
 	int32_t i, notified;
-	int32_t samples[SAMPLE_SIZE] = {0};
+	static int32_t samples[SAMPLE_SIZE] = {0};
 	HAL_StatusTypeDef status;
 
 	printLog("I'm taskMicSensorSouth() task!");
@@ -149,7 +149,7 @@ void taskMicSensorSouth(void *pvParams)
 void taskMicSensorWest(void *pvParams)
 {
 	int32_t i, notified;
-	int32_t samples[SAMPLE_SIZE] = {0};
+	static int32_t samples[SAMPLE_SIZE] = {0};
 	HAL_StatusTypeDef status;
 
 	printLog("I'm taskMicSensorWest() task!");
@@ -180,37 +180,6 @@ void taskMicSensorWest(void *pvParams)
 				/* Give up the mutex. */
 				xSemaphoreGive(payloadMutex);
 			}
-		}
-	}	
-	vTaskDelete(NULL);
-}
-
-/**
- * Read GPS data from the existing module.
- */
-void taskGPSModule(void *pvParams)
-{
-	uint8_t buffer[DATA_SIZE] = {0};
-	HAL_StatusTypeDef status;
-
-	printLog("I'm taskGPSModule() task!");
-
-	for (;;)
-	{
-		/* Recieve the GPS sentences over serial line. */
-		status = HAL_UART_Receive(&huart7, buffer, DATA_SIZE, 
-			HAL_MAX_DELAY);
-		if (status != HAL_OK)
-			printError(status, "Failed to receive GPS sentences!\n");
-		
-		/* Take the mutex to update shared variable. */
-		if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
-		{
-			/* Parse the NMEA sentences. */
-			__parse_nmea_sentences(buffer, &payloadData);
-
-			/* Give up the mutex. */
-			xSemaphoreGive(payloadMutex);
 		}
 	}	
 	vTaskDelete(NULL);
@@ -249,6 +218,36 @@ void taskIMUSensor(void *pvParams)
 			__read_accel_from_imu(&payloadData);
 			__read_gyro_from_imu(&payloadData);
 			__read_temp_from_imu(&payloadData);
+
+			/* Give up the mutex. */
+			xSemaphoreGive(payloadMutex);
+		}
+	}	
+	vTaskDelete(NULL);
+}
+
+/**
+ * Read GPS data from the existing module.
+ */
+void taskGPSModule(void *pvParams)
+{
+	uint8_t buffer[DATA_SIZE] = {0};
+	HAL_StatusTypeDef status;
+
+	printLog("I'm taskGPSModule() task!");
+
+	for (;;)
+	{
+		/* Recieve the GPS sentences over serial line. */
+		status = HAL_UART_Receive(&huart7, buffer, DATA_SIZE, HAL_MAX_DELAY);
+		if (status != HAL_OK)
+			printError(status, "Failed to receive GPS sentences!\n");
+		
+		/* Take the mutex to update shared variable. */
+		if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
+		{
+			/* Parse the NMEA sentences. */
+			__parse_nmea_sentences(buffer, &payloadData);
 
 			/* Give up the mutex. */
 			xSemaphoreGive(payloadMutex);

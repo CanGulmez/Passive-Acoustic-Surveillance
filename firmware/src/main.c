@@ -46,8 +46,8 @@ int main(void)
 	/* Initialize and configure the peripherals. */
 	configOscClk();
 	configDebugPort();
+	configMicSensors();
 	// configIMUSensor();
-	// configMicSensors();
 	// configGPSModule();
 	// configSDCard();
 	// configLoRaModule();
@@ -70,27 +70,21 @@ int main(void)
 
 	/* Create the taskMicSensorEast() task. */
 	status = xTaskCreate(taskMicSensorEast, TASK_MIC_NAME_E, 
-		TASK_MIC_STACK, NULL, TASK_MIC_PRIORITY, &micTaskHandlers[0]);
+		TASK_MIC_STACK, NULL, TASK_MIC_PRIORITY, &micTaskHandlers[1]);
 	if (status != pdPASS)
 		printKernel("Failed to create '%s' task!", TASK_MIC_NAME_E);
 
 	/* Create the taskMicSensorSouth() task. */
 	status = xTaskCreate(taskMicSensorSouth, TASK_MIC_NAME_S, 
-		TASK_MIC_STACK, NULL, TASK_MIC_PRIORITY, &micTaskHandlers[0]);
+		TASK_MIC_STACK, NULL, TASK_MIC_PRIORITY, &micTaskHandlers[2]);
 	if (status != pdPASS)
 		printKernel("Failed to create '%s' task!", TASK_MIC_NAME_S);
 
 	/* Create the taskMicSensorWest() task. */
 	status = xTaskCreate(taskMicSensorWest, TASK_MIC_NAME_W, 
-		TASK_MIC_STACK, NULL, TASK_MIC_PRIORITY, &micTaskHandlers[0]);
+		TASK_MIC_STACK, NULL, TASK_MIC_PRIORITY, &micTaskHandlers[3]);
 	if (status != pdPASS)
 		printKernel("Failed to create '%s' task!", TASK_MIC_NAME_W);
-
-	/* Create the taskGPSModule() task. */
-	// status = xTaskCreate(taskGPSModule, TASK_GPS_NAME, 
-	// 	TASK_GPS_STACK, NULL, TASK_GPS_PRIORITY, NULL);
-	// if (status != pdPASS)
-	// 	printKernel("Failed to create '%s' task!", TASK_GPS_NAME);
 
 	/* Create the taskIMUSensor() task. */
 	// status = xTaskCreate(taskIMUSensor, TASK_IMU_NAME, 
@@ -98,23 +92,29 @@ int main(void)
 	// if (status != pdPASS)
 	// 	printKernel("Failed to create '%s' task!", TASK_IMU_NAME);
 
+	/* Create the taskGPSModule() task. */
+	// status = xTaskCreate(taskGPSModule, TASK_GPS_NAME, 
+	// 	TASK_GPS_STACK, NULL, TASK_GPS_PRIORITY, NULL);
+	// if (status != pdPASS)
+	// 	printKernel("Failed to create '%s' task!", TASK_GPS_NAME);
+
 	/* Create the taskSDCard() task. */
 	// status = xTaskCreate(taskSDCard, TASK_SD_NAME, 
 	// 	TASK_SD_STACK, NULL, TASK_SD_PRIORITY, NULL);
 	// if (status != pdPASS)
 	// 	printKernel("Failed to create '%s' task!", TASK_SD_NAME);
 
-	/* Create the taskServoMotors() task. */
-	// status = xTaskCreate(taskServoMotors, TASK_SERVO_NAME, 
-	// 	TASK_SERVO_STACK, NULL, TASK_SERVO_PRIORITY, NULL);
-	// if (status != pdPASS)
-	// 	printKernel("Failed to create '%s' task!", TASK_SERVO_NAME);
-
 	/* Create the taskLoRaModule() task. */
 	// status = xTaskCreate(taskLoRaModule, TASK_LORA_NAME, 
 	// 	TASK_LORA_STACK, NULL, TASK_LORA_PRIORITY, NULL);
 	// if (status != pdPASS)
 	// 	printKernel("Failed to create '%s' task!", TASK_LORA_NAME);
+
+	/* Create the taskServoMotors() task. */
+	// status = xTaskCreate(taskServoMotors, TASK_SERVO_NAME, 
+	// 	TASK_SERVO_STACK, NULL, TASK_SERVO_PRIORITY, NULL);
+	// if (status != pdPASS)
+	// 	printKernel("Failed to create '%s' task!", TASK_SERVO_NAME);
 
 	/* Create the taskSystemCheck() task. */
 	// status = xTaskCreate(taskSystemCheck, TASK_SYSTEM_NAME, 
