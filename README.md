@@ -77,14 +77,21 @@ channel configurations. The embedded firmware can be read from many channels.
 At center, there is the signal analysises. As I said, it is done over my custom DSP
 library. Also there are cartesian and polar plots to visualize the sensor data.
 
+![Ground Station - Microphone Module](docs/images/microphone.png)
+
 In `AI Model` sub-module, there is a deep learning model written in Python 3 with
 **Tensorflow** library. At UI, there is a model parameter selection panel. This 
 model is being run as a **child** process. It's made by **fork()/exec()** routines 
 as general. Because, model fitting is computationally heavy.
 
+![Ground Station - Microphone Module](docs/images/ai_model.png)
+
 In `Navigation` sub-module, the IMU (Interial Measurement Unit) sensor data is
 being visualized.
+
+![Ground Station - Microphone Module](docs/images/navigation.png)
 
 In `GPS Map` sub-module, there is also a shumate map that shows the GPS module 
 outputs.
 
+![Ground Station - Microphone Module](docs/images/gps_map.png)
