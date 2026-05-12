@@ -18,7 +18,7 @@ To get the repo, use this command:
 $ git clone https://github.com/CanGulmez/Digital-Signal-Processing.git
 ```
 
-Also I put the library and header file in the **./lib** directory.
+Also I put the library and header file in the `./lib` directory.
 
 At embedded side, the firmware was written for STM32H75x series microcontroller. 
 There is no externel dependencies for the firmware building, flashing and running. 
@@ -83,7 +83,7 @@ this command:
 $ docker build -t sonar .
 ```
 
-This command will create a **sonar** image using the Dockerfile instructions. This
+This command will create a `sonar` image using the Dockerfile instructions. This
 project is based GTK-4 so that you need to specify that which window server (X11
 or Wayland) you will use from the Docker image. I'm gonna use the X11 server for my
 image. Firstly, enable it for Docker with this command:
