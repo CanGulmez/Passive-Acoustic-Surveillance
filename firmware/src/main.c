@@ -1,13 +1,13 @@
 /**
  ******************************************************************************
  * @file 	main.c
- * @author 	Can GULMEZ
+ * @author 	Can Gulmez
  * @brief 	Main source file of the firmware.
  * 
  ******************************************************************************
  * @attention
  * 
- * Copyright (c) 2025 Can GULMEZ.
+ * Copyright (c) 2025 Can Gulmez.
  * All rights reserved.
  * 
  * This software is licensed under the MIT License.
@@ -47,15 +47,14 @@ int main(void)
 	configOscClk();
 	configDebugPort();
 	configMicSensors();
-	// configIMUSensor();
-	// configGPSModule();
-	// configSDCard();
-	// configLoRaModule();
-	// configLEDs();
-	// configWatchdog();
+	configIMUSensor();
+	configGPSModule();
+	configSDCard();
+	configLoRaModule();
+	configLEDs();
+	configWatchdog();
 
-	printLog("The firmware is running (system clock: %ld)...", 
-		SystemCoreClock);
+	printLog("The firmware is running (system clock: %ld)...", SystemCoreClock);
 	
 	/* Create the mutex for the payload data. */
 	payloadMutex = xSemaphoreCreateMutex();
@@ -87,52 +86,46 @@ int main(void)
 		printKernel("Failed to create '%s' task!", TASK_MIC_NAME_W);
 
 	/* Create the taskIMUSensor() task. */
-	// status = xTaskCreate(taskIMUSensor, TASK_IMU_NAME, 
-	// 	TASK_IMU_STACK, NULL, TASK_IMU_PRIORITY, NULL);
-	// if (status != pdPASS)
-	// 	printKernel("Failed to create '%s' task!", TASK_IMU_NAME);
+	status = xTaskCreate(taskIMUSensor, TASK_IMU_NAME, 
+		TASK_IMU_STACK, NULL, TASK_IMU_PRIORITY, NULL);
+	if (status != pdPASS)
+		printKernel("Failed to create '%s' task!", TASK_IMU_NAME);
 
 	/* Create the taskGPSModule() task. */
-	// status = xTaskCreate(taskGPSModule, TASK_GPS_NAME, 
-	// 	TASK_GPS_STACK, NULL, TASK_GPS_PRIORITY, NULL);
-	// if (status != pdPASS)
-	// 	printKernel("Failed to create '%s' task!", TASK_GPS_NAME);
+	status = xTaskCreate(taskGPSModule, TASK_GPS_NAME, 
+		TASK_GPS_STACK, NULL, TASK_GPS_PRIORITY, NULL);
+	if (status != pdPASS)
+		printKernel("Failed to create '%s' task!", TASK_GPS_NAME);
 
 	/* Create the taskSDCard() task. */
-	// status = xTaskCreate(taskSDCard, TASK_SD_NAME, 
-	// 	TASK_SD_STACK, NULL, TASK_SD_PRIORITY, NULL);
-	// if (status != pdPASS)
-	// 	printKernel("Failed to create '%s' task!", TASK_SD_NAME);
+	status = xTaskCreate(taskSDCard, TASK_SD_NAME, 
+		TASK_SD_STACK, NULL, TASK_SD_PRIORITY, NULL);
+	if (status != pdPASS)
+		printKernel("Failed to create '%s' task!", TASK_SD_NAME);
 
 	/* Create the taskLoRaModule() task. */
-	// status = xTaskCreate(taskLoRaModule, TASK_LORA_NAME, 
-	// 	TASK_LORA_STACK, NULL, TASK_LORA_PRIORITY, NULL);
-	// if (status != pdPASS)
-	// 	printKernel("Failed to create '%s' task!", TASK_LORA_NAME);
-
-	/* Create the taskServoMotors() task. */
-	// status = xTaskCreate(taskServoMotors, TASK_SERVO_NAME, 
-	// 	TASK_SERVO_STACK, NULL, TASK_SERVO_PRIORITY, NULL);
-	// if (status != pdPASS)
-	// 	printKernel("Failed to create '%s' task!", TASK_SERVO_NAME);
+	status = xTaskCreate(taskLoRaModule, TASK_LORA_NAME, 
+		TASK_LORA_STACK, NULL, TASK_LORA_PRIORITY, NULL);
+	if (status != pdPASS)
+		printKernel("Failed to create '%s' task!", TASK_LORA_NAME);
 
 	/* Create the taskSystemCheck() task. */
-	// status = xTaskCreate(taskSystemCheck, TASK_SYSTEM_NAME, 
-	// 	TASK_SYSTEM_STACK, NULL, TASK_SYSTEM_PRIORITY, NULL);
-	// if (status != pdPASS)
-	// 	printKernel("Failed to create '%s' task!", TASK_SYSTEM_NAME);
+	status = xTaskCreate(taskSystemCheck, TASK_SYSTEM_NAME, 
+		TASK_SYSTEM_STACK, NULL, TASK_SYSTEM_PRIORITY, NULL);
+	if (status != pdPASS)
+		printKernel("Failed to create '%s' task!", TASK_SYSTEM_NAME);
 
 	/* Create the taskLEDs() task. */
-	// status = xTaskCreate(taskLEDs, TASK_LED_NAME, 
-	// 	TASK_LED_STACK, NULL, TASK_LED_PRIORITY, NULL);
-	// if (status != pdPASS)
-	// 	printKernel("Failed to create '%s' task!", TASK_LED_NAME);
+	status = xTaskCreate(taskLEDs, TASK_LED_NAME, 
+		TASK_LED_STACK, NULL, TASK_LED_PRIORITY, NULL);
+	if (status != pdPASS)
+		printKernel("Failed to create '%s' task!", TASK_LED_NAME);
 
 	/* Create the taskWatchDog() task. */
-	// status = xTaskCreate(taskWatchdog, TASK_WATCHDOG_NAME, 
-	// 	TASK_WATCHDOG_STACK, NULL, TASK_WATCHDOG_PRIORITY, NULL);
-	// if (status != pdPASS)
-	// 	printKernel("Failed to create '%s' task!", TASK_WATCHDOG_NAME);
+	status = xTaskCreate(taskWatchdog, TASK_WATCHDOG_NAME, 
+		TASK_WATCHDOG_STACK, NULL, TASK_WATCHDOG_PRIORITY, NULL);
+	if (status != pdPASS)
+		printKernel("Failed to create '%s' task!", TASK_WATCHDOG_NAME);
 
 	printLog("free heap size is %d bytes", xPortGetFreeHeapSize());
 

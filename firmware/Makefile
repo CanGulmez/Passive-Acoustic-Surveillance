@@ -20,23 +20,23 @@ AS_FLAGS			:= -x assembler-with-cpp
 
 # Include paths
 MAIN_INC			:= ./src
-CMSIS_INC		:= ./driver/CMSIS/Include 
-CMSIS_DEV_INC	:= ./driver/CMSIS/Device/ST/STM32H7xx/Include
-HAL_INC			:= ./driver/STM32H7xx_HAL_Driver/Inc
-RTOS_INC			:= ./driver/FreeRTOS/include 
-RTOS_GCC_INC	:= ./driver/FreeRTOS/portable/GCC/ARM_CM7
+CMSIS_INC		:= ./drivers/CMSIS/Include 
+CMSIS_DEV_INC	:= ./drivers/CMSIS/Device/ST/STM32H7xx/Include
+HAL_INC			:= ./drivers/STM32H7xx_HAL_Driver/Inc
+RTOS_INC			:= ./drivers/FreeRTOS/include 
+RTOS_GCC_INC	:= ./drivers/FreeRTOS/portable/GCC/ARM_CM7
 
 # Source files
 MAIN_SRC			:= $(wildcard ./src/*.c)
-HAL_SRC			:= $(wildcard ./driver/STM32H7xx_HAL_Driver/Src/*.c)
-SYSTEM_SRC		:= ./driver/CMSIS/Device/ST/STM32H7xx/Source/Templates/system_stm32h7xx.c
-RTOS_SRC			:= $(wildcard ./driver/FreeRTOS/*.c) 
-RTOS_GCC_SRC	:= $(wildcard ./driver/FreeRTOS/portable/GCC/ARM_CM7/*.c) 
-RTOS_MEM_SRC	:= $(wildcard ./driver/FreeRTOS/portable/MemMang/*.c) 
+HAL_SRC			:= $(wildcard ./drivers/STM32H7xx_HAL_Driver/Src/*.c)
+SYSTEM_SRC		:= ./drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/system_stm32h7xx.c
+RTOS_SRC			:= $(wildcard ./drivers/FreeRTOS/*.c) 
+RTOS_GCC_SRC	:= $(wildcard ./drivers/FreeRTOS/portable/GCC/ARM_CM7/*.c) 
+RTOS_MEM_SRC	:= $(wildcard ./drivers/FreeRTOS/portable/MemMang/*.c) 
 
 # Startup file and linker script 
-STARTUP_CODE	:= ./driver/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc/startup_stm32h750xx.S
-LINKER_SCRIPT	:= ./driver/STM32H750VBTX_FLASH.ld
+STARTUP_CODE	:= ./drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc/startup_stm32h750xx.S
+LINKER_SCRIPT	:= ./drivers/STM32H750VBTX_FLASH.ld
 
 # Sorthand and build definititions
 INCLUDES			:= -I$(MAIN_INC) -I$(CMSIS_DEV_INC) -I$(CMSIS_INC) -I$(HAL_INC) \

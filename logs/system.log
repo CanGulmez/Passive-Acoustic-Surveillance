@@ -327,3 +327,5 @@
 [PID=13400][2026-04-24 09:55:09] on_device_node_selected(): 'ttyS31'
 [PID=189408][2026-05-09 15:29:14] on_visible_page_changed(): 'microphone'
 [PID=189408][2026-05-09 15:29:16] on_device_node_selected(): 'ttyS31'
+[PID=204890][2026-05-18 21:20:21] on_visible_page_changed(): 'microphone'
+[PID=204890][2026-05-18 21:20:21] on_device_node_selected(): 'ttyS31'

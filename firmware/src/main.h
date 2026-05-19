@@ -1,13 +1,13 @@
 /**
  ******************************************************************************
  * @file 	main.h
- * @author 	Can GULMEZ
+ * @author 	Can Gulmez
  * @brief 	Main headers of the firmware.
  * 
  ******************************************************************************
  * @attention
  * 
- * Copyright (c) 2025 Can GULMEZ.
+ * Copyright (c) 2025 Can Gulmez.
  * All rights reserved.
  * 
  * This software is licensed under the MIT License.
