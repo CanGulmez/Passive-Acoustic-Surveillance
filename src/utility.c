@@ -236,7 +236,7 @@ void read_device_node(int fd)
 {
 	ssize_t numRead, totalRead;
 	uint8_t *payloadPtr;
-	uint32_t magicNum;
+	uint32_t magicWord;
 	long payloadSize;
 	
 	/* Initialize with 0s. */
@@ -245,10 +245,10 @@ void read_device_node(int fd)
 	/* Firstly, find the magic number to synchronize the stream. */
 	while (TRUE)
 	{
-		numRead = read(fd, &magicNum, sizeof(magicNum));
-		if (numRead == sizeof(magicNum))
+		numRead = read(fd, &magicWord, sizeof(magicWord));
+		if (numRead == sizeof(magicWord))
 		{
-			if (magicNum == MAGIC_WORD)
+			if (magicWord == MAGIC_WORD)
 			{
 				break;
 			}
@@ -302,7 +302,7 @@ int get_model_datasets(void)
 
 	for (;;) 
 	{
-		entry = readdir(dir);				/* read its contents */
+		entry = readdir(dir);			/* read its contents */
 		if (entry == NULL)
 		{
 			break;

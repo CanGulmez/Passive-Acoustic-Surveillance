@@ -46,7 +46,7 @@ void taskMicSensor0(void *pvParams)
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 			{
-				memcpy(payloadData.micFilter0, samples, DATA_SIZE);
+				memcpy(payloadData.micFilter0, samples, DATA_SIZE * sizeof(int32_t));
 				/* Give up the payload mutex. */
 				xSemaphoreGive(payloadMutex);
 			}
@@ -80,7 +80,7 @@ void taskMicSensor1(void *pvParams)
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 			{
-				memcpy(payloadData.micFilter1, samples, DATA_SIZE);
+				memcpy(payloadData.micFilter1, samples, DATA_SIZE * sizeof(int32_t));
 				/* Give up the payload mutex. */
 				xSemaphoreGive(payloadMutex);
 			}
@@ -114,7 +114,7 @@ void taskMicSensor2(void *pvParams)
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 			{
-				memcpy(payloadData.micFilter2, samples, DATA_SIZE);
+				memcpy(payloadData.micFilter2, samples, DATA_SIZE * sizeof(int32_t));
 				/* Give up the payload mutex. */
 				xSemaphoreGive(payloadMutex);
 			}
@@ -148,7 +148,7 @@ void taskMicSensor3(void *pvParams)
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 			{
-				memcpy(payloadData.micFilter3, samples, DATA_SIZE);
+				memcpy(payloadData.micFilter3, samples, DATA_SIZE * sizeof(int32_t));
 				/* Give up the payload mutex. */
 				xSemaphoreGive(payloadMutex);
 			}
@@ -206,13 +206,14 @@ void taskIMUSensor(void *pvParams)
  */
 void taskTransmitter(void *pvParams)
 {
+	uint32_t magicWord = MAGIC_WORD;
 	EventBits_t eventValue;
 	EventBits_t eventBits = (TASK_MIC_EVENT_BIT_0 | TASK_MIC_EVENT_BIT_1 |
 							 TASK_MIC_EVENT_BIT_2 | TASK_MIC_EVENT_BIT_3 |
 							 TASK_IMU_EVENT_BIT);
 	for (;;)
 	{
-		/* Block to wait for the event bits to become set within the
+		/* Block to wait for the event bits to become set within the payload
 		   event group. */
 		eventValue = xEventGroupWaitBits(
 			payloadEvent,					/* event group object */
@@ -224,8 +225,11 @@ void taskTransmitter(void *pvParams)
 		/* Transmit payload data locally using mutex. */
 		if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 		{
-			HAL_UART_Transmit(&huart4, (uint8_t *)&payloadData,  
-							  sizeof(payloadData), portMAX_DELAY);
+			HAL_UART_Transmit(&huart4, (uint8_t *)&magicWord, sizeof(magicWord), 
+				portMAX_DELAY);
+			HAL_UART_Transmit(&huart4, (uint8_t *)&payloadData, sizeof(payloadData), 
+				portMAX_DELAY);
+				
 			/* Give up the payload mutex. */
 			xSemaphoreGive(payloadMutex);
 		}

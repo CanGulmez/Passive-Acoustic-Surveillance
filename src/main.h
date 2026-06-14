@@ -57,7 +57,15 @@ extern "C" {
 
 #define TIME_FORMAT							"%F %T"
 #define BUFFER_SIZE							512
+
+/* DATA_SIZE is defined as the sample length. The DSP library 
+	defines a predefined DATA_SIZE. Firstly undefine and then 
+	redefine it. */
+#ifdef DATA_SIZE
+#undef DATA_SIZE
 #define DATA_SIZE							(BUFFER_SIZE * 2)
+#endif
+
 #define SQL_SIZE							20480
 #define GPS_SIZE							64
 #define INTERPRETER							"/bin/python3"
@@ -215,11 +223,6 @@ typedef enum _HeaderButton
 	HEADER_BUTTON_PREFS,
 	HEADER_BUTTON_ABOUT
 } HeaderButton;
-
-typedef enum _Database
-{
-	DATABASE_SENSOR_DATA = 1,
-} Database;
 
 /* Microphone enumerations */
 
@@ -531,9 +534,9 @@ extern void gps_map_area_markers(ShumateMarkerLayer *gpsMarkerLayer, double lat,
 /* Database function prototypes */
 
 extern sqlite3 *db_open(const char *dbPath);
-extern void db_create_table(sqlite3 *db, Database database);
-extern void db_bind_data(sqlite3 *db, Database database);
-extern void db_query_data(sqlite3 *db, Database database);
+extern void db_create_table(sqlite3 *db);
+extern void db_bind_data(sqlite3 *db);
+extern void db_query_data(sqlite3 *db);
 extern void db_close(sqlite3 *db);
 
 /* Common utility function prototypes */
