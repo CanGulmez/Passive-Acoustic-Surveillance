@@ -35,17 +35,10 @@ void prepare_samples(void)
 	{
 		sigSamples[i].length = DATA_SIZE;
 	}
-	for (i = 0; i < DATA_SIZE; i++)
-	{
-		sigSamples[0].data[i] = (double) payloadData.micNorth[i];
-		sigSamples[1].data[i] = (double) payloadData.micNorthEast[i];
-		sigSamples[2].data[i] = (double) payloadData.micEast[i];
-		sigSamples[3].data[i] = (double) payloadData.micSouthEast[i];
-		sigSamples[4].data[i] = (double) payloadData.micSouth[i];
-		sigSamples[5].data[i] = (double) payloadData.micSouthWest[i];
-		sigSamples[6].data[i] = (double) payloadData.micWest[i];
-		sigSamples[7].data[i] = (double) payloadData.micNorthWest[i];
-	}
+	memcpy(sigSamples[0].data, payloadData.micFilter0, DATA_SIZE);
+	memcpy(sigSamples[1].data, payloadData.micFilter1, DATA_SIZE);
+	memcpy(sigSamples[2].data, payloadData.micFilter2, DATA_SIZE);
+	memcpy(sigSamples[3].data, payloadData.micFilter3, DATA_SIZE);
 }
 
 /**
@@ -193,36 +186,36 @@ int select_sector(void)
  */
 NavAccel accel_direction(void)
 {
-	if ((payloadData.imuAccelX > payloadData.imuAccelY) &&
-		 (payloadData.imuAccelX > payloadData.imuAccelZ))
-	{
-		return NAV_ACCEL_X_PLUS;
-	}
-	else if ((payloadData.imuAccelY > payloadData.imuAccelX) &&
-		 		(payloadData.imuAccelY > payloadData.imuAccelZ))
-	{
-		return NAV_ACCEL_Y_PLUS;
-	}
-	else if ((payloadData.imuAccelZ > payloadData.imuAccelX) &&
-		 		(payloadData.imuAccelZ > payloadData.imuAccelY))
-	{
-		return NAV_ACCEL_Z_PLUS;
-	}
-	else if ((payloadData.imuAccelX < payloadData.imuAccelY) &&
-		 		(payloadData.imuAccelX < payloadData.imuAccelZ))
-	{
-		return NAV_ACCEL_X_MINUS;
-	}
-	else if ((payloadData.imuAccelY < payloadData.imuAccelX) &&
-		 		(payloadData.imuAccelY < payloadData.imuAccelZ))
-	{
-		return NAV_ACCEL_Y_MINUS;
-	}
-	else if ((payloadData.imuAccelZ < payloadData.imuAccelX) &&
-		 		(payloadData.imuAccelZ < payloadData.imuAccelY))
-	{
-		return NAV_ACCEL_Z_MINUS;
-	}
+	// if ((payloadData.imuAccelX > payloadData.imuAccelY) &&
+	// 	 (payloadData.imuAccelX > payloadData.imuAccelZ))
+	// {
+	// 	return NAV_ACCEL_X_PLUS;
+	// }
+	// else if ((payloadData.imuAccelY > payloadData.imuAccelX) &&
+	// 	 		(payloadData.imuAccelY > payloadData.imuAccelZ))
+	// {
+	// 	return NAV_ACCEL_Y_PLUS;
+	// }
+	// else if ((payloadData.imuAccelZ > payloadData.imuAccelX) &&
+	// 	 		(payloadData.imuAccelZ > payloadData.imuAccelY))
+	// {
+	// 	return NAV_ACCEL_Z_PLUS;
+	// }
+	// else if ((payloadData.imuAccelX < payloadData.imuAccelY) &&
+	// 	 		(payloadData.imuAccelX < payloadData.imuAccelZ))
+	// {
+	// 	return NAV_ACCEL_X_MINUS;
+	// }
+	// else if ((payloadData.imuAccelY < payloadData.imuAccelX) &&
+	// 	 		(payloadData.imuAccelY < payloadData.imuAccelZ))
+	// {
+	// 	return NAV_ACCEL_Y_MINUS;
+	// }
+	// else if ((payloadData.imuAccelZ < payloadData.imuAccelX) &&
+	// 	 		(payloadData.imuAccelZ < payloadData.imuAccelY))
+	// {
+	// 	return NAV_ACCEL_Z_MINUS;
+	// }
 	return NAV_ACCEL_UNDEF;
 }
 
@@ -231,36 +224,36 @@ NavAccel accel_direction(void)
  */
 NavGyro gyro_rotation(void)
 {
-	if ((payloadData.imuGyroX > payloadData.imuGyroY) &&
-		 (payloadData.imuGyroX > payloadData.imuGyroZ))
-	{
-		return NAV_GYRO_X_PLUS;
-	}
-	else if ((payloadData.imuGyroY > payloadData.imuGyroX) &&
-		 		(payloadData.imuGyroY > payloadData.imuGyroZ))
-	{
-		return NAV_GYRO_Y_PLUS;
-	}
-	else if ((payloadData.imuGyroZ > payloadData.imuGyroX) &&
-		 		(payloadData.imuGyroZ > payloadData.imuGyroY))
-	{
-		return NAV_GYRO_Z_PLUS;
-	}
-	else if ((payloadData.imuGyroX < payloadData.imuGyroY) &&
-		 		(payloadData.imuGyroX < payloadData.imuGyroZ))
-	{
-		return NAV_GYRO_X_MINUS;
-	}
-	else if ((payloadData.imuGyroY < payloadData.imuGyroX) &&
-		 		(payloadData.imuGyroY < payloadData.imuGyroZ))
-	{
-		return NAV_GYRO_Y_MINUS;
-	}
-	else if ((payloadData.imuGyroZ < payloadData.imuGyroX) &&
-		 		(payloadData.imuGyroZ < payloadData.imuGyroY))
-	{
-		return NAV_GYRO_Z_MINUS;
-	}
+	// if ((payloadData.imuGyroX > payloadData.imuGyroY) &&
+	// 	 (payloadData.imuGyroX > payloadData.imuGyroZ))
+	// {
+	// 	return NAV_GYRO_X_PLUS;
+	// }
+	// else if ((payloadData.imuGyroY > payloadData.imuGyroX) &&
+	// 	 		(payloadData.imuGyroY > payloadData.imuGyroZ))
+	// {
+	// 	return NAV_GYRO_Y_PLUS;
+	// }
+	// else if ((payloadData.imuGyroZ > payloadData.imuGyroX) &&
+	// 	 		(payloadData.imuGyroZ > payloadData.imuGyroY))
+	// {
+	// 	return NAV_GYRO_Z_PLUS;
+	// }
+	// else if ((payloadData.imuGyroX < payloadData.imuGyroY) &&
+	// 	 		(payloadData.imuGyroX < payloadData.imuGyroZ))
+	// {
+	// 	return NAV_GYRO_X_MINUS;
+	// }
+	// else if ((payloadData.imuGyroY < payloadData.imuGyroX) &&
+	// 	 		(payloadData.imuGyroY < payloadData.imuGyroZ))
+	// {
+	// 	return NAV_GYRO_Y_MINUS;
+	// }
+	// else if ((payloadData.imuGyroZ < payloadData.imuGyroX) &&
+	// 	 		(payloadData.imuGyroZ < payloadData.imuGyroY))
+	// {
+	// 	return NAV_GYRO_Z_MINUS;
+	// }
 	return NAV_GYRO_UNDEF;
 }
 
@@ -275,26 +268,26 @@ void update_nav_data(void)
 	__ui_action_row_update(navSensorRows[0], NAV_IMU_SENSOR);
 
 	/* Update the acceloremeter output. */
-	snprintf(
-		buffer, BUFFER_SIZE, "[%.2f, %.2f, %.2f]", 
-		payloadData.imuAccelX, payloadData.imuAccelY, payloadData.imuAccelZ
-	);
-	__ui_action_row_update(navSensorRows[1], "Running");
-	__ui_action_row_update(navSensorRows[2], buffer);
+	// snprintf(
+	// 	buffer, BUFFER_SIZE, "[%.2f, %.2f, %.2f]", 
+	// 	payloadData.imuAccelX, payloadData.imuAccelY, payloadData.imuAccelZ
+	// );
+	// __ui_action_row_update(navSensorRows[1], "Running");
+	// __ui_action_row_update(navSensorRows[2], buffer);
 
 	/* Update the gyroscope output. */
-	snprintf(
-		buffer, BUFFER_SIZE, "[%.2f, %.2f, %.2f]", 
-		payloadData.imuGyroX, payloadData.imuGyroY, payloadData.imuGyroZ
-	);	
-	__ui_action_row_update(navSensorRows[3], "Running");
-	__ui_action_row_update(navSensorRows[4], buffer);
+	// snprintf(
+	// 	buffer, BUFFER_SIZE, "[%.2f, %.2f, %.2f]", 
+	// 	payloadData.imuGyroX, payloadData.imuGyroY, payloadData.imuGyroZ
+	// );	
+	// __ui_action_row_update(navSensorRows[3], "Running");
+	// __ui_action_row_update(navSensorRows[4], buffer);
 
 	/* Update the temperature output. */
-	snprintf(
-		buffer, BUFFER_SIZE, "%.3f", payloadData.imuTemp
-	);	
-	__ui_action_row_update(navSensorRows[7], buffer);
+	// snprintf(
+	// 	buffer, BUFFER_SIZE, "%.3f", payloadData.imuTemp
+	// );	
+	// __ui_action_row_update(navSensorRows[7], buffer);
 }
 
 /**
@@ -306,15 +299,15 @@ void update_gps_data(void)
 	__ui_action_row_update(gpsModuleRows[0], GPS_MODULE);
 
 	/* Update the GPS module outputs. */
-	__ui_action_row_update(gpsModuleRows[1], payloadData.gpsUTCTime);
-	__ui_action_row_update(gpsModuleRows[2], payloadData.gpsLatitude);
-	__ui_action_row_update(gpsModuleRows[3], payloadData.gpsLongitude);
-	__ui_action_row_update(gpsModuleRows[4], payloadData.gpsQuality);
-	__ui_action_row_update(gpsModuleRows[5], payloadData.gpsNumSat);
-	__ui_action_row_update(gpsModuleRows[6], payloadData.gpsAltitude);
-	__ui_action_row_update(gpsModuleRows[7], payloadData.gpsStatus);
-	__ui_action_row_update(gpsModuleRows[8], payloadData.gpsSpeed);
-	__ui_action_row_update(gpsModuleRows[9], payloadData.gpsCourse);
-	__ui_action_row_update(gpsModuleRows[10], payloadData.gpsDate);
+	// __ui_action_row_update(gpsModuleRows[1], payloadData.gpsUTCTime);
+	// __ui_action_row_update(gpsModuleRows[2], payloadData.gpsLatitude);
+	// __ui_action_row_update(gpsModuleRows[3], payloadData.gpsLongitude);
+	// __ui_action_row_update(gpsModuleRows[4], payloadData.gpsQuality);
+	// __ui_action_row_update(gpsModuleRows[5], payloadData.gpsNumSat);
+	// __ui_action_row_update(gpsModuleRows[6], payloadData.gpsAltitude);
+	// __ui_action_row_update(gpsModuleRows[7], payloadData.gpsStatus);
+	// __ui_action_row_update(gpsModuleRows[8], payloadData.gpsSpeed);
+	// __ui_action_row_update(gpsModuleRows[9], payloadData.gpsCourse);
+	// __ui_action_row_update(gpsModuleRows[10], payloadData.gpsDate);
 }
  

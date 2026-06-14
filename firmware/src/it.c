@@ -20,8 +20,8 @@
 void SysTick_Handler(void)
 {
 	HAL_IncTick();
-	
-	if ( xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED ) 
+
+	if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) 
 	{
 		xPortSysTickHandler();
 	}
@@ -29,20 +29,20 @@ void SysTick_Handler(void)
 
 void DMA1_Stream0_IRQHandler(void)
 {
-	HAL_DMA_IRQHandler(&hdfsdm1dma[0]);
+	HAL_DMA_IRQHandler(&hdfsdm1dma0);
 }
 
 void DMA1_Stream1_IRQHandler(void)
 {
-	HAL_DMA_IRQHandler(&hdfsdm1dma[1]);
+	HAL_DMA_IRQHandler(&hdfsdm1dma1);
 }
 
 void DMA1_Stream2_IRQHandler(void)
 {
-	HAL_DMA_IRQHandler(&hdfsdm1dma[2]);
+	HAL_DMA_IRQHandler(&hdfsdm1dma2);
 }
 
 void DMA1_Stream3_IRQHandler(void)
 {
-	HAL_DMA_IRQHandler(&hdfsdm1dma[3]);
+	HAL_DMA_IRQHandler(&hdfsdm1dma3);
 }

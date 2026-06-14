@@ -1,12 +1,12 @@
 # Embedded Firmware of Acoustic Surveillance System
 
 # Toolchain definitions
-CC					:= arm-none-eabi-gcc
+CC				:= arm-none-eabi-gcc
 OBJCOPY			:= arm-none-eabi-objcopy
-SIZE				:= arm-none-eabi-size
-RM					:= rm
-FILE				:= file
-AR					:= ar rcs
+SIZE			:= arm-none-eabi-size
+RM				:= rm
+FILE			:= file
+AR				:= ar rcs
 
 # Microcontroller-specific definitions
 DEVICE_FAMILY	:= STM32H7xx
@@ -15,22 +15,22 @@ DEVICE_VARIANT	:= STM32H750VBTx
 
 # Compiler and linker flags
 CORTEX_FLAGS	:= -mthumb -mcpu=cortex-m7 -mfpu=fpv5-d16 -mfloat-abi=hard
-COMMON_FLAGS	:= -O0 -Wall -ffunction-sections -fdata-sections
-AS_FLAGS			:= -x assembler-with-cpp
+COMMON_FLAGS	:= -std=gnu2x -g -Wall -ffunction-sections -fdata-sections
+AS_FLAGS		:= -x assembler-with-cpp
 
 # Include paths
-MAIN_INC			:= ./src
+MAIN_INC		:= ./src
 CMSIS_INC		:= ./drivers/CMSIS/Include 
 CMSIS_DEV_INC	:= ./drivers/CMSIS/Device/ST/STM32H7xx/Include
 HAL_INC			:= ./drivers/STM32H7xx_HAL_Driver/Inc
-RTOS_INC			:= ./drivers/FreeRTOS/include 
+RTOS_INC		:= ./drivers/FreeRTOS/include 
 RTOS_GCC_INC	:= ./drivers/FreeRTOS/portable/GCC/ARM_CM7
 
 # Source files
-MAIN_SRC			:= $(wildcard ./src/*.c)
+MAIN_SRC		:= $(wildcard ./src/*.c)
 HAL_SRC			:= $(wildcard ./drivers/STM32H7xx_HAL_Driver/Src/*.c)
 SYSTEM_SRC		:= ./drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/system_stm32h7xx.c
-RTOS_SRC			:= $(wildcard ./drivers/FreeRTOS/*.c) 
+RTOS_SRC		:= $(wildcard ./drivers/FreeRTOS/*.c) 
 RTOS_GCC_SRC	:= $(wildcard ./drivers/FreeRTOS/portable/GCC/ARM_CM7/*.c) 
 RTOS_MEM_SRC	:= $(wildcard ./drivers/FreeRTOS/portable/MemMang/*.c) 
 
@@ -39,10 +39,10 @@ STARTUP_CODE	:= ./drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc/startup
 LINKER_SCRIPT	:= ./drivers/STM32H750VBTX_FLASH.ld
 
 # Sorthand and build definititions
-INCLUDES			:= -I$(MAIN_INC) -I$(CMSIS_DEV_INC) -I$(CMSIS_INC) -I$(HAL_INC) \
-						-I$(RTOS_INC) -I$(RTOS_GCC_INC)
+INCLUDES		:= -I$(MAIN_INC) -I$(CMSIS_DEV_INC) -I$(CMSIS_INC) -I$(HAL_INC) \
+				   -I$(RTOS_INC) -I$(RTOS_GCC_INC)
 DEFINES			:= -D$(DEVICE_FAMILY) -D$(DEVICE_MODEL) -D$(DEVICE_VARIANT) \
-						-DUSE_HAL_DRIVER
+				   -DUSE_HAL_DRIVER -DUSE_PWR_LDO_SUPPLY
 DRIVER_SRCS		:= $(HAL_SRC) $(SYSTEM_SRC) $(RTOS_SRC) $(RTOS_GCC_SRC) $(RTOS_MEM_SRC)
 DRIVER_OBJS		:= $(notdir $(patsubst %.c,%.o,$(DRIVER_SRCS))) startup_stm32h750xx.o
 MAIN_OBJS		:= $(notdir $(patsubst %.c,%.o,$(MAIN_SRC)))
@@ -51,7 +51,7 @@ CFLAGS			:= $(CORTEX_FLAGS) $(COMMON_FLAGS) $(DEFINES) $(INCLUDES)
 AFLAGS			:= $(CORTEX_FLAGS) $(AS_FLAGS)
 LDFLAGS			:= $(CORTEX_FLAGS) -T $(LINKER_SCRIPT) \
 						-Wl,--gc-sections,--relax --specs=nano.specs --specs=nosys.specs \
-				   	-Wl,--start-group -lc -lm -Wl,--end-group
+				   		-u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 
 # Output definitions
 FIRMWARE_ELF	:= ./bin/firmware.elf

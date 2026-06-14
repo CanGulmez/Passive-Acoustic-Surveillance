@@ -57,31 +57,31 @@ extern "C" {
 
 #define TIME_FORMAT							"%F %T"
 #define BUFFER_SIZE							512
-#define DATA_SIZE								BUFFER_SIZE
-#define SQL_SIZE								20480
-#define GPS_SIZE								64
+#define DATA_SIZE							(BUFFER_SIZE * 2)
+#define SQL_SIZE							20480
+#define GPS_SIZE							64
 #define INTERPRETER							"/bin/python3"
 #define SYSTEM_LOG_PATH						"./logs/system.log"
 #define MAGIC_WORD							0xDEADBEEF
 
-#define DB_SENSOR_DATA_PATH				"./db/sensor-data.db"
+#define DB_SENSOR_DATA_PATH					"./db/sensor-data.db"
 #define DB_SENSOR_DATA_TABLE				"SensorData"
 
 #define MAX_COMM_CHANNEL					3
-#define MAX_BUFFER_SIZE						( BUFFER_SIZE * 200 )
+#define MAX_BUFFER_SIZE						(BUFFER_SIZE * 200)
 #define MAX_DEVICE_NODE						64
-#define MAX_BALLISTIC_LAYER				10
-#define MAX_LAYER_THICKNESS				200
+#define MAX_BALLISTIC_LAYER					10
+#define MAX_LAYER_THICKNESS					200
 #define MAX_MODEL_DATASET					128
 #define MAX_MODEL_UNITS						1024
 #define MAX_MODEL_EPOCHS					100
-#define MAX_MODEL_LAYER_NUMBER			48
+#define MAX_MODEL_LAYER_NUMBER				48
 #define MAX_CAMERA_FILE						16	
 
-#define BUTTON_WIDTH							100 	/* pixel */	
+#define BUTTON_WIDTH						100 	/* pixel */	
 #define BUTTON_HEIGHT						40  	/* pixel */	
 #define PAGE_BOX_MARGIN_WIDTH				20  	/* pixel */	
-#define PAGE_BOX_MARGIN_HEIGHT			10  	/* pixel */	
+#define PAGE_BOX_MARGIN_HEIGHT				10  	/* pixel */	
 #define BOX_INNER_MARGIN					10  	/* pixel */	
 #define BOX_SPACING							25  	/* pixel */		
 
@@ -91,38 +91,38 @@ extern "C" {
 #define MIC_USB_PREFIX						"ttyUSB"
 #define MIC_WIFI_PREFIX						"wl"
 #define MIC_PLOT_MARGIN						40		/* pixel */
-#define MIC_PLOT_GRID						20 	/* pixel */
+#define MIC_PLOT_GRID						20		/* pixel */
 #define MIC_SIGNAL_NUM						15
-#define MIC_COUNT								8
+#define MIC_COUNT							4
 #define MIC_RADIUS							0.1		/* meter */
-#define MIC_SAMPLING_FREQ					12000		/* Hz */
+#define MIC_SAMPLING_FREQ					12000	/* Hz */
 
 #define MODEL_DATASET_PATH					"./datasets/"
 #define MODEL_DATASET_SUFFIX				".csv"
 #define MODEL_FIT_SCRIPT					"./scripts/acoustic_model.py"
 #define MODEL_LOG_PATH						"./logs/keras-output.log"
 
-#define NAV_PLOT_MARGIN						0			/* pixel */
-#define NAV_PLOT_GRID						20			/* pixel */
+#define NAV_PLOT_MARGIN						0		/* pixel */
+#define NAV_PLOT_GRID						20		/* pixel */
 #define NAV_PLOT_CAXIS						220		/* pixel */
 #define NAV_PLOT_VAXIS						280		/* pixel */
-#define NAV_FLAT_GRAVITY					9.81		/* m/s^2 */
+#define NAV_FLAT_GRAVITY					9.81	/* m/s^2 */
 #define NAV_ACCEL_NOISE						1.0		/* m/s^2 */		
 #define NAV_GYRO_NOISE						NAV_ACCEL_NOISE				
 #define NAV_IMU_SENSOR						"LSM6DALTR (ST)"
 
 #define GPS_ZOOM_LEVEL						12.0
-#define GPS_INIT_LAT							41.008
+#define GPS_INIT_LAT						41.008
 #define GPS_INIT_LONG						28.9784
 #define GPS_MODULE							"GY-NEO6MV2"
 
-#define TIMEOUT_DEVICE_READ				2000		/* ms */
-#define TIMEOUT_MODEL_LOG					2000		/* ms */
-#define TIMEOUT_DATA_RECORD				8000		/* ms */
-#define TIMEOUT_NAV_UPDATE					2000		/* ms */ 
-#define TIMEOUT_GPS_UPDATE					2000		/* ms */
+#define TIMEOUT_DEVICE_READ					2000	/* ms */
+#define TIMEOUT_MODEL_LOG					2000	/* ms */
+#define TIMEOUT_DATA_RECORD					8000	/* ms */
+#define TIMEOUT_NAV_UPDATE					2000	/* ms */ 
+#define TIMEOUT_GPS_UPDATE					2000	/* ms */
 
-#define HEADER_SYSTEM_DEVELOPER			"Can Gulmez"
+#define HEADER_SYSTEM_DEVELOPER				"Can Gulmez"
 #define HEADER_SYSTEM_NAME					"Passive Acoustic Surveillance"
 #define HEADER_SYSTEM_VERSION				"1.0.0"
 #define HEADER_SYSTEM_LICENSE				GTK_LICENSE_MIT_X11
@@ -131,11 +131,8 @@ extern "C" {
 
 /* Attribute and built-in macro definitions  */
 
-#define FILE									__FILE__
-#define LINE									__LINE__
-#define FUNC									__func__
-#define PACKED									__attribute__((packed, aligned(1)))
-#define NORETURN								__attribute__((noreturn))
+#define PACKED								__attribute__((packed, aligned(1)))
+#define NORETURN							__attribute__((noreturn))
 #define DEPRECATED							__attribute__((deprecated))
 #define ALIGNED(n)							__attribute__((aligned(n)))
 #define SECTION(s)							__attribute__((section(s)))
@@ -164,36 +161,36 @@ extern "C" {
 
 /* Maro function definitions */
 
-#define printLog(msg, ...)																	\
-do {																								\
-	char buffer[BUFFER_SIZE];																\
-																									\
-	memset(buffer, 0, BUFFER_SIZE);														\
-	snprintf(buffer, sizeof(buffer), "[PID=%d][%s] " msg "\n", getpid(), 	\
-				get_time(TIME_FORMAT), ##__VA_ARGS__);									\
-	logging(buffer, strlen(buffer));		/* write the logs */						\
-	printf("%s", buffer);		/* print the log buffer to "stdout" */			\
+#define printLog(msg, ...)													\
+do {																		\
+	char buffer[BUFFER_SIZE];												\
+																			\
+	memset(buffer, 0, BUFFER_SIZE);											\
+	snprintf(buffer, sizeof(buffer), "[PID=%d][%s] " msg "\n", 				\
+			 getpid(), get_time(TIME_FORMAT), ##__VA_ARGS__);				\
+	logging(buffer, strlen(buffer));		/* write the logs */			\
+	printf("%s", buffer);		/* print the log buffer to "stdout" */		\
 } while (0)
 
-#define syscallError()																		\
-do {                                      											\
+#define syscallError()														\
+do {                                      									\
 	fprintf(stderr, "\n*** %s (%s::%d in %s()) ***\n", strerror(errno),		\
-			  FILE, LINE, FUNC);		   	 												\
-	exit(EXIT_FAILURE);	/* exit with failure status */							\
+			  __FILE__, __LINE__, __func__);		   	 					\
+	exit(EXIT_FAILURE);	/* exit with failure status */						\
 } while (0)
 
-#define customError(errmsg, ...) 														\
-do {                            															\
-	fprintf(stderr, "\n*** " errmsg " (%s::%d in %s()) ***\n",					\
-			  ##__VA_ARGS__, FILE, LINE, FUNC);											\
-	exit(EXIT_FAILURE);	/* exit with failure status */							\
+#define customError(errmsg, ...) 											\
+do {                            											\
+	fprintf(stderr, "\n*** " errmsg " (%s::%d in %s()) ***\n",				\
+			  ##__VA_ARGS__, __FILE__, __LINE__, __func__);					\
+	exit(EXIT_FAILURE);	/* exit with failure status */						\
 } while (0)
 
-#define dbError(db)																			\
-do {																								\
-	fprintf(stderr, "\n*** %s (%s::%d in %s()) ***\n",								\
-			  sqlite3_errmsg(db), FILE, LINE, FUNC);									\
-	exit(EXIT_FAILURE);	/* exit with failure status */							\
+#define dbError(db)															\
+do {																		\
+	fprintf(stderr, "\n*** %s (%s::%d in %s()) ***\n",						\
+			  sqlite3_errmsg(db), __FILE__, __LINE__, __func__);			\
+	exit(EXIT_FAILURE);	/* exit with failure status */						\
 } while (0)
 
 /*****************************************************************************/
@@ -350,41 +347,58 @@ typedef enum _GPSButton
 
 /* Global structures */
 
+// typedef struct PACKED _PayloadData
+// {
+// 	/* The microphone sensors payload data  */
+
+// 	int8_t micNorth[DATA_SIZE];
+// 	int8_t micNorthEast[DATA_SIZE];
+// 	int8_t micEast[DATA_SIZE];
+// 	int8_t micSouthEast[DATA_SIZE];
+// 	int8_t micSouth[DATA_SIZE];
+// 	int8_t micSouthWest[DATA_SIZE];
+// 	int8_t micWest[DATA_SIZE];
+// 	int8_t micNorthWest[DATA_SIZE];
+
+// 	/* The GPS module payload data */
+
+// 	char gpsUTCTime[GPS_SIZE];
+// 	char gpsLatitude[GPS_SIZE];
+// 	char gpsLongitude[GPS_SIZE];
+// 	char gpsQuality[GPS_SIZE];
+// 	char gpsNumSat[GPS_SIZE];
+// 	char gpsAltitude[GPS_SIZE];
+// 	char gpsStatus[GPS_SIZE];
+// 	char gpsSpeed[GPS_SIZE];			/* knots */
+// 	char gpsCourse[GPS_SIZE];			/* degrees */
+// 	char gpsDate[GPS_SIZE];
+
+// 	/* The IMU sensor payload data */
+	
+// 	float imuAccelX;						/* m/s^2 */
+// 	float imuAccelY;						/* m/s^2 */
+// 	float imuAccelZ;						/* m/s^2 */
+// 	float imuGyroX;							/* dps */
+// 	float imuGyroY;							/* dps */
+// 	float imuGyroZ;							/* dps */
+// 	float imuTemp;							/* C */ 
+// } PayloadData;
+
 typedef struct PACKED _PayloadData
 {
-	/* The microphone sensors payload data  */
+	/* microphone sensors payload data */
 
-	int8_t micNorth[DATA_SIZE];
-	int8_t micNorthEast[DATA_SIZE];
-	int8_t micEast[DATA_SIZE];
-	int8_t micSouthEast[DATA_SIZE];
-	int8_t micSouth[DATA_SIZE];
-	int8_t micSouthWest[DATA_SIZE];
-	int8_t micWest[DATA_SIZE];
-	int8_t micNorthWest[DATA_SIZE];
+	int32_t micFilter0[DATA_SIZE];
+	int32_t micFilter1[DATA_SIZE];
+	int32_t micFilter2[DATA_SIZE];
+	int32_t micFilter3[DATA_SIZE];
 
-	/* The GPS module payload data */
+	/* IMU sensor payload data */
 
-	char gpsUTCTime[GPS_SIZE];
-	char gpsLatitude[GPS_SIZE];
-	char gpsLongitude[GPS_SIZE];
-	char gpsQuality[GPS_SIZE];
-	char gpsNumSat[GPS_SIZE];
-	char gpsAltitude[GPS_SIZE];
-	char gpsStatus[GPS_SIZE];
-	char gpsSpeed[GPS_SIZE];			/* knots */
-	char gpsCourse[GPS_SIZE];			/* degrees */
-	char gpsDate[GPS_SIZE];
+	float imuAccel[3];				/* [x, y, z] m/s^2 */
+	float imuGyro[3];				/* [x, y, z] dps */
+	float imuTemp;					/* C */
 
-	/* The IMU sensor payload data */
-	
-	float imuAccelX;						/* m/s^2 */
-	float imuAccelY;						/* m/s^2 */
-	float imuAccelZ;						/* m/s^2 */
-	float imuGyroX;						/* dps */
-	float imuGyroY;						/* dps */
-	float imuGyroZ;						/* dps */
-	float imuTemp;							/* C */ 
 } PayloadData;
 
 /*****************************************************************************/

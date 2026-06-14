@@ -17,26 +17,28 @@
 
 #include "main.h"
 
-/* Global and shared objects */
+RCC_OscInitTypeDef iosc = {0};				/* Oscillator */
+RCC_ClkInitTypeDef iclk = {0};				/* Clock */
 
-RCC_OscInitTypeDef iosc	= {0};	/* Oscillator */
-RCC_ClkInitTypeDef iclk	= {0};	/* Clk */
-GPIO_InitTypeDef igpio = {0};		/* Generic IO */
-UART_HandleTypeDef huart4 = {0};	/* Debug Port */
-UART_HandleTypeDef huart5 = {0};	/* LoRa Module Port */
+GPIO_InitTypeDef igpio = {0};				/* Generic IO */
+UART_HandleTypeDef huart4 = {0};			/* Debug Port */
 
-UART_HandleTypeDef huart7 = {0};		/* GPS Module */
-DMA_HandleTypeDef huart7dma = {0};	/* GPS Module */
+RCC_PeriphCLKInitTypeDef hdfsdm1clk = {0};
+DFSDM_Channel_HandleTypeDef hdfsdm1c2 = {0};
+DFSDM_Channel_HandleTypeDef hdfsdm1c3 = {0};
+DFSDM_Channel_HandleTypeDef hdfsdm1c4 = {0};
+DFSDM_Channel_HandleTypeDef hdfsdm1c7 = {0};
+DFSDM_Filter_HandleTypeDef hdfsdm1f0 = {0};
+DFSDM_Filter_HandleTypeDef hdfsdm1f1 = {0};
+DFSDM_Filter_HandleTypeDef hdfsdm1f2 = {0};
+DFSDM_Filter_HandleTypeDef hdfsdm1f3 = {0};
+DMA_HandleTypeDef hdfsdm1dma0 = {0};
+DMA_HandleTypeDef hdfsdm1dma1 = {0};
+DMA_HandleTypeDef hdfsdm1dma2 = {0};
+DMA_HandleTypeDef hdfsdm1dma3 = {0};
 
-SPI_HandleTypeDef	hspi1 = {0};		/* IMU Sensor */
-DMA_HandleTypeDef hspi1dma = {0};	/* IMU Sensor */
-
-SD_HandleTypeDef hsdmmc1 = {0};		/* SD Card */
-DMA_HandleTypeDef hsdmmc1dma = {0};	/* SD Card */
-
-DFSDM_Channel_HandleTypeDef hdfsdm1c[CHANNEL_COUNT] = {0};	/* Mic Sensor */
-DFSDM_Filter_HandleTypeDef hdfsdm1f[CHANNEL_COUNT] = {0};	/* Mic Sensor */
-DMA_HandleTypeDef hdfsdm1dma[CHANNEL_COUNT] = {0};				/* Mic Sensor */
+SPI_HandleTypeDef hspi1 = {0};				/* IMU Sensor */
+DMA_HandleTypeDef hspi1dma4 = {0};			/* IMU Sensor */
 
 /**
  * Configurate the oscillator and clock sources.
@@ -44,34 +46,52 @@ DMA_HandleTypeDef hdfsdm1dma[CHANNEL_COUNT] = {0};				/* Mic Sensor */
 void configOscClk(void)
 {
 	/**
-	 * PLL1_M: 5									(25MHz / 5 = 5MHz)
-	 * PLL1_N: 80									(5MHz × 80 = 400MHz)
-	 * PLL1_P: 4									(400MHz / 4 = 100MHz) -> SYSCLK
-	 * PLL1_Q: 8									(400MHz / 8 = 50MHz)  -> For SDMMC, USB, RNG
-	 * PLL1_R: 8									(400MHz / 8 = 50MHz)  -> For SPI, I2S
+	 * PLL1_M: 5				(25MHz / 5 = 5MHz)
+	 * PLL1_N: 80				(5MHz × 80 = 400MHz)
+	 * PLL1_P: 4				(400MHz / 4 = 100MHz) -> SYSCLK
+	 * PLL1_Q: 8				(400MHz / 8 = 50MHz)  -> For SDMMC, USB, RNG
+	 * PLL1_R: 8				(400MHz / 8 = 50MHz)  -> For SPI, I2S
 	 * 
-	 * AHB Prescaler: 1							HCLK = 100MHz
-	 * APB1 Prescaler: 2							PCLK1 = 50MHz
-	 * APB2 Prescaler: 2							PCLK2 = 50MHz
-	 * APB3 Prescaler: 2							PCLK3 = 50MHz
-	 * APB4 Prescaler: 2							PCLK4 = 50MHz
+	 * AHB Prescaler: 1			HCLK = 100MHz
+	 * APB1 Prescaler: 2		PCLK1 = 50MHz
+	 * APB2 Prescaler: 2		PCLK2 = 50MHz
+	 * APB3 Prescaler: 2		PCLK3 = 50MHz
+	 * APB4 Prescaler: 2		PCLK4 = 50MHz
 	 */
 
 	/* Initialize the system oscillator. */
-	initOscillator(iosc, RCC_OSCILLATORTYPE_HSE, RCC_HSE_ON, RCC_PLL_ON, 
-		RCC_PLLSOURCE_HSE, 5, 80, 4, 8, 8, RCC_PLL1VCIRANGE_2, RCC_PLL1VCOWIDE, 0);
-	HAL_RCC_OscConfig(&iosc); 
+	iosc.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+	iosc.HSEState = RCC_HSE_ON;
+	iosc.PLL.PLLState = RCC_PLL_ON;
+	iosc.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+	iosc.PLL.PLLM = 5;
+	iosc.PLL.PLLN = 80;
+	iosc.PLL.PLLP = 4;
+	iosc.PLL.PLLQ = 8;
+	iosc.PLL.PLLR = 8;
+	iosc.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
+	iosc.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
+	iosc.PLL.PLLFRACN = 0;	
+	HAL_RCC_OscConfig(&iosc);
 
 	/* Initialize the system clock. */
-	initClock(iclk, RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | 
-		RCC_CLOCKTYPE_PCLK2 | RCC_CLOCKTYPE_D1PCLK1 | RCC_CLOCKTYPE_D3PCLK1, 
-		RCC_SYSCLKSOURCE_PLLCLK, RCC_SYSCLK_DIV1, RCC_HCLK_DIV1, RCC_APB1_DIV2, 
-		RCC_APB2_DIV2, RCC_APB3_DIV2, RCC_APB4_DIV2);
+	iclk.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | 
+					 RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2 | 
+					 RCC_CLOCKTYPE_D1PCLK1 | RCC_CLOCKTYPE_D3PCLK1;
+	iclk.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+	iclk.SYSCLKDivider = RCC_SYSCLK_DIV1;
+	iclk.AHBCLKDivider = RCC_HCLK_DIV1;
+	iclk.APB1CLKDivider = RCC_APB1_DIV2;
+	iclk.APB2CLKDivider = RCC_APB2_DIV2;
+	iclk.APB3CLKDivider = RCC_APB3_DIV2;
+	iclk.APB4CLKDivider = RCC_APB4_DIV2;
 	HAL_RCC_ClockConfig(&iclk, FLASH_LATENCY_3);
 
-	/* Enable data and instruction caches. */
-	SCB_EnableDCache();
-	SCB_EnableICache();
+	hdfsdm1clk.PeriphClockSelection = RCC_PERIPHCLK_DFSDM1;
+	hdfsdm1clk.Dfsdm1ClockSelection = RCC_DFSDM1CLKSOURCE_D2PCLK1;
+	HAL_RCCEx_PeriphCLKConfig(&hdfsdm1clk);
+
+	SystemCoreClock = HAL_RCC_GetSysClockFreq();
 }
 
 /**
@@ -80,13 +100,19 @@ void configOscClk(void)
 void configDebugPort(void)
 {
 	/* Initialize the GPIOA peripheral. */
-	initGPIO(igpio, DEBUG_PIN_TX | DEBUG_PIN_RX, GPIO_MODE_AF_PP, GPIO_NOPULL, 
-		GPIO_AF6_UART4);
+	initGPIO(&igpio, DEBUG_PIN_TX | DEBUG_PIN_RX, GPIO_MODE_AF_PP, 
+		GPIO_NOPULL, GPIO_AF8_UART4);
 	HAL_GPIO_Init(GPIOA, &igpio);
 
 	/* Initialize the UART4 peripheral. */
-	initUART(huart4, UART4, 115200, UART_MODE_TX, UART_WORDLENGTH_8B, 
-		UART_STOPBITS_1, UART_PARITY_NONE, UART_HWCONTROL_NONE, UART_OVERSAMPLING_16);
+	huart4.Instance = UART4;
+	huart4.Init.BaudRate = 115200;
+	huart4.Init.Mode = UART_MODE_TX_RX;
+	huart4.Init.WordLength = UART_WORDLENGTH_8B;
+	huart4.Init.StopBits = UART_STOPBITS_1;
+	huart4.Init.Parity = UART_PARITY_NONE;
+	huart4.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+	huart4.Init.OverSampling = UART_OVERSAMPLING_16;
 	HAL_UART_Init(&huart4);
 }
 
@@ -95,66 +121,263 @@ void configDebugPort(void)
  */
 void configMicSensors(void)
 {
-	int i;
 	HAL_StatusTypeDef status;
 
 	/**
- 	 * System Clock:								100 MHz
- 	 * DFSDM Clock:								100 MHz / DIVIDER = 3.125 MHz
- 	 * Filter Output Rate:						3.125 MHz / OVERSAMPLING = 97.656 kHz
- 	 * Actual Audio Rate:						48.828 kHz / (ORDER + 1) = 24.414 kHz
+ 	 * APB1 Clock:				50 MHz
+ 	 * DFSDM Clock:				50 MHz / DIVIDER = 1.5625 MHz
+ 	 * Filter Output Rate:		1.25 MHz / OVERSAMPLING = 48.828 kHz
  	 */
 
-	/* Initialize the GPIOB peripheral. */
-	initGPIO(igpio, MIC_PIN_DATAIN1 | MIC_PIN_CKOUT, GPIO_MODE_AF_PP, 
-		GPIO_NOPULL, GPIO_AF3_DFSDM1);
+	/* Initialize the GPIO peripheral. */
+
+	initGPIO(&igpio, GPIO_PIN_0, GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF6_DFSDM1);
 	HAL_GPIO_Init(GPIOB, &igpio);
 
-	/* Initialize the GPIOC peripheral. */
-	initGPIO(igpio, MIC_PIN_DATAIN0 | MIC_PIN_DATAIN2 | MIC_PIN_DATAIN3, 
-		GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF3_DFSDM1);
+	initGPIO(&igpio, GPIO_PIN_10, GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF3_DFSDM1);
+	HAL_GPIO_Init(GPIOE, &igpio);
+
+	initGPIO(&igpio, GPIO_PIN_7, GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF4_DFSDM1);
 	HAL_GPIO_Init(GPIOC, &igpio);
 
-	/* Initialize the DFSDM1 peripheral. */
-	for (i = 0; i < CHANNEL_COUNT; i++)
-	{
-		/* Initialize the channel. */
-		initDFSDMChannel(hdfsdm1c, i, 32, DFSDM_CHANNEL_FASTSINC_ORDER, 
-			0, 0);
-		status = HAL_DFSDM_ChannelInit(&hdfsdm1c[i]);
-		if (status != HAL_OK)
-			printError(status, "Failed to initialize DFSDM channel!");
+	initGPIO(&igpio, GPIO_PIN_9, GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF3_DFSDM1);
+	HAL_GPIO_Init(GPIOB, &igpio);
 
-		/* Initialize the filter. */
-		initDFSDMFilter(hdfsdm1f, i, DFSDM_FILTER_SINC3_ORDER, 32);
-		status = HAL_DFSDM_FilterInit(&hdfsdm1f[i]);
-		if (status != HAL_OK)
-			printError(status, "Failed to initialize DFSDM filter!");
+	/*************************************************************************/
 
-		/* Assign the the channel to the filter. */
-		status = HAL_DFSDM_FilterConfigRegChannel(&hdfsdm1f[i], i, 
-			DFSDM_CONTINUOUS_CONV_ON);
-		if (status != HAL_OK)
-			printError(status, "Failed to assign the filter to channel!");
-		
-		/* Initialize the DMA1_Stream0-3 for DFSDM1. */
-		initDFSDMDMA(hdfsdm1dma, i, DMA1_Stream0 + i, DMA_REQUEST_DFSDM1_FLT0 + i, 
-			DMA_PERIPH_TO_MEMORY, DMA_PINC_DISABLE, DMA_MINC_ENABLE, 
-			DMA_PDATAALIGN_WORD, DMA_MDATAALIGN_WORD, DMA_CIRCULAR, DMA_PRIORITY_HIGH, 
-			DMA_FIFOMODE_DISABLE);
-		status = HAL_DMA_Init(&hdfsdm1dma[i]);
-		if (status != HAL_OK)
-			printError(status, "Failed to initialize the DMA for DFSDM!");
-	
-		/* Link DMA1_Stream0-3 to DFSDM1 filter. */
-		__HAL_LINKDMA(&hdfsdm1f[i], hdmaReg, hdfsdm1dma[i]);
-		
-		/* Configure the DMA1_Stream0-3 interrupts. */
-		HAL_NVIC_SetPriority(DMA1_Stream0_IRQn + i, 1, 0);
-		HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn + i);
-	}
+	/* Initialize the DFSDM1 channels. */
+
+    hdfsdm1c2.Instance = DFSDM1_Channel2;
+    hdfsdm1c2.Init.OutputClock.Activation = ENABLE;
+    hdfsdm1c2.Init.OutputClock.Selection = DFSDM_CHANNEL_OUTPUT_CLOCK_AUDIO;
+    hdfsdm1c2.Init.OutputClock.Divider = 32;
+    hdfsdm1c2.Init.Input.Multiplexer = DFSDM_CHANNEL_EXTERNAL_INPUTS;
+    hdfsdm1c2.Init.Input.DataPacking = DFSDM_CHANNEL_STANDARD_MODE;
+    hdfsdm1c2.Init.Input.Pins = DFSDM_CHANNEL_FOLLOWING_CHANNEL_PINS;
+    hdfsdm1c2.Init.SerialInterface.Type = DFSDM_CHANNEL_SPI_RISING;
+    hdfsdm1c2.Init.SerialInterface.SpiClock = DFSDM_CHANNEL_SPI_CLOCK_INTERNAL;
+    hdfsdm1c2.Init.Awd.FilterOrder = DFSDM_CHANNEL_FASTSINC_ORDER;
+    hdfsdm1c2.Init.Awd.Oversampling = 1;
+    hdfsdm1c2.Init.Offset = 0;
+    hdfsdm1c2.Init.RightBitShift = 0;
+
+    status = HAL_DFSDM_ChannelInit(&hdfsdm1c2);
+    if (status != HAL_OK)
+        printError(status, "Failed to initialize DFSDM1 channel!");
+
+	hdfsdm1c3.Instance = DFSDM1_Channel3;
+	hdfsdm1c3.Init.OutputClock.Activation = ENABLE;
+	hdfsdm1c3.Init.OutputClock.Selection = DFSDM_CHANNEL_OUTPUT_CLOCK_AUDIO;
+	hdfsdm1c3.Init.OutputClock.Divider = 32;
+	hdfsdm1c3.Init.Input.Multiplexer = DFSDM_CHANNEL_EXTERNAL_INPUTS;
+	hdfsdm1c3.Init.Input.DataPacking = DFSDM_CHANNEL_STANDARD_MODE;
+	hdfsdm1c3.Init.Input.Pins = DFSDM_CHANNEL_FOLLOWING_CHANNEL_PINS;
+	hdfsdm1c3.Init.SerialInterface.Type = DFSDM_CHANNEL_SPI_FALLING;
+	hdfsdm1c3.Init.SerialInterface.SpiClock = DFSDM_CHANNEL_SPI_CLOCK_INTERNAL;
+	hdfsdm1c3.Init.Awd.FilterOrder = DFSDM_CHANNEL_FASTSINC_ORDER;
+	hdfsdm1c3.Init.Awd.Oversampling = 1;
+	hdfsdm1c3.Init.Offset = 0;
+	hdfsdm1c3.Init.RightBitShift = 0;
+
+	status = HAL_DFSDM_ChannelInit(&hdfsdm1c3);
+	if (status != HAL_OK)
+	    printError(status, "Failed to initialize DFSDM1 channel 3!");
+
+	hdfsdm1c4.Instance = DFSDM1_Channel4;
+	hdfsdm1c4.Init.OutputClock.Activation = ENABLE;
+	hdfsdm1c4.Init.OutputClock.Selection = DFSDM_CHANNEL_OUTPUT_CLOCK_AUDIO;
+	hdfsdm1c4.Init.OutputClock.Divider = 32;
+	hdfsdm1c4.Init.Input.Multiplexer = DFSDM_CHANNEL_EXTERNAL_INPUTS;
+	hdfsdm1c4.Init.Input.DataPacking = DFSDM_CHANNEL_STANDARD_MODE;
+	hdfsdm1c4.Init.Input.Pins = DFSDM_CHANNEL_SAME_CHANNEL_PINS;
+	hdfsdm1c4.Init.SerialInterface.Type = DFSDM_CHANNEL_SPI_FALLING;
+	hdfsdm1c4.Init.SerialInterface.SpiClock = DFSDM_CHANNEL_SPI_CLOCK_INTERNAL;
+	hdfsdm1c4.Init.Awd.FilterOrder = DFSDM_CHANNEL_FASTSINC_ORDER;
+	hdfsdm1c4.Init.Awd.Oversampling = 1;
+	hdfsdm1c4.Init.Offset = 0;
+	hdfsdm1c4.Init.RightBitShift = 0;
+
+	status = HAL_DFSDM_ChannelInit(&hdfsdm1c4);
+	if (status != HAL_OK)
+	    printError(status, "Failed to initialize DFSDM1 channel 4!");
+
+	hdfsdm1c7.Instance = DFSDM1_Channel7;
+	hdfsdm1c7.Init.OutputClock.Activation = ENABLE;
+	hdfsdm1c7.Init.OutputClock.Selection = DFSDM_CHANNEL_OUTPUT_CLOCK_AUDIO;
+	hdfsdm1c7.Init.OutputClock.Divider = 32;
+	hdfsdm1c7.Init.Input.Multiplexer = DFSDM_CHANNEL_EXTERNAL_INPUTS;
+	hdfsdm1c7.Init.Input.DataPacking = DFSDM_CHANNEL_STANDARD_MODE;
+	hdfsdm1c7.Init.Input.Pins = DFSDM_CHANNEL_SAME_CHANNEL_PINS;
+	hdfsdm1c7.Init.SerialInterface.Type = DFSDM_CHANNEL_SPI_FALLING;
+	hdfsdm1c7.Init.SerialInterface.SpiClock = DFSDM_CHANNEL_SPI_CLOCK_INTERNAL;
+	hdfsdm1c7.Init.Awd.FilterOrder = DFSDM_CHANNEL_FASTSINC_ORDER;
+	hdfsdm1c7.Init.Awd.Oversampling = 1;
+	hdfsdm1c7.Init.Offset = 0;
+	hdfsdm1c7.Init.RightBitShift = 0;
+
+	status = HAL_DFSDM_ChannelInit(&hdfsdm1c7);
+	if (status != HAL_OK)
+	    printError(status, "Failed to initialize DFSDM1 channel 7!");
+
+	/*************************************************************************/
+
+	/* Initialize the DFSDM1 filters. */
+
+	hdfsdm1f0.Instance = DFSDM1_Filter0;
+	hdfsdm1f0.Init.RegularParam.Trigger = DFSDM_FILTER_SW_TRIGGER;
+	hdfsdm1f0.Init.RegularParam.FastMode = DISABLE;	
+	hdfsdm1f0.Init.RegularParam.DmaMode = ENABLE;
+	hdfsdm1f0.Init.FilterParam.SincOrder = DFSDM_FILTER_SINC3_ORDER;
+	hdfsdm1f0.Init.FilterParam.Oversampling = 32;
+	hdfsdm1f0.Init.FilterParam.IntOversampling = 1;
+
+	status = HAL_DFSDM_FilterInit(&hdfsdm1f0);
+	if (status != HAL_OK)
+		printError(status, "Failed to initialize DFSDM1 filter 0!");
+
+	hdfsdm1f1.Instance = DFSDM1_Filter1;
+	hdfsdm1f1.Init.RegularParam.Trigger = DFSDM_FILTER_SW_TRIGGER;
+	hdfsdm1f1.Init.RegularParam.FastMode = DISABLE;	
+	hdfsdm1f1.Init.RegularParam.DmaMode = ENABLE;
+	hdfsdm1f1.Init.FilterParam.SincOrder = DFSDM_FILTER_SINC3_ORDER;
+	hdfsdm1f1.Init.FilterParam.Oversampling = 32;
+	hdfsdm1f1.Init.FilterParam.IntOversampling = 1;
+
+	status = HAL_DFSDM_FilterInit(&hdfsdm1f1);
+	if (status != HAL_OK)
+		printError(status, "Failed to initialize DFSDM1 filter 1!");
+
+	hdfsdm1f2.Instance = DFSDM1_Filter2;
+	hdfsdm1f2.Init.RegularParam.Trigger = DFSDM_FILTER_SW_TRIGGER;
+	hdfsdm1f2.Init.RegularParam.FastMode = DISABLE;	
+	hdfsdm1f2.Init.RegularParam.DmaMode = ENABLE;
+	hdfsdm1f2.Init.FilterParam.SincOrder = DFSDM_FILTER_SINC3_ORDER;
+	hdfsdm1f2.Init.FilterParam.Oversampling = 32;
+	hdfsdm1f2.Init.FilterParam.IntOversampling = 1;
+
+	status = HAL_DFSDM_FilterInit(&hdfsdm1f2);
+	if (status != HAL_OK)
+		printError(status, "Failed to initialize DFSDM1 filter 2!");
+
+	hdfsdm1f3.Instance = DFSDM1_Filter3;
+	hdfsdm1f3.Init.RegularParam.Trigger = DFSDM_FILTER_SW_TRIGGER;
+	hdfsdm1f3.Init.RegularParam.FastMode = DISABLE;	
+	hdfsdm1f3.Init.RegularParam.DmaMode = ENABLE;
+	hdfsdm1f3.Init.FilterParam.SincOrder = DFSDM_FILTER_SINC3_ORDER;
+	hdfsdm1f3.Init.FilterParam.Oversampling = 32;
+	hdfsdm1f3.Init.FilterParam.IntOversampling = 1;
+
+	status = HAL_DFSDM_FilterInit(&hdfsdm1f3);
+	if (status != HAL_OK)
+		printError(status, "Failed to initialize DFSDM1 filter 3!");
+
+	/*************************************************************************/
+
+	/* Assign the channels to the associated filters. */
+
+	status = HAL_DFSDM_FilterConfigRegChannel(&hdfsdm1f0, DFSDM_CHANNEL_7, DFSDM_CONTINUOUS_CONV_ON);
+	if (status != HAL_OK)
+        printError(status, "Failed to assign the filter to the channel!");
+
+	status = HAL_DFSDM_FilterConfigRegChannel(&hdfsdm1f1, DFSDM_CHANNEL_2, DFSDM_CONTINUOUS_CONV_ON);
+	if (status != HAL_OK)
+        printError(status, "Failed to assign the filter to the channel!");
+
+	status = HAL_DFSDM_FilterConfigRegChannel(&hdfsdm1f2, DFSDM_CHANNEL_4, DFSDM_CONTINUOUS_CONV_ON);
+	if (status != HAL_OK)
+        printError(status, "Failed to assign the filter to the channel!");
+
+	status = HAL_DFSDM_FilterConfigRegChannel(&hdfsdm1f3, DFSDM_CHANNEL_3, DFSDM_CONTINUOUS_CONV_ON);
+	if (status != HAL_OK)
+        printError(status, "Failed to assign the filter to the channel!");
+
+	/*************************************************************************/
+
+	/* Initialize the DMA1_Stream0..3 for DFSDM1. */
+
+	hdfsdm1dma0.Instance = DMA1_Stream0;
+	hdfsdm1dma0.Init.Request = DMA_REQUEST_DFSDM1_FLT0;
+	hdfsdm1dma0.Init.Direction = DMA_PERIPH_TO_MEMORY;
+	hdfsdm1dma0.Init.PeriphInc = DMA_PINC_DISABLE;
+	hdfsdm1dma0.Init.MemInc = DMA_MINC_ENABLE;	
+	hdfsdm1dma0.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+	hdfsdm1dma0.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+	hdfsdm1dma0.Init.Mode = DMA_CIRCULAR;
+	hdfsdm1dma0.Init.Priority = DMA_PRIORITY_HIGH;	
+	hdfsdm1dma0.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+
+	status = HAL_DMA_Init(&hdfsdm1dma0);
+	if (status != HAL_OK)
+		printError(status, "Failed to initialize the DMA1 Stream0 for DFSDM1!");
+
+	hdfsdm1dma1.Instance = DMA1_Stream1;
+	hdfsdm1dma1.Init.Request = DMA_REQUEST_DFSDM1_FLT1;
+	hdfsdm1dma1.Init.Direction = DMA_PERIPH_TO_MEMORY;
+	hdfsdm1dma1.Init.PeriphInc = DMA_PINC_DISABLE;
+	hdfsdm1dma1.Init.MemInc = DMA_MINC_ENABLE;	
+	hdfsdm1dma1.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+	hdfsdm1dma1.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+	hdfsdm1dma1.Init.Mode = DMA_CIRCULAR;
+	hdfsdm1dma1.Init.Priority = DMA_PRIORITY_HIGH;	
+	hdfsdm1dma1.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+
+	status = HAL_DMA_Init(&hdfsdm1dma1);
+	if (status != HAL_OK)
+		printError(status, "Failed to initialize the DMA1 Stream1 for DFSDM1!");
+
+	hdfsdm1dma2.Instance = DMA1_Stream2;
+	hdfsdm1dma2.Init.Request = DMA_REQUEST_DFSDM1_FLT2;
+	hdfsdm1dma2.Init.Direction = DMA_PERIPH_TO_MEMORY;
+	hdfsdm1dma2.Init.PeriphInc = DMA_PINC_DISABLE;
+	hdfsdm1dma2.Init.MemInc = DMA_MINC_ENABLE;	
+	hdfsdm1dma2.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+	hdfsdm1dma2.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+	hdfsdm1dma2.Init.Mode = DMA_CIRCULAR;
+	hdfsdm1dma2.Init.Priority = DMA_PRIORITY_HIGH;	
+	hdfsdm1dma2.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+
+	status = HAL_DMA_Init(&hdfsdm1dma2);
+	if (status != HAL_OK)
+		printError(status, "Failed to initialize the DMA1 Stream2 for DFSDM1!");
+
+	hdfsdm1dma3.Instance = DMA1_Stream3;
+	hdfsdm1dma3.Init.Request = DMA_REQUEST_DFSDM1_FLT3;
+	hdfsdm1dma3.Init.Direction = DMA_PERIPH_TO_MEMORY;
+	hdfsdm1dma3.Init.PeriphInc = DMA_PINC_DISABLE;
+	hdfsdm1dma3.Init.MemInc = DMA_MINC_ENABLE;	
+	hdfsdm1dma3.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+	hdfsdm1dma3.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+	hdfsdm1dma3.Init.Mode = DMA_CIRCULAR;
+	hdfsdm1dma3.Init.Priority = DMA_PRIORITY_HIGH;	
+	hdfsdm1dma3.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+
+	status = HAL_DMA_Init(&hdfsdm1dma3);
+	if (status != HAL_OK)
+		printError(status, "Failed to initialize the DMA1 Stream3 for DFSDM1!");
+
+	/* Link DMA1_Stream0 to DFSDM1 filter. */
+	__HAL_LINKDMA(&hdfsdm1f0, hdmaReg, hdfsdm1dma0);
+	__HAL_LINKDMA(&hdfsdm1f1, hdmaReg, hdfsdm1dma1);
+	__HAL_LINKDMA(&hdfsdm1f2, hdmaReg, hdfsdm1dma2);
+	__HAL_LINKDMA(&hdfsdm1f3, hdmaReg, hdfsdm1dma3);
+
+	__HAL_LINKDMA(&hdfsdm1f0, hdmaInj, hdfsdm1dma0);
+	__HAL_LINKDMA(&hdfsdm1f1, hdmaInj, hdfsdm1dma1);
+	__HAL_LINKDMA(&hdfsdm1f2, hdmaInj, hdfsdm1dma2);
+	__HAL_LINKDMA(&hdfsdm1f3, hdmaInj, hdfsdm1dma3);
+
+	/* Configure the DMA1_Stream0-3 interrupts. */
+	HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, MIC_IRQ, 0);
+	HAL_NVIC_SetPriority(DMA1_Stream1_IRQn, MIC_IRQ, 0);
+	HAL_NVIC_SetPriority(DMA1_Stream2_IRQn, MIC_IRQ, 0);
+	HAL_NVIC_SetPriority(DMA1_Stream3_IRQn, MIC_IRQ, 0);
+
+	HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn);
+	HAL_NVIC_EnableIRQ(DMA1_Stream1_IRQn);
+	HAL_NVIC_EnableIRQ(DMA1_Stream2_IRQn);
+	HAL_NVIC_EnableIRQ(DMA1_Stream3_IRQn);
 }
-
+ 
 /**
  * Configure the IMU sensor.
  */
@@ -162,148 +385,36 @@ void configIMUSensor(void)
 {
 	HAL_StatusTypeDef status;
 
-	/* Initialize the GPIOA peripheral. */
-	initGPIO(igpio, IMU_PIN_NSS, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, -1);
+	/* Initialize the GPIO peripheral. */
+
+	initGPIO(&igpio, IMU_PIN_NSS, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, -1);
 	HAL_GPIO_Init(GPIOA, &igpio);
 	IMU_NSS_HIGH();
 
-	initGPIO(igpio, IMU_PIN_INT2, GPIO_MODE_INPUT, GPIO_NOPULL, -1);
+	initGPIO(&igpio, IMU_PIN_INT2, GPIO_MODE_INPUT, GPIO_NOPULL, -1);
 	HAL_GPIO_Init(GPIOA, &igpio);
 
-	initGPIO(igpio, IMU_PIN_SCK | IMU_PIN_MISO | IMU_PIN_MOSI, GPIO_MODE_AF_PP,
+	initGPIO(&igpio, IMU_PIN_SCK | IMU_PIN_MISO | IMU_PIN_MOSI, GPIO_MODE_AF_PP,
 		GPIO_NOPULL, GPIO_AF5_SPI1);
 	HAL_GPIO_Init(GPIOA, &igpio);
 
-	/* Initialize the GPIOB peripheral. */
-	initGPIO(igpio, IMU_PIN_INT1, GPIO_MODE_INPUT, GPIO_NOPULL, -1);
+	initGPIO(&igpio, IMU_PIN_INT1, GPIO_MODE_INPUT, GPIO_NOPULL, -1);
 	HAL_GPIO_Init(GPIOB, &igpio);
 
 	/* Initialize the SPI1 peripheral. */
-	initSPI(hspi1, SPI1, SPI_MODE_MASTER, SPI_DIRECTION_2LINES, SPI_DATASIZE_8BIT, 
-		SPI_POLARITY_LOW, SPI_PHASE_1EDGE, SPI_NSS_SOFT, SPI_BAUDRATEPRESCALER_8, 
-		SPI_FIRSTBIT_MSB, SPI_TIMODE_DISABLE);
+
+	hspi1.Instance = SPI1;
+	hspi1.Init.Mode = SPI_MODE_MASTER;
+	hspi1.Init.Direction = SPI_DIRECTION_2LINES;
+	hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
+	hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
+	hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
+	hspi1.Init.NSS = SPI_NSS_SOFT;
+	hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
+	hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
+	hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
+
 	status = HAL_SPI_Init(&hspi1);
 	if (status != HAL_OK)
 		printError(status, "Failed to initialize SPI1 peripheral!");
-
-	/* Initialize the DMA1_Stream4 for SPI. */
-	// initDMA(hspi1dma, DMA1_Stream4, DMA_REQUEST_SPI1_RX, DMA_PERIPH_TO_MEMORY,
-	// 	DMA_PINC_DISABLE, DMA_MINC_ENABLE, DMA_PDATAALIGN_WORD, DMA_MDATAALIGN_WORD,
-	// 	DMA_CIRCULAR, DMA_PRIORITY_HIGH, DMA_FIFOMODE_DISABLE);
-	// status = HAL_DMA_Init(&hspi1dma);
-	// if (status != HAL_OK)
-	// 	printError(status, "Failed to initialize DMA for SPI1!");
-
-	/* Link the DMA1_Stream4 to SPI1 peripheral. */
-	// __HAL_LINKDMA(&hspi1, hdmarx, hspi1dma);
-
-	/* Configure the DMA1_Stream4 interrupts. */
-	// HAL_NVIC_EnableIRQ(DMA1_Stream4_IRQn);
-	// HAL_NVIC_SetPriority(DMA1_Stream4_IRQn, 2, 0);
 }
-
-/**
- * Configure the GPS module.
- */
-void configGPSModule(void)
-{
-	HAL_StatusTypeDef status;
-
-	/* Initialize the GPIOE peripheral. */
-	initGPIO(igpio, GPS_PIN_RX | GPS_PIN_TX, GPIO_MODE_AF_PP, GPIO_NOPULL, 
-		GPIO_AF7_UART7);
-	HAL_GPIO_Init(GPIOE, &igpio);
-	
-	/* Initialize the UART7 peripheral. */
-	initUART(huart7, UART7, 9600, UART_MODE_RX, UART_WORDLENGTH_8B, 
-		UART_STOPBITS_1, UART_PARITY_NONE, UART_HWCONTROL_NONE, 
-		UART_OVERSAMPLING_16);
-	status = HAL_UART_Init(&huart7);
-	if (status != HAL_OK)
-		printError(status, "Failied to initialize UART7 peripheral!");
-}
-
-/**
- * Configure the SD card.
- */
-void configSDCard(void)
-{
-	HAL_StatusTypeDef status;
-
-	/* Initialize the GPIOA peripheral. */
-	initGPIO(igpio, SD_PIN_CD, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, -1);
-	HAL_GPIO_Init(GPIOA, &igpio);
-
-	/* Initialize the GPIOC peripheral. */
-	initGPIO(igpio, SD_PIN_DAT0 | SD_PIN_DAT1 | SD_PIN_DAT2 | SD_PIN_DAT3 | 
-		SD_PIN_CLK, GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF12_SDMMC1);
-	HAL_GPIO_Init(GPIOC, &igpio);
-
-	/* Initialize the GPIOD peripheral. */
-	initGPIO(igpio, SD_PIN_CMD, GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF12_SDMMC1);
-	HAL_GPIO_Init(GPIOD, &igpio);
-
-	/* Initialize the SDMMC1 peripheral. */
-	initSDMMC(hsdmmc1, SDMMC1, SDMMC_BUS_WIDE_4B, SDMMC_CLOCK_EDGE_RISING, 
-		SDMMC_CLOCK_POWER_SAVE_DISABLE, 1, SDMMC_HARDWARE_FLOW_CONTROL_DISABLE);
-	status = HAL_SD_Init(&hsdmmc1);
-	if (status != HAL_OK)
-		printError(status, "Failed to initialize SDMMC1 peripheral!");
-}
-
-/**
- * Configure the LoRa module.
- */
-void configLoRaModule(void)
-{
-	HAL_StatusTypeDef status;
-
-	/* Initialize the GPIOD peripheral. */
-	initGPIO(igpio, LORA_PIN_M0 | LORA_PIN_M1, GPIO_MODE_OUTPUT_PP, 
-		GPIO_NOPULL, -1);
-	HAL_GPIO_Init(GPIOD, &igpio);
-
-	initGPIO(igpio, LORA_PIN_AUX, GPIO_MODE_INPUT, GPIO_NOPULL, -1);
-	HAL_GPIO_Init(GPIOD, &igpio);
-
-	/* Initialize the GPIOB peripheral. */
-	initGPIO(igpio, LORA_PIN_TX | LORA_PIN_RX, GPIO_MODE_AF_PP, 
-		GPIO_NOPULL, GPIO_AF8_UART5);
-	HAL_GPIO_Init(GPIOB, &igpio);
-
-	/* Initialize the UART5 peripheral. */
-	initUART(huart5, UART5, 115200, UART_MODE_TX, UART_WORDLENGTH_8B, 
-		UART_STOPBITS_1, UART_PARITY_NONE, UART_HWCONTROL_NONE, 
-		UART_OVERSAMPLING_16);
-	status = HAL_UART_Init(&huart5);
-	if (status != HAL_OK)
-		printError(status, "Failed to initialize UART5 peripheral!");
-}
-
-/**
- * Configure the LEDs.
- */
-void configLEDs(void)
-{
-	/* Initialize the GPIOE peripheral. */
-	initGPIO(igpio, LED_PIN_HEARTBEAT | LED_PIN_ERROR | LED_PIN_DETECT, 
-		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, -1);
-	HAL_GPIO_Init(GPIOE, &igpio);
-}
-
-/**
- * Configure the servo motors.
- */
-void configServoMotors(void)
-{
-
-}
-
-/**
- * Configure the watch dog timer.
- */
-void configWatchdog(void)
-{
-
-}
- 

@@ -19,16 +19,14 @@
 
 /* Global and shared objects */
 
-PayloadData payloadData = {0};
-SemaphoreHandle_t payloadMutex;
-TaskHandle_t micTaskHandlers[CHANNEL_COUNT];
+TaskHandle_t micTaskHandlers[CHANNEL_COUNT] = {0};
 
 int main(void)
 {
-	BaseType_t status;
+	HAL_StatusTypeDef status;
 
 	HAL_Init();
-	
+
 	/* Enable the peripheral clocks. */
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 	__HAL_RCC_GPIOB_CLK_ENABLE();
@@ -42,95 +40,64 @@ int main(void)
 	__HAL_RCC_SDMMC1_CLK_ENABLE();
 	__HAL_RCC_DFSDM1_CLK_ENABLE();
 	__HAL_RCC_DMA1_CLK_ENABLE();
-	
+
 	/* Initialize and configure the peripherals. */
 	configOscClk();
 	configDebugPort();
 	configMicSensors();
 	configIMUSensor();
-	configGPSModule();
-	configSDCard();
-	configLoRaModule();
-	configLEDs();
-	configWatchdog();
 
-	printLog("The firmware is running (system clock: %ld)...", SystemCoreClock);
-	
-	/* Create the mutex for the payload data. */
+	// printLog("\nThe firmware is running...");
+	// printLog("System core clock is %ld Hz", SystemCoreClock);
+
+	/* Create the mutex to protect the payload data. */
 	payloadMutex = xSemaphoreCreateMutex();
 	if (payloadMutex == NULL)
 		printKernel("Failed to create the payload mutex!");
 
-	/* Create the taskMicSensorNorth() task. */
-	status = xTaskCreate(taskMicSensorNorth, TASK_MIC_NAME_N, 
-		TASK_MIC_STACK, NULL, TASK_MIC_PRIORITY, &micTaskHandlers[0]);
-	if (status != pdPASS)
-		printKernel("Failed to create '%s' task!", TASK_MIC_NAME_N);
+	/* Create the payload event group. */
+	payloadEvent = xEventGroupCreate();
+	if (payloadEvent == NULL)
+		printKernel("Failed to create the payload event group!");
 
-	/* Create the taskMicSensorEast() task. */
-	status = xTaskCreate(taskMicSensorEast, TASK_MIC_NAME_E, 
-		TASK_MIC_STACK, NULL, TASK_MIC_PRIORITY, &micTaskHandlers[1]);
+	/* Create the taskMicSensor0() task. */
+	status = xTaskCreate(taskMicSensor0, TASK_MIC_NAME_0, TASK_MIC_STACK, 
+		NULL, TASK_MIC_PRIORITY, &micTaskHandlers[0]);
 	if (status != pdPASS)
-		printKernel("Failed to create '%s' task!", TASK_MIC_NAME_E);
+		printKernel("Failed to create '%s' task!", TASK_MIC_NAME_0);
 
-	/* Create the taskMicSensorSouth() task. */
-	status = xTaskCreate(taskMicSensorSouth, TASK_MIC_NAME_S, 
-		TASK_MIC_STACK, NULL, TASK_MIC_PRIORITY, &micTaskHandlers[2]);
+	/* Create the taskMicSensor1() task. */
+	status = xTaskCreate(taskMicSensor1, TASK_MIC_NAME_1, TASK_MIC_STACK, 
+		NULL, TASK_MIC_PRIORITY, &micTaskHandlers[1]);
 	if (status != pdPASS)
-		printKernel("Failed to create '%s' task!", TASK_MIC_NAME_S);
+		printKernel("Failed to create '%s' task!", TASK_MIC_NAME_1);
 
-	/* Create the taskMicSensorWest() task. */
-	status = xTaskCreate(taskMicSensorWest, TASK_MIC_NAME_W, 
-		TASK_MIC_STACK, NULL, TASK_MIC_PRIORITY, &micTaskHandlers[3]);
+	/* Create the taskMicSensor2() task. */
+	status = xTaskCreate(taskMicSensor2, TASK_MIC_NAME_2, TASK_MIC_STACK, 
+		NULL, TASK_MIC_PRIORITY, &micTaskHandlers[2]);
 	if (status != pdPASS)
-		printKernel("Failed to create '%s' task!", TASK_MIC_NAME_W);
+		printKernel("Failed to create '%s' task!", TASK_MIC_NAME_2);
+
+	/* Create the taskMicSensor2() task. */
+	status = xTaskCreate(taskMicSensor3, TASK_MIC_NAME_3, TASK_MIC_STACK, 
+		NULL, TASK_MIC_PRIORITY, &micTaskHandlers[3]);
+	if (status != pdPASS)
+		printKernel("Failed to create '%s' task!", TASK_MIC_NAME_3);
 
 	/* Create the taskIMUSensor() task. */
-	status = xTaskCreate(taskIMUSensor, TASK_IMU_NAME, 
-		TASK_IMU_STACK, NULL, TASK_IMU_PRIORITY, NULL);
+	status = xTaskCreate(taskIMUSensor, TASK_IMU_NAME, TASK_IMU_STACK, 
+		NULL, TASK_IMU_PRIORITY, NULL);
 	if (status != pdPASS)
 		printKernel("Failed to create '%s' task!", TASK_IMU_NAME);
 
-	/* Create the taskGPSModule() task. */
-	status = xTaskCreate(taskGPSModule, TASK_GPS_NAME, 
-		TASK_GPS_STACK, NULL, TASK_GPS_PRIORITY, NULL);
+	/* Create the taskTransmitter() task. */
+	status = xTaskCreate(taskTransmitter, TASK_SERIAL_NAME, TASK_SERIAL_STACK, 
+		NULL, TASK_SERIAL_PRIORITY, NULL);
 	if (status != pdPASS)
-		printKernel("Failed to create '%s' task!", TASK_GPS_NAME);
+		printKernel("Failed to create '%s' task!", TASK_SERIAL_NAME);
 
-	/* Create the taskSDCard() task. */
-	status = xTaskCreate(taskSDCard, TASK_SD_NAME, 
-		TASK_SD_STACK, NULL, TASK_SD_PRIORITY, NULL);
-	if (status != pdPASS)
-		printKernel("Failed to create '%s' task!", TASK_SD_NAME);
-
-	/* Create the taskLoRaModule() task. */
-	status = xTaskCreate(taskLoRaModule, TASK_LORA_NAME, 
-		TASK_LORA_STACK, NULL, TASK_LORA_PRIORITY, NULL);
-	if (status != pdPASS)
-		printKernel("Failed to create '%s' task!", TASK_LORA_NAME);
-
-	/* Create the taskSystemCheck() task. */
-	status = xTaskCreate(taskSystemCheck, TASK_SYSTEM_NAME, 
-		TASK_SYSTEM_STACK, NULL, TASK_SYSTEM_PRIORITY, NULL);
-	if (status != pdPASS)
-		printKernel("Failed to create '%s' task!", TASK_SYSTEM_NAME);
-
-	/* Create the taskLEDs() task. */
-	status = xTaskCreate(taskLEDs, TASK_LED_NAME, 
-		TASK_LED_STACK, NULL, TASK_LED_PRIORITY, NULL);
-	if (status != pdPASS)
-		printKernel("Failed to create '%s' task!", TASK_LED_NAME);
-
-	/* Create the taskWatchDog() task. */
-	status = xTaskCreate(taskWatchdog, TASK_WATCHDOG_NAME, 
-		TASK_WATCHDOG_STACK, NULL, TASK_WATCHDOG_PRIORITY, NULL);
-	if (status != pdPASS)
-		printKernel("Failed to create '%s' task!", TASK_WATCHDOG_NAME);
-
-	printLog("free heap size is %d bytes", xPortGetFreeHeapSize());
+	// printLog("free heap size is %d bytes", xPortGetFreeHeapSize());
 
 	/* Start the task schedular. */
 	vTaskStartScheduler();
-
-	while (1);
 }

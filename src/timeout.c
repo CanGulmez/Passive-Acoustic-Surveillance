@@ -127,8 +127,10 @@ gboolean gps_update_timeout(gpointer)
 	printLog("updated the GPS map data correctly");
 
 	/* Update the GPS map. */
-	latitude = atof(payloadData.gpsLatitude);
-	longitude = atof(payloadData.gpsLongitude);
+	// latitude = atof(payloadData.gpsLatitude);
+	// longitude = atof(payloadData.gpsLongitude);
+	latitude = GPS_INIT_LAT;
+	longitude = GPS_INIT_LONG;
 	shumate_map_center_on(gpsMap, latitude, longitude + i * 0.01);
 	gps_map_area_markers(gpsMarkerLayer, latitude, longitude + i * 0.01);
 	printLog("marked the last position onto the map");
