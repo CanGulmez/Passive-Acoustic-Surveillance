@@ -130,5 +130,5 @@
 #define IMU_REG_Y_OFS_USR				0x74
 #define IMU_REG_Z_OFS_USR				0x75
 
-#define IMU_NSS_LOW()					(HAL_GPIO_WritePin(GPIOA, IMU_PIN_NSS, RESET))
-#define IMU_NSS_HIGH()					(HAL_GPIO_WritePin(GPIOA, IMU_PIN_NSS, SET))
+#define IMU_NSS_LOW()					(HAL_GPIO_WritePin(GPIOA, IMU_PIN_NSS, GPIO_PIN_RESET))
+#define IMU_NSS_HIGH()					(HAL_GPIO_WritePin(GPIOA, IMU_PIN_NSS, GPIO_PIN_SET))

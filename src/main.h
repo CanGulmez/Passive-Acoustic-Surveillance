@@ -63,7 +63,7 @@ extern "C" {
 	redefine it. */
 #ifdef DATA_SIZE
 #undef DATA_SIZE
-#define DATA_SIZE							(BUFFER_SIZE * 2)
+#define DATA_SIZE							1024
 #endif
 
 #define SQL_SIZE							20480

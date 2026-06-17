@@ -24,10 +24,12 @@ SemaphoreHandle_t payloadMutex = {0};
 EventGroupHandle_t payloadEvent = {0};
 
 /**
- * Read microphone data from the filter 0.
+ * Read microphone data from the filter 0 (physically MK2).
  */
 void taskMicSensor0(void *pvParams)
 {
+	(void)pvParams;
+	
 	int32_t notified;
 	static int32_t samples[DATA_SIZE] = {0};
 	HAL_StatusTypeDef status;
@@ -47,21 +49,25 @@ void taskMicSensor0(void *pvParams)
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 			{
 				memcpy(payloadData.micFilter0, samples, DATA_SIZE * sizeof(int32_t));
+				
+				/* Set the payload event group bit of this task. */
+				xEventGroupSetBits(payloadEvent, TASK_MIC_EVENT_BIT_0);
+
 				/* Give up the payload mutex. */
 				xSemaphoreGive(payloadMutex);
 			}
-			/* Set the payload event group bit of this task. */
-			xEventGroupSetBits(payloadEvent, TASK_MIC_EVENT_BIT_0);
 		}
 	}	
 	vTaskDelete(NULL);
 }
 
 /**
- * Read microphone data from the filter 1.
+ * Read microphone data from the filter 1 (physically MK7).
  */
 void taskMicSensor1(void *pvParams)
 {
+	(void)pvParams;
+
 	int32_t notified;
 	static int32_t samples[DATA_SIZE] = {0};
 	HAL_StatusTypeDef status;
@@ -81,21 +87,25 @@ void taskMicSensor1(void *pvParams)
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 			{
 				memcpy(payloadData.micFilter1, samples, DATA_SIZE * sizeof(int32_t));
+				
+				/* Set the payload event group bit of this task. */
+				xEventGroupSetBits(payloadEvent, TASK_MIC_EVENT_BIT_1);
+
 				/* Give up the payload mutex. */
 				xSemaphoreGive(payloadMutex);
 			}
-			/* Set the payload event group bit of this task. */
-			xEventGroupSetBits(payloadEvent, TASK_MIC_EVENT_BIT_1);
 		}
 	}	
 	vTaskDelete(NULL);
 }
 
 /**
- * Read microphone data from the filter 2.
+ * Read microphone data from the filter 2 (physically MK6).
  */
 void taskMicSensor2(void *pvParams)
 {
+	(void)pvParams;
+
 	int32_t notified;
 	static int32_t samples[DATA_SIZE] = {0};
 	HAL_StatusTypeDef status;
@@ -115,21 +125,25 @@ void taskMicSensor2(void *pvParams)
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 			{
 				memcpy(payloadData.micFilter2, samples, DATA_SIZE * sizeof(int32_t));
+				
+				/* Set the payload event group bit of this task. */
+				xEventGroupSetBits(payloadEvent, TASK_MIC_EVENT_BIT_2);
+
 				/* Give up the payload mutex. */
 				xSemaphoreGive(payloadMutex);
 			}
-			/* Set the payload event group bit of this task. */
-			xEventGroupSetBits(payloadEvent, TASK_MIC_EVENT_BIT_2);
 		}
 	}	
 	vTaskDelete(NULL);
 }
 
 /**
- * Read microphone data from the filter 3.
+ * Read microphone data from the filter 3 (physically MK5).
  */
 void taskMicSensor3(void *pvParams)
 {
+	(void)pvParams;
+
 	int32_t notified;
 	static int32_t samples[DATA_SIZE] = {0};
 	HAL_StatusTypeDef status;
@@ -149,11 +163,13 @@ void taskMicSensor3(void *pvParams)
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 			{
 				memcpy(payloadData.micFilter3, samples, DATA_SIZE * sizeof(int32_t));
+				
+				/* Set the payload event group bit of this task. */
+				xEventGroupSetBits(payloadEvent, TASK_MIC_EVENT_BIT_3);
+
 				/* Give up the payload mutex. */
 				xSemaphoreGive(payloadMutex);
 			}
-			/* Set the payload event group bit of this task. */
-			xEventGroupSetBits(payloadEvent, TASK_MIC_EVENT_BIT_3);
 		}
 	}	
 	vTaskDelete(NULL);
@@ -164,6 +180,8 @@ void taskMicSensor3(void *pvParams)
  */
 void taskIMUSensor(void *pvParams)
 {
+	(void)pvParams;
+
 	uint8_t whoami;
 	TickType_t lastWake;
 
@@ -182,7 +200,7 @@ void taskIMUSensor(void *pvParams)
 	for (;;)
 	{
 		/* Give some period. */
-		vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(1000));
+		vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(100));
 
 		/* Take the payload mutex to update the payload data. */
 		if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
@@ -192,11 +210,12 @@ void taskIMUSensor(void *pvParams)
 			readGyroFromIMU(&payloadData);
 			readTempFromIMU(&payloadData);
 
+			/* Set the payload event group bit of this task. */
+			xEventGroupSetBits(payloadEvent, TASK_IMU_EVENT_BIT);
+
 			/* Give up the payload mutex. */
 			xSemaphoreGive(payloadMutex);
 		}
-		/* Set the payload event group bit of this task. */
-		xEventGroupSetBits(payloadEvent, TASK_IMU_EVENT_BIT);
 	}	
 	vTaskDelete(NULL);
 }
@@ -206,8 +225,9 @@ void taskIMUSensor(void *pvParams)
  */
 void taskTransmitter(void *pvParams)
 {
+	(void)pvParams;
+
 	uint32_t magicWord = MAGIC_WORD;
-	EventBits_t eventValue;
 	EventBits_t eventBits = (TASK_MIC_EVENT_BIT_0 | TASK_MIC_EVENT_BIT_1 |
 							 TASK_MIC_EVENT_BIT_2 | TASK_MIC_EVENT_BIT_3 |
 							 TASK_IMU_EVENT_BIT);
@@ -215,7 +235,7 @@ void taskTransmitter(void *pvParams)
 	{
 		/* Block to wait for the event bits to become set within the payload
 		   event group. */
-		eventValue = xEventGroupWaitBits(
+		xEventGroupWaitBits(
 			payloadEvent,					/* event group object */
 			eventBits,						/* event bits to wait for */
 			pdTRUE,							/* clear the bits on exit */
@@ -229,6 +249,14 @@ void taskTransmitter(void *pvParams)
 				portMAX_DELAY);
 			HAL_UART_Transmit(&huart4, (uint8_t *)&payloadData, sizeof(payloadData), 
 				portMAX_DELAY);
+
+			// printLog("filter0 (MK2): %ld, %ld, %ld", payloadData.micFilter0[10], payloadData.micFilter0[100], payloadData.micFilter0[500]);
+			// printLog("filter1 (MK7): %ld, %ld, %ld", payloadData.micFilter1[10], payloadData.micFilter1[100], payloadData.micFilter1[500]);
+			// printLog("filter2 (MK6): %ld, %ld, %ld", payloadData.micFilter2[10], payloadData.micFilter2[100], payloadData.micFilter2[500]);
+			// printLog("filter3 (MK5): %ld, %ld, %ld", payloadData.micFilter3[10], payloadData.micFilter3[100], payloadData.micFilter3[500]);
+			// printLog("accel: %f, %f, %f", payloadData.imuAccel[0], payloadData.imuAccel[1], payloadData.imuAccel[2]);
+			// printLog("gyro: %f, %f, %f", payloadData.imuGyro[0], payloadData.imuGyro[1], payloadData.imuGyro[2]);
+			// printLog("temp: %f", payloadData.imuTemp);
 				
 			/* Give up the payload mutex. */
 			xSemaphoreGive(payloadMutex);

@@ -72,7 +72,7 @@ void set_serial_attrs(int fd, struct termios *tty)
 		(micBaudRate == MIC_BAUD_RATE_9600) ? B9600 :
 		(micBaudRate == MIC_BAUD_RATE_19200) ? B19200 :
 		(micBaudRate == MIC_BAUD_RATE_38400) ? B38400 :
-		(micBaudRate == MIC_BAUD_RATE_57600) ? B576000 :
+		(micBaudRate == MIC_BAUD_RATE_57600) ? B57600 :
 		(micBaudRate == MIC_BAUD_RATE_115200) ? B115200 : 0
 	);
 	cfsetospeed(tty,
@@ -256,7 +256,7 @@ void read_device_node(int fd)
 		else if (numRead == -1 && errno != EAGAIN)
 			syscallError();
 	}
-
+	
 	totalRead = 0;
 	payloadPtr = (uint8_t *) &payloadData;
 	payloadSize = sizeof(payloadData);

@@ -1,11 +1,10 @@
 # Passive Acoustic Surveillance System
 
-CC				:= gcc
-PIO			:= pio
-VALGRIND		:= valgrind
-CPPCHECK		:= cppcheck
+CC			:= gcc
+VALGRIND	:= valgrind
+CPPCHECK	:= cppcheck
 
-CFLAGS		:= -Wall -std=gnu17 -O3 -march=native
+CFLAGS		:= -Wall -Wextra -std=gnu2x -O0 -g -march=native
 
 SRC			:= $(wildcard ./src/*.c)
 DEPENDS		:= check sqlite3 gsl gtk4 libadwaita-1 shumate-1.0

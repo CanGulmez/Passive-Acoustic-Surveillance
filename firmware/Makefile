@@ -15,7 +15,7 @@ DEVICE_VARIANT	:= STM32H750VBTx
 
 # Compiler and linker flags
 CORTEX_FLAGS	:= -mthumb -mcpu=cortex-m7 -mfpu=fpv5-d16 -mfloat-abi=hard
-COMMON_FLAGS	:= -std=gnu2x -g -Wall -ffunction-sections -fdata-sections
+COMMON_FLAGS	:= -std=gnu2x -O0 -g -Wall -Wextra -ffunction-sections -fdata-sections
 AS_FLAGS		:= -x assembler-with-cpp
 
 # Include paths

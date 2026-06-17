@@ -35,10 +35,10 @@ void prepare_samples(void)
 	{
 		sigSamples[i].length = DATA_SIZE;
 	}
-	memcpy(sigSamples[0].data, payloadData.micFilter0, DATA_SIZE);
-	memcpy(sigSamples[1].data, payloadData.micFilter1, DATA_SIZE);
-	memcpy(sigSamples[2].data, payloadData.micFilter2, DATA_SIZE);
-	memcpy(sigSamples[3].data, payloadData.micFilter3, DATA_SIZE);
+	memcpy(sigSamples[0].data, payloadData.micFilter0, DATA_SIZE * sizeof(int32_t));
+	memcpy(sigSamples[1].data, payloadData.micFilter1, DATA_SIZE * sizeof(int32_t));
+	memcpy(sigSamples[2].data, payloadData.micFilter2, DATA_SIZE * sizeof(int32_t));
+	memcpy(sigSamples[3].data, payloadData.micFilter3, DATA_SIZE * sizeof(int32_t));
 }
 
 /**

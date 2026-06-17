@@ -392,8 +392,8 @@ void on_mic_button_clicked(GtkButton *button, gpointer data)
 		deviceFd = open_device_node(micChannel, micDeviceNode);
 
 		/* Open the 'sensor_data.db' database. */
-		db = db_open(DB_SENSOR_DATA_PATH);
-		db_create_table(db);
+		// db = db_open(DB_SENSOR_DATA_PATH);
+		// db_create_table(db);
 
 		/* Add the timeout for updating "payloadData". */
 		if (!micTimeout) 

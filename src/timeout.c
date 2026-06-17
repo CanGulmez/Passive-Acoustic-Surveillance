@@ -88,7 +88,7 @@ gboolean db_record_timeout(gpointer data)
 
 	db = (sqlite3 *) data;
 	/* Bind the last sensor data. */
-	db_bind_data(db);
+	// db_bind_data(db);
 	printLog("recorded the sensor data into '%s'", DB_SENSOR_DATA_PATH);
 
 	return G_SOURCE_CONTINUE;

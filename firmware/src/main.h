@@ -39,7 +39,7 @@ extern "C" {
 /* Global and generic definitions */
 
 #define BUFFER_SIZE			512
-#define DATA_SIZE			(BUFFER_SIZE * 2) /* 1 KB */
+#define DATA_SIZE			1024	/* 1 KB */
 #define CHANNEL_COUNT		4
 #define MIC_COUNT			(CHANNEL_COUNT * 2)
 #define MAGIC_WORD			0xDEADBEEF
