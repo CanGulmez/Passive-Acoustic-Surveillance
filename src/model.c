@@ -19,7 +19,7 @@
 
 /* Shared widgets and variables */
 
-char *modelDatasets[MAX_MODEL_DATASET];
+char *modelDatasets[MODEL_MAX_DATASET];
 guint modelFitPid = 0;
 char *modelDataset = NULL;
 char *modelKerasLog = NULL;
@@ -50,7 +50,7 @@ void model_group_dataset(GtkWidget *datasetGroup)
 		"Dataset", (const char **)modelDatasets, -1
 	);
 	__ui_group_add(datasetGroup, datasetRow);
-	comboRowSig(datasetRow, on_dataset_selected);
+	__ui_sig_combo_row(datasetRow, on_dataset_selected);
 }
 
 /**
@@ -65,54 +65,54 @@ void model_group_model(GtkWidget *modelGroup)
 	/* Output Model Name */
 	outputModelRow = __ui_entry_row_new("Output Model");
 	__ui_group_add(modelGroup, outputModelRow);
-	entryRowSig(outputModelRow, on_output_model_texted);
+	__ui_sig_entry_row(outputModelRow, on_output_model_texted);
 	
 	/* Layer Type */
 	layerTypeRow = __ui_combo_row_new(
 		"Layer Type", (const char *[]) {"LSTM", "GRU", NULL}, 0
 	);
 	__ui_group_add(modelGroup, layerTypeRow);
-	comboRowSig(layerTypeRow, on_layer_type_selected);
+	__ui_sig_combo_row(layerTypeRow, on_layer_type_selected);
 
 	/* Layer Number */
 	layerNumberRow = __ui_spin_row_new(
-		"Layer Number", 2, 2, MAX_MODEL_LAYER_NUMBER, 1, 0
+		"Layer Number", 2, 2, MODEL_MAX_LAYER, 1, 0
 	);
 	__ui_group_add(modelGroup, layerNumberRow);
-	spinRowSig(layerNumberRow, on_layer_number_changed);
+	__ui_sig_spin_row(layerNumberRow, on_layer_number_changed);
 
 	/* Units */  
 	unitsRow = __ui_spin_row_new(
-		"Units", 1, 1, MAX_MODEL_UNITS, 1, 0
+		"Units", 1, 1, MODEL_MAX_UNIT, 1, 0
 	);
 	__ui_group_add(modelGroup, unitsRow);
-	spinRowSig(unitsRow, on_units_changed);
+	__ui_sig_spin_row(unitsRow, on_units_changed);
 
 	/* Epochs */
 	epochsRow = __ui_spin_row_new(
-		"Epochs", 1, 1, MAX_MODEL_EPOCHS, 1, 0
+		"Epochs", 1, 1, MODEL_MAX_EPOCH, 1, 0
 	);
 	__ui_group_add(modelGroup, epochsRow);
-	spinRowSig(epochsRow, on_epochs_changed);
+	__ui_sig_spin_row(epochsRow, on_epochs_changed);
 
 	/* Batch Size */
 	batchSizeRow = __ui_combo_row_new(
 		"Batch Size", (const char *[]) {"16", "32", "64", "128", "256", "512", NULL}, 0
 	);
 	__ui_group_add(modelGroup, batchSizeRow);
-	comboRowSig(batchSizeRow, on_batch_size_selected);
+	__ui_sig_combo_row(batchSizeRow, on_batch_size_selected);
 
 	/* Early Stopping */ 
 	earlyStopRow = __ui_switch_row_new("Early Stop");
 	__ui_group_add(modelGroup, earlyStopRow);
-	switchRowSig(earlyStopRow, on_early_stop_switched);
+	__ui_sig_switch_row(earlyStopRow, on_early_stop_switched);
 
 	/* Recurrent Dropout */
 	dropoutRow = __ui_spin_row_new(
 		"Dropout", 0.1, 0.1, 1.0, 0.01, 2
 	);
 	__ui_group_add(modelGroup, dropoutRow);
-	spinRowSig(dropoutRow, on_recurrent_dropout_changed);
+	__ui_sig_spin_row(dropoutRow, on_recurrent_dropout_changed);
 }
 
 /**
@@ -143,8 +143,8 @@ void model(GtkBox *modelBox, gpointer data)
 	gtk_widget_set_size_request(leftBox, 300, -1);
 	gtk_widget_set_size_request(rightBox, 900, -1);
 
-	gtk_widget_set_margin_end(leftBox, BOX_INNER_MARGIN);
-	gtk_widget_set_margin_start(rightBox, BOX_INNER_MARGIN);
+	gtk_widget_set_margin_end(leftBox, __UI_INNER_MARGIN);
+	gtk_widget_set_margin_start(rightBox, __UI_INNER_MARGIN);
 
 	/* Put the dataset selection group. */
 	datasetGroup = __ui_group_new(
@@ -187,7 +187,7 @@ void model(GtkBox *modelBox, gpointer data)
 
 	for (i = 0; i < 2; i++) 
 	{
-		buttonSig(buttons[i], on_model_button_clicked);
+		__ui_sig_button(buttons[i], on_model_button_clicked);
 		gtk_box_append(GTK_BOX(btnBox), buttons[i]);
 	}
 

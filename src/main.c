@@ -40,7 +40,7 @@ void on_activate(GtkApplication *app, gpointer user_data)
 	/* View Switchers */
 
 	viewStack = adw_view_stack_new();
-	visiblePageSig(viewStack, on_visible_page_changed);
+	__ui_sig_visible_page(viewStack, on_visible_page_changed);
 
 	viewSwitcher = adw_view_switcher_new();
 	adw_view_switcher_set_stack(ADW_VIEW_SWITCHER(viewSwitcher), ADW_VIEW_STACK(viewStack));
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 	
 	adw_init();
 	app = gtk_application_new("com.example.SONAR", G_APPLICATION_DEFAULT_FLAGS);
-	activateSig(app, on_activate);
+	__ui_sig_activate(app, on_activate);
 
 	status = g_application_run(G_APPLICATION(app), argc, argv);
 	g_object_unref(app);

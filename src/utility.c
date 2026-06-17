@@ -26,17 +26,17 @@ void logging(const char* buffer, size_t size)
 
 	fd = open(SYSTEM_LOG_PATH, O_WRONLY | O_APPEND);
 	if (fd == -1)
-		syscallError();
+		syscall_error();
 	
 	if (write(fd, buffer, size) == -1)	/* write the logs. */
-		syscallError();
+		syscall_error();
 	
 	/* Make sure that each log is explicitly written. */
 	if (fsync(fd) == -1)
-		syscallError();
+		syscall_error();
 	
 	if (close(fd) == -1)
-		syscallError();
+		syscall_error();
 }
 
 /**
@@ -51,7 +51,7 @@ const char *get_time(const char *format)
 	t = time(NULL);			/* get the time in seconds */
 	tm = localtime(&t);		/* convert it into broken-down */
 	if (tm == NULL)
-		syscallError();
+		syscall_error();
 
 	/* Format the 'tm' struct into buffer. */
 	strftime(buffer, 64, (format != NULL) ? format : "%c", tm);
@@ -65,7 +65,7 @@ const char *get_time(const char *format)
 void set_serial_attrs(int fd, struct termios *tty)
 {
 	if (tcgetattr(fd, tty) == -1)
-		syscallError();
+		syscall_error();
 	
 	/* Set the baud rate of the channel. */
 	cfsetispeed(tty, 
@@ -129,7 +129,7 @@ void set_serial_attrs(int fd, struct termios *tty)
    tty->c_cflag |= CREAD | CLOCAL;
 
    if (tcsetattr(fd, TCSANOW, tty) == -1)
-		syscallError();
+		syscall_error();
 }
 
 /**
@@ -154,7 +154,7 @@ int get_device_nodes(MicChannel channel)
 		dir = opendir(MIC_SERIAL_PATH);	/* open the serial device folder */
 	}
 	if (dir == NULL)
-		syscallError();
+		syscall_error();
 
 	if (channel == MIC_CHANNEL_UART)
 	{
@@ -188,7 +188,7 @@ int get_device_nodes(MicChannel channel)
 		}
 	}
 	if (closedir(dir) == -1)
-		syscallError();
+		syscall_error();
 	
 	return index;
 }
@@ -219,9 +219,9 @@ int open_device_node(MicChannel channel, const char *node)
 
 	fd = open(devicePath, O_RDONLY | O_NONBLOCK); /* read-only channel */	
 	if (fd == -1)
-		syscallError();
+		syscall_error();
 	else
-		printLog("opened the '%s' device node", devicePath);
+		print_log("opened the '%s' device node", devicePath);
 
 	/* Set serial terminal attributes. */
 	set_serial_attrs(fd, &tty);
@@ -248,13 +248,13 @@ void read_device_node(int fd)
 		numRead = read(fd, &magicWord, sizeof(magicWord));
 		if (numRead == sizeof(magicWord))
 		{
-			if (magicWord == MAGIC_WORD)
+			if (magicWord == MIC_MAGIC_WORD)
 			{
 				break;
 			}
 		}
 		else if (numRead == -1 && errno != EAGAIN)
-			syscallError();
+			syscall_error();
 	}
 	
 	totalRead = 0;
@@ -271,16 +271,16 @@ void read_device_node(int fd)
 		if (numRead > 0) 
 		{
 			totalRead += numRead;
-			printLog("read %ld bytes from the node", numRead);
+			print_log("read %ld bytes from the node", numRead);
 		} 
 		else if (numRead == -1) 
 		{
 			if (errno != EAGAIN && errno != EWOULDBLOCK)
-				syscallError(); 
+				syscall_error(); 
 				/* EAGAIN is normal (no data at this cycle) */
 		}
 	}
-	printLog("read total %ld bytes from the associated node", totalRead);
+	print_log("read total %ld bytes from the associated node", totalRead);
 }
 
 /**
@@ -298,7 +298,7 @@ int get_model_datasets(void)
 
 	dir = opendir(MODEL_DATASET_PATH);	/* open the directory */
 	if (dir == NULL)
-		syscallError();
+		syscall_error();
 
 	for (;;) 
 	{
@@ -324,7 +324,7 @@ int get_model_datasets(void)
 		}
 	}
 	if (closedir(dir) == -1)
-		syscallError();
+		syscall_error();
 
 	return index;
 }
@@ -381,19 +381,19 @@ int run_keras_script(const char *script)
 	switch (childPid = fork()) 
 	{
 		case -1: 	/* child-process couldn't be forked */
-			syscallError();
+			syscall_error();
 		
 		case 0: 
 			logFd = open(logFile, O_RDWR | O_TRUNC);
 			if (logFd == -1)
-				syscallError();
+				syscall_error();
 
 			if ((dup2(logFd, STDOUT_FILENO) == -1) ||
 				 (dup2(logFd, STDERR_FILENO) == -1))	/* duplicate the stdout */
-				syscallError();
+				syscall_error();
 
 			if (close(logFd) == -1)
-				syscallError();
+				syscall_error();
 			
 			execl(
 				INTERPRETER, 						/* python 3 interpreter */
@@ -415,7 +415,7 @@ int run_keras_script(const char *script)
 void abort_keras_script(int childPid)
 {
 	if (kill(childPid, SIGKILL) == -1) 
-		syscallError();
+		syscall_error();
 }
 
 /**
@@ -444,23 +444,30 @@ const char *get_keras_script_log(const char *logFile)
 {
 	int fd;
 	struct stat st;
-	static char buffer[MAX_BUFFER_SIZE];
+	char *buffer;;
 
 	fd = open(logFile, O_RDONLY);	/* open for read-only */
 	if (fd == -1)
-		syscallError();
+		syscall_error();
 
 	/* Bother the "stat" structure to get size of logs. */
 	if (fstat(fd, &st) == -1)
-		syscallError();
+		syscall_error();
+
+	/* According to the log file size, allocate the memory 
+	   on the heap and then initialize it with zeros. */
+	buffer = malloc(sizeof(char) * st.st_size);
+	if (buffer == NULL)
+		syscall_error();
+	memset(buffer, 0, st.st_size);
 
 	if (read(fd, buffer, st.st_size) == -1)
-		syscallError();
+		syscall_error();
 	/* Make sure that the log results terminate. */
 	buffer[st.st_size] = '\0';
 
 	if (close(fd) == -1)
-		syscallError();
+		syscall_error();
 
 	return buffer;
 }

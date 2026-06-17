@@ -21,17 +21,15 @@
 
 ShumateMarkerLayer *gpsMarkerLayer = {0};
 ShumateMap *gpsMap = {0};
-GtkWidget *gpsModuleRows[11];	/* module, time, latitude, longitude, quality,
-											num of sat, altitude, status, speed, course,
-											date */
-GPSButton gpsButton;
+GtkWidget *gpsModuleRows[GPS_OUTPUT_ROWS];	
+GpsButton gpsButton;
 guint gpsTimeout = 0;
 
 /**
  * Put the markers at specific locations in the map.
  */
 void gps_map_area_markers(ShumateMarkerLayer *gpsMarkerLayer, double lat, 
-								  double lon)
+						  double lon)
 {
 	GtkWidget *image;
 	ShumateMarker *marker;
@@ -78,8 +76,7 @@ void gps_map_area(GtkBox *rightBox, gpointer data)
 	shumate_map_add_layer(gpsMap, SHUMATE_LAYER(gpsMarkerLayer));
 
 	/* Set the map area expandable as possible. */
-	gtk_widget_set_size_request(GTK_WIDGET(simpleMap), 
-		900, -1);
+	gtk_widget_set_size_request(GTK_WIDGET(simpleMap), 900, -1);
 	gtk_widget_set_hexpand(GTK_WIDGET(simpleMap), TRUE);
 	gtk_widget_set_vexpand(GTK_WIDGET(simpleMap), TRUE);
 
@@ -109,8 +106,8 @@ void gps_map(GtkBox *mapBox, gpointer data)
 	gtk_widget_set_hexpand(rightBox, TRUE);
 	gtk_widget_set_vexpand(rightBox, TRUE);
 
-	gtk_widget_set_margin_end(leftBox, BOX_INNER_MARGIN);
-	gtk_widget_set_margin_start(rightBox, BOX_INNER_MARGIN);
+	gtk_widget_set_margin_end(leftBox, __UI_INNER_MARGIN);
+	gtk_widget_set_margin_start(rightBox, __UI_INNER_MARGIN);
 
 	gtk_widget_set_size_request(leftBox, 300, -1);
 
@@ -161,14 +158,14 @@ void gps_map(GtkBox *mapBox, gpointer data)
 	gpsModuleRows[10] = __ui_action_row_new("Date", "Null");
 
 	/* Put the outputs into group. */
-	for (i = 1; i < 11; i++)
+	for (i = 1; i < GPS_OUTPUT_ROWS; i++)
 	{
 		__ui_group_add(GPSResGroup, gpsModuleRows[i]);
 	}
 
 	/* Put the required buttons. */
 	startBtn = __ui_button_new("Start", "suggested-action");
-	buttonSig(startBtn, on_gps_button_clicked);
+	__ui_sig_button(startBtn, on_gps_button_clicked);
 	
 	/* Layout */
 	gtk_box_append(GTK_BOX(propertyBox), GPSModuleGroup);

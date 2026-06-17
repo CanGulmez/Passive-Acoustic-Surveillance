@@ -2,7 +2,7 @@
  ******************************************************************************
  * @file 	navigation.c
  * @author 	Can Gulmez
- * @brief 	Navigation system of passive acoustic surveillance.
+ * @brief 	Navigation sensor integration of passive acoustic surveillance.
  * 
  ******************************************************************************
  * @attention
@@ -23,7 +23,7 @@ NavAccel navAccel = NAV_ACCEL_UNDEF;
 NavGyro navGyro = NAV_ACCEL_UNDEF;
 GtkWidget *navPlotArea;
 NavButton navButton;
-GtkWidget *navSensorRows[8];	/* module, accel-status, accel-output,
+GtkWidget *navSensorRows[NAV_SENSOR_ROW]; /* module, accel-status, accel-output,
 											gyro-status, gyro-output, magnet-status,
 											magnet-output, temp */
 guint navTimeout = 0;
@@ -119,8 +119,8 @@ void navigation(GtkBox *imuBox, gpointer data)
 
 	gtk_widget_set_size_request(leftBox, 300, -1);
 
-	gtk_widget_set_margin_end(leftBox, BOX_INNER_MARGIN);
-	gtk_widget_set_margin_start(rightBox, BOX_INNER_MARGIN);
+	gtk_widget_set_margin_end(leftBox, __UI_INNER_MARGIN);
+	gtk_widget_set_margin_start(rightBox, __UI_INNER_MARGIN);
 
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolledWin), 
 		GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
@@ -136,7 +136,7 @@ void navigation(GtkBox *imuBox, gpointer data)
 
 	/* Put the required buttons. */
 	startBtn = __ui_button_new("Start", "suggested-action");
-	buttonSig(startBtn, on_nav_button_clicked);
+	__ui_sig_button(startBtn, on_nav_button_clicked);
 
 	/* Put the plot areas. */
 	navPlotArea = gtk_drawing_area_new();

@@ -47,8 +47,12 @@ extern "C" {
 #include <check.h>
 #include <shumate/shumate.h>
 #include <sqlite3.h>
-#include <cairo/cairo.h>
-#include <adwaita.h>
+
+#include "microphone.h"
+#include "model.h"
+#include "navigation.h"
+#include "gps-map.h"
+#include "headers.h"
 
 // #include "../lib/include/alat.h"
 #include "../lib/include/dsp.h"
@@ -66,63 +70,12 @@ extern "C" {
 #define DATA_SIZE							1024
 #endif
 
-#define SQL_SIZE							20480
-#define GPS_SIZE							64
 #define INTERPRETER							"/bin/python3"
 #define SYSTEM_LOG_PATH						"./logs/system.log"
-#define MAGIC_WORD							0xDEADBEEF
 
-#define DB_SENSOR_DATA_PATH					"./db/sensor-data.db"
-#define DB_SENSOR_DATA_TABLE				"SensorData"
-
-#define MAX_COMM_CHANNEL					3
-#define MAX_BUFFER_SIZE						(BUFFER_SIZE * 200)
-#define MAX_DEVICE_NODE						64
-#define MAX_BALLISTIC_LAYER					10
-#define MAX_LAYER_THICKNESS					200
-#define MAX_MODEL_DATASET					128
-#define MAX_MODEL_UNITS						1024
-#define MAX_MODEL_EPOCHS					100
-#define MAX_MODEL_LAYER_NUMBER				48
-#define MAX_CAMERA_FILE						16	
-
-#define BUTTON_WIDTH						100 	/* pixel */	
-#define BUTTON_HEIGHT						40  	/* pixel */	
-#define PAGE_BOX_MARGIN_WIDTH				20  	/* pixel */	
-#define PAGE_BOX_MARGIN_HEIGHT				10  	/* pixel */	
-#define BOX_INNER_MARGIN					10  	/* pixel */	
-#define BOX_SPACING							25  	/* pixel */		
-
-#define MIC_SERIAL_PATH						"/dev/"
-#define MIC_WIFI_PATH						"/sys/class/net/"
-#define MIC_UART_PREFIX						"ttyS"
-#define MIC_USB_PREFIX						"ttyUSB"
-#define MIC_WIFI_PREFIX						"wl"
-#define MIC_PLOT_MARGIN						40		/* pixel */
-#define MIC_PLOT_GRID						20		/* pixel */
-#define MIC_SIGNAL_NUM						15
-#define MIC_COUNT							4
-#define MIC_RADIUS							0.1		/* meter */
-#define MIC_SAMPLING_FREQ					12000	/* Hz */
-
-#define MODEL_DATASET_PATH					"./datasets/"
-#define MODEL_DATASET_SUFFIX				".csv"
-#define MODEL_FIT_SCRIPT					"./scripts/acoustic_model.py"
-#define MODEL_LOG_PATH						"./logs/keras-output.log"
-
-#define NAV_PLOT_MARGIN						0		/* pixel */
-#define NAV_PLOT_GRID						20		/* pixel */
-#define NAV_PLOT_CAXIS						220		/* pixel */
-#define NAV_PLOT_VAXIS						280		/* pixel */
-#define NAV_FLAT_GRAVITY					9.81	/* m/s^2 */
-#define NAV_ACCEL_NOISE						1.0		/* m/s^2 */		
-#define NAV_GYRO_NOISE						NAV_ACCEL_NOISE				
-#define NAV_IMU_SENSOR						"LSM6DALTR (ST)"
-
-#define GPS_ZOOM_LEVEL						12.0
-#define GPS_INIT_LAT						41.008
-#define GPS_INIT_LONG						28.9784
-#define GPS_MODULE							"GY-NEO6MV2"
+#define DB_SENSOR_PATH						"./db/sensor-data.db"
+#define DB_SENSOR_TABLE						"SensorData"
+#define DB_SQL_LENGTH						10240
 
 #define TIMEOUT_DEVICE_READ					2000	/* ms */
 #define TIMEOUT_MODEL_LOG					2000	/* ms */
@@ -130,46 +83,14 @@ extern "C" {
 #define TIMEOUT_NAV_UPDATE					2000	/* ms */ 
 #define TIMEOUT_GPS_UPDATE					2000	/* ms */
 
-#define HEADER_SYSTEM_DEVELOPER				"Can Gulmez"
-#define HEADER_SYSTEM_NAME					"Passive Acoustic Surveillance"
-#define HEADER_SYSTEM_VERSION				"1.0.0"
-#define HEADER_SYSTEM_LICENSE				GTK_LICENSE_MIT_X11
-#define HEADER_SYSTEM_WEBSITE				"https://github.com/CanGulmez/Passive-Acoustic-Surveillance"
-#define HEADER_SYSTEM_ICON					"weather-clear"
-
 /* Attribute and built-in macro definitions  */
 
 #define PACKED								__attribute__((packed, aligned(1)))
-#define NORETURN							__attribute__((noreturn))
-#define DEPRECATED							__attribute__((deprecated))
-#define ALIGNED(n)							__attribute__((aligned(n)))
-#define SECTION(s)							__attribute__((section(s)))
-#define ADDRESS0()							__builtin_return_address(0)
-#define UNREACHABLE()						__builtin_unreachable()
-
-/* Shorthands for GTK objects */
-
-#define activateSig(app, callback) (g_signal_connect(app, "activate", G_CALLBACK(callback), NULL))
-#define visiblePageSig(page, callback) (g_signal_connect(page, "notify::visible-child", G_CALLBACK(callback), NULL))
-#define comboRowSig(row, callback) (g_signal_connect(row, "notify::selected", G_CALLBACK(callback), NULL))
-#define spinRowSig(row, callback) (g_signal_connect(row, "notify::value", G_CALLBACK(callback), NULL))
-#define switchRowSig(row, callback) (g_signal_connect(row, "notify::active", G_CALLBACK(callback), NULL))
-#define entryRowSig(row, callback) (g_signal_connect(row, "notify::text", G_CALLBACK(callback), NULL))
-#define buttonSig(button, callback) (g_signal_connect(button, "clicked", G_CALLBACK(callback), NULL))
-#define comboRowSigWithData(row, callback, data) (g_signal_connect(row, "notify::selected", G_CALLBACK(callback), data))
-#define spinRowSigWithData(row, callback, data) (g_signal_connect(row, "notify::value", G_CALLBACK(callback), data))
-#define buttonSigWithData(button, callback, data) (g_signal_connect(button, "clicked", G_CALLBACK(callback), data))
-#define realizeSig(widget, callback) (g_signal_connect(widget, "realize", G_CALLBACK(callback), NULL))
-#define renderSig(widget, callback) (g_signal_connect(widget, "render", G_CALLBACK(callback), NULL))
-#define pressedSig(widget, callback) (g_signal_connect(widget, "pressed", G_CALLBACK(callback), NULL))
-#define releasedSig(widget, callback) (g_signal_connect(widget, "released", G_CALLBACK(callback), NULL))
-#define motionSig(widget, callback) (g_signal_connect(widget, "motion", G_CALLBACK(callback), NULL))
-
-#define cmp(fstring, sstring) (strcmp(fstring, sstring) == 0)
+#define cmp(fstring, sstring) 				(strcmp(fstring, sstring) == 0)
 
 /* Maro function definitions */
 
-#define printLog(msg, ...)													\
+#define print_log(msg, ...)													\
 do {																		\
 	char buffer[BUFFER_SIZE];												\
 																			\
@@ -180,29 +101,26 @@ do {																		\
 	printf("%s", buffer);		/* print the log buffer to "stdout" */		\
 } while (0)
 
-#define syscallError()														\
+#define syscall_error()														\
 do {                                      									\
 	fprintf(stderr, "\n*** %s (%s::%d in %s()) ***\n", strerror(errno),		\
 			  __FILE__, __LINE__, __func__);		   	 					\
 	exit(EXIT_FAILURE);	/* exit with failure status */						\
 } while (0)
 
-#define customError(errmsg, ...) 											\
+#define custom_error(errmsg, ...) 											\
 do {                            											\
 	fprintf(stderr, "\n*** " errmsg " (%s::%d in %s()) ***\n",				\
 			  ##__VA_ARGS__, __FILE__, __LINE__, __func__);					\
 	exit(EXIT_FAILURE);	/* exit with failure status */						\
 } while (0)
 
-#define dbError(db)															\
+#define db_error(db)														\
 do {																		\
 	fprintf(stderr, "\n*** %s (%s::%d in %s()) ***\n",						\
 			  sqlite3_errmsg(db), __FILE__, __LINE__, __func__);			\
 	exit(EXIT_FAILURE);	/* exit with failure status */						\
 } while (0)
-
-/*****************************************************************************/
-/*****************************************************************************/
 
 /* General enumerations */
 
@@ -214,179 +132,7 @@ typedef enum _CurrentPage
 	PAGE_GPS_MAP
 } CurrentPage;
 
-typedef enum _HeaderButton 
-{
-	HEADER_BUTTON_NEW = 1,
-	HEADER_BUTTON_SAVE_AS,
-	HEADER_BUTTON_TRASH,
-	HEADER_BUTTON_SYSTEM,
-	HEADER_BUTTON_PREFS,
-	HEADER_BUTTON_ABOUT
-} HeaderButton;
-
-/* Microphone enumerations */
-
-typedef enum _MicChannel
-{
-	MIC_CHANNEL_UART = 1,
-	MIC_CHANNEL_USB,
-	MIC_CHANNEL_WIFI
-} MicChannel;
-
-typedef enum _MicBaudRate
-{
-	MIC_BAUD_RATE_9600 = 1,
-	MIC_BAUD_RATE_19200,
-	MIC_BAUD_RATE_38400,
-	MIC_BAUD_RATE_57600,
-	MIC_BAUD_RATE_115200
-} MicBaudRate;
-
-typedef enum _MicDataBits
-{
-	MIC_DATA_BITS_5 = 1,
-	MIC_DATA_BITS_6,
-	MIC_DATA_BITS_7,
-	MIC_DATA_BITS_8
-} MicDataBits;
-
-typedef enum _MicParityBit
-{
-	MIC_PARITY_BIT_NONE = 1,
-	MIC_PARITY_BIT_EVEN,
-	MIC_PARITY_BIT_ODD
-} MicParityBit;
-
-typedef enum _MicStopBits
-{
-	MIC_STOP_BITS_1 = 1,
-	MIC_STOP_BITS_2
-} MicStopBits;
-
-typedef enum _MicFlowControl
-{
-	MIC_FLOW_CNTL_NO = 1,
-	MIC_FLOW_CNTL_HW,
-	MIC_FLOW_CNTL_SW
-} MicFlowCntl;
-
-typedef enum _MicButton
-{
-	MIC_BUTTON_START = 1,
-	MIC_BUTTON_ANALYZE,
-	MIC_BUTTON_STOP
-} MicButton;
-
-/* AI model enumerations */
-
-typedef enum _ModelLayerType
-{
-	MODEL_LAYER_TYPE_LSTM = 1,
-	MODEL_LAYER_TYPE_GRU
-} ModelLayerType;
-
-typedef enum _ModelBatchSize
-{
-	MODEL_BATCH_SIZE_16 = 1,
-	MODEL_BATCH_SIZE_32,
-	MODEL_BATCH_SIZE_64,
-	MODEL_BATCH_SIZE_128,
-	MODEL_BATCH_SIZE_256,
-	MODEL_BATCH_SIZE_512
-} ModelBatchSize;
-
-typedef enum _ModelEarlyStop
-{
-	MODEL_EARLY_STOP_TRUE = 1,
-	MODEL_EARLY_STOP_FALSE
-} ModelEarlyStop;
-
-typedef enum _ModelButton
-{
-	MODEL_BUTTON_FIT = 1,
-	MODEL_BUTTON_ABORT,
-	MODEL_BUTTON_EVALUATE,
-	MODEL_BUTTON_PREDICT
-} ModelButton;
-
-/* Navigation enumerations */
-
-typedef enum _NavAccel
-{
-	NAV_ACCEL_X_PLUS = 1,
-	NAV_ACCEL_X_MINUS,
-	NAV_ACCEL_Y_PLUS,
-	NAV_ACCEL_Y_MINUS,
-	NAV_ACCEL_Z_PLUS,
-	NAV_ACCEL_Z_MINUS,
-	NAV_ACCEL_UNDEF
-} NavAccel;
-
-typedef enum _NavGyro
-{
-	NAV_GYRO_X_PLUS = 1,
-	NAV_GYRO_X_MINUS,
-	NAV_GYRO_Y_PLUS,
-	NAV_GYRO_Y_MINUS,
-	NAV_GYRO_Z_PLUS,
-	NAV_GYRO_Z_MINUS,
-	NAV_GYRO_UNDEF
-} NavGyro;
-
-typedef enum _NavButton
-{
-	NAV_BUTTON_START = 1
-} NavButton;
-
-/* GPS map enumerations */
-
-typedef enum _GPSButton
-{
-	GPS_BUTTON_START = 1
-} GPSButton;
-
-/*****************************************************************************/
-/*****************************************************************************/
-
-/* Global structures */
-
-// typedef struct PACKED _PayloadData
-// {
-// 	/* The microphone sensors payload data  */
-
-// 	int8_t micNorth[DATA_SIZE];
-// 	int8_t micNorthEast[DATA_SIZE];
-// 	int8_t micEast[DATA_SIZE];
-// 	int8_t micSouthEast[DATA_SIZE];
-// 	int8_t micSouth[DATA_SIZE];
-// 	int8_t micSouthWest[DATA_SIZE];
-// 	int8_t micWest[DATA_SIZE];
-// 	int8_t micNorthWest[DATA_SIZE];
-
-// 	/* The GPS module payload data */
-
-// 	char gpsUTCTime[GPS_SIZE];
-// 	char gpsLatitude[GPS_SIZE];
-// 	char gpsLongitude[GPS_SIZE];
-// 	char gpsQuality[GPS_SIZE];
-// 	char gpsNumSat[GPS_SIZE];
-// 	char gpsAltitude[GPS_SIZE];
-// 	char gpsStatus[GPS_SIZE];
-// 	char gpsSpeed[GPS_SIZE];			/* knots */
-// 	char gpsCourse[GPS_SIZE];			/* degrees */
-// 	char gpsDate[GPS_SIZE];
-
-// 	/* The IMU sensor payload data */
-	
-// 	float imuAccelX;						/* m/s^2 */
-// 	float imuAccelY;						/* m/s^2 */
-// 	float imuAccelZ;						/* m/s^2 */
-// 	float imuGyroX;							/* dps */
-// 	float imuGyroY;							/* dps */
-// 	float imuGyroZ;							/* dps */
-// 	float imuTemp;							/* C */ 
-// } PayloadData;
-
+/* Global and structures */
 typedef struct PACKED _PayloadData
 {
 	/* microphone sensors payload data */
@@ -404,70 +150,10 @@ typedef struct PACKED _PayloadData
 
 } PayloadData;
 
-/*****************************************************************************/
-/*****************************************************************************/
-
 /* General shared widgets and variables */
 
-extern HeaderButton headerButton;
 extern CurrentPage currentPage;
 extern PayloadData payloadData;
-
-/* Microphone shared widgets and variables */
-
-extern char *micDeviceNodes[MAX_DEVICE_NODE];
-extern GtkWidget *micUARTGroup;
-extern GtkWidget *micUSBGroup;
-extern GtkWidget *micWiFiGroup;
-extern GtkWidget *micSignalRows[MIC_SIGNAL_NUM];
-extern GtkWidget *micCarPlot;
-extern GtkWidget *micPolarPlot;
-extern MicChannel micChannel;
-extern char *micDeviceNode;
-extern MicBaudRate micBaudRate;
-extern MicDataBits micDataBits;
-extern MicParityBit micParityBit;
-extern MicStopBits micStopBits;
-extern MicFlowCntl micFlowCntl;
-extern guint micTimeout;
-extern guint recordTimeout;
-extern MicButton micButton;
-
-/* AI model shared widgets and variables */
-
-extern char *modelDatasets[MAX_MODEL_DATASET];
-extern guint modelFitPid;
-extern char *modelDataset;
-extern char *modelKerasLog;
-extern guint modelTimeout;
-extern GtkWidget *modelTextView;
-extern GtkTextBuffer *modelTextBuffer;
-extern ModelLayerType modelLayerType;
-extern guint modelLayerNumber;
-extern guint modelUnits;
-extern guint modelEpochs;
-extern gdouble modelDropout;
-extern ModelBatchSize modelBatchSize;
-extern ModelEarlyStop modelEarlyStop;
-extern char *modelOutputName;
-extern ModelButton modelButton;
-
-/* GPS map shared widgets and variables */
-
-extern ShumateMarkerLayer *gpsMarkerLayer;
-extern ShumateMap *gpsMap;
-extern GPSButton gpsButton;
-extern guint gpsTimeout;
-extern GtkWidget *gpsModuleRows[11];
-
-/* Nagivation shared widgets and variables */
-
-extern NavAccel navAccel;
-extern NavGyro navGyro;
-extern GtkWidget *navPlotArea;
-extern NavButton navButton;
-extern GtkWidget *navSensorRows[8];
-extern guint navTimeout;
 
 /* Signal analysis shared widgets and variables */
 
@@ -475,168 +161,53 @@ extern DspTime sigSamples[MIC_COUNT];
 extern DspTime sigBeamformed;
 extern guint sigVolumest;
 
-/*****************************************************************************/
-/*****************************************************************************/
-
-/* Microphone function prototypes */
-
-extern void microphone(GtkBox *micBox, gpointer data);
-extern void mic_row_device_node(GtkWidget *propertyGroup);						
-extern void mic_row_baud_rate(GtkWidget *propertyGroup);	
-extern void mic_row_data_bits(GtkWidget *propertyGroup);	
-extern void mic_row_parity_bit(GtkWidget *propertyGroup);
-extern void mic_row_stop_bits(GtkWidget *propertyGroup);	
-extern void mic_row_flow_control(GtkWidget *propertyGroup);
-extern void mic_group_UART(gpointer data);
-extern void mic_group_USB(gpointer data);
-extern void mic_group_WiFi(gpointer data);
-extern void mic_signal_analysis(GtkWidget *analysisGroup);
-extern void mic_plot_car(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer data);
-extern void mic_plot_car_frame(cairo_t *cr, int width, int height);	
-extern void mic_plot_car_grid(cairo_t *cr, int width, int height);	
-extern void mic_plot_car_label_x(cairo_t *cr, int width, int height);		
-extern void mic_plot_car_label_y(cairo_t *cr, int width, int height);	
-extern void mic_plot_car_data(cairo_t *cr, int width, int height);
-extern void mic_plot_polar(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer data);
-extern void mic_plot_polar_frame(cairo_t *cr, int width, int height);
-extern void mic_plot_polar_label(cairo_t *cr, int width, int height);
-extern void mic_plot_polar_fill(cairo_t *cr, int width, int height, double start, double end);
-extern void mic_plot_polar_sector(cairo_t *cr, int width, int height, int mic);
-
-/* AI Model function prototypes */
-
-extern void model(GtkBox *modelBox, gpointer data);
-extern void model_group_dataset(GtkWidget *datasetGroup);
-extern void model_group_model(GtkWidget *modelGroup);
-
-/* Navigation function prototypes */
-
-extern void navigation(GtkBox *imuBox, gpointer data);
-extern GtkWidget *nav_info_group(gpointer data);
-extern GtkWidget *nav_accel_group(gpointer data);
-extern GtkWidget *nav_gyro_group(gpointer data);
-extern GtkWidget *nav_magnet_group(gpointer data);
-extern GtkWidget *nav_temp_group(gpointer data);
-extern void nav_plot_area_grid(cairo_t *cr, int width, int height);
-extern void nav_plot_area_device(cairo_t *cr, int width, int height);
-extern void nav_plot_area_axes(cairo_t *cr, int width, int height);
-extern void nav_plot_area_labels(cairo_t *cr, int width, int height);
-extern void nav_plot_area_accel(cairo_t *cr, int width, int height, NavAccel accel);
-extern void nav_plot_area_gyro(cairo_t *cr, int width, int height, NavGyro gyro);
-extern void nav_plot_area(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer data);
-
-/* GPS map function prototypes */
-
-extern void gps_map(GtkBox *mapBox, gpointer data);
-extern void gps_map_area(GtkBox *rightBox, gpointer data);
-extern void gps_map_area_markers(ShumateMarkerLayer *gpsMarkerLayer, double lat, double lon);
-
 /* Database function prototypes */
 
-extern sqlite3 *db_open(const char *dbPath);
-extern void db_create_table(sqlite3 *db);
-extern void db_bind_data(sqlite3 *db);
-extern void db_query_data(sqlite3 *db);
-extern void db_close(sqlite3 *db);
+sqlite3 *db_open(const char *dbPath);
+void db_create_table(sqlite3 *db);
+void db_bind_data(sqlite3 *db);
+void db_query_data(sqlite3 *db);
+void db_close(sqlite3 *db);
 
 /* Common utility function prototypes */
 
-extern void logging(const char* buffer, size_t size);
-extern const char *get_time(const char *format);
-extern void set_serial_attrs(int fd, struct termios *tty);
-extern int get_device_nodes(MicChannel channel);
-extern int open_device_node(MicChannel channel, const char *node);
-extern void read_device_node(int fd);
-extern int get_model_datasets(void);
-extern int run_keras_script(const char *script);
-extern void abort_keras_script(int childPid);
-extern int is_keras_script_running(int childPid);
-extern const char *get_keras_script_log(const char *logFile);
+void logging(const char* buffer, size_t size);
+const char *get_time(const char *format);
+void set_serial_attrs(int fd, struct termios *tty);
+int get_device_nodes(MicChannel channel);
+int open_device_node(MicChannel channel, const char *node);
+void read_device_node(int fd);
+int get_model_datasets(void);
+int run_keras_script(const char *script);
+void abort_keras_script(int childPid);
+int is_keras_script_running(int childPid);
+const char *get_keras_script_log(const char *logFile);
 
 /* Timeout utility function prototypes */
 
-extern gboolean device_node_timeout(gpointer data);
-extern gboolean model_keras_log_timeout(gpointer data);
-extern gboolean db_record_timeout(gpointer data);
-extern gboolean nav_update_timeout(gpointer data);
-extern gboolean gps_update_timeout(gpointer data);
-
-/* Generic component function prototypes */
-
-extern GtkWidget *__ui_page_box_new(void);
-extern GtkWidget *__ui_header_button_new(const char *icon, const char *tooltip);
-extern guint __ui_row_selected(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
-extern guint __ui_row_changed(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
-extern gboolean __ui_row_switched(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
-extern const char *__ui_row_texted(GObject *gobject, GParamSpec *pspec, gpointer data, const char *func);
-extern GtkWidget *__ui_action_row_new(const char *title, const char *label);
-extern void __ui_action_row_update(GtkWidget *row, const char *label);
-extern GtkWidget *__ui_combo_row_new(const char *title, const char **strings, guint index);
-extern GtkWidget *__ui_spin_row_new(const char *title, double value, double lower, double upper, double increment, guint digits);
-extern GtkWidget *__ui_switch_row_new(const char *title);
-extern GtkWidget *__ui_entry_row_new(const char *title);
-extern GtkWidget *__ui_group_new(const char *title, const char *description);
-extern void __ui_group_add(GtkWidget *group, GtkWidget *row);
-extern void __ui_group_remove(GtkWidget *group, GtkWidget *row);
-extern GtkWidget *__ui_button_new(const char *label, const char *action);
+gboolean device_node_timeout(gpointer data);
+gboolean model_keras_log_timeout(gpointer data);
+gboolean db_record_timeout(gpointer data);
+gboolean nav_update_timeout(gpointer data);
+gboolean gps_update_timeout(gpointer data);
 
 /* Signal analysis function prototypes */
 
-extern void prepare_samples(void);
-extern double find_dominant_freq(void);
-extern int calculate_arrival(double freq);
-extern DspTime do_beamforming(double freq, double arrival);
-extern void make_signal_analysis(const DspTime *beamformed, int arrival);
-extern int select_sector(void);
-extern NavAccel accel_direction(void);
-extern NavGyro gyro_rotation(void);
-extern void update_nav_data(void);
-extern void update_gps_data(void);
-
-/* Header button function prototypes */
-extern void header_system_window(void);
-extern void header_preferences_window(void);
-extern void header_about_me_window(void);
-
-/*****************************************************************************/
-/*****************************************************************************/
+void prepare_samples(void);
+double find_dominant_freq(void);
+int calculate_arrival(double freq);
+DspTime do_beamforming(double freq, double arrival);
+void make_signal_analysis(const DspTime *beamformed, int arrival);
+int select_sector(void);
+NavAccel accel_direction(void);
+NavGyro gyro_rotation(void);
+void update_nav_data(void);
+void update_gps_data(void);
 
 /* General signal handler prototypes */
 
-extern void on_visible_page_changed(GObject *object, GParamSpec *pspec, gpointer data);
-extern void on_header_button_clicked(GtkButton *button, gpointer data);
-
-/* Microphone signal handler prototypes */
-
-extern void on_comm_channel_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_device_node_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_baud_rate_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_data_bits_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_parity_bit_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_stop_bits_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_flow_control_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_mic_button_clicked(GtkButton *button, gpointer data);
-
-/* AI model signal handler prototypes */
-
-extern void on_dataset_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_layer_type_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_recurrent_dropout_changed(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_units_changed(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_batch_size_selected(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_epochs_changed(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_layer_number_changed(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_early_stop_switched(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_output_model_texted(GObject *gobject, GParamSpec *pspec, gpointer data);
-extern void on_model_button_clicked(GtkButton *button, gpointer data);
-
-/* Navigation signal handler prototypes */
-
-extern void on_nav_button_clicked(GtkButton *button, gpointer data);
-
-/* GPS map signal handler prototypes */
-
-extern void on_gps_button_clicked(GtkButton *button, gpointer data);
+void on_visible_page_changed(GObject *object, GParamSpec *pspec, gpointer data);
+void on_header_button_clicked(GtkButton *button, gpointer data);
 
 #ifdef __cplusplus
 }

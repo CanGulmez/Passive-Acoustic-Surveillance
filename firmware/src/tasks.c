@@ -200,7 +200,7 @@ void taskIMUSensor(void *pvParams)
 	for (;;)
 	{
 		/* Give some period. */
-		vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(100));
+		vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(1000));
 
 		/* Take the payload mutex to update the payload data. */
 		if (xSemaphoreTake(payloadMutex, portMAX_DELAY))

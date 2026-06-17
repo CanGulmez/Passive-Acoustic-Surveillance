@@ -30,7 +30,7 @@ void on_visible_page_changed(GObject *object, GParamSpec *pspec, gpointer data)
 	
 	stack = ADW_VIEW_STACK(object);
 	page = adw_view_stack_get_visible_child_name(stack);
-	printLog("%s(): '%s'", __func__, page);
+	print_log("%s(): '%s'", __func__, page);
 	
 	if (cmp(page, "microphone"))
 	{
@@ -50,7 +50,7 @@ void on_visible_page_changed(GObject *object, GParamSpec *pspec, gpointer data)
 	}
 	else
 	{
-		customError("Unknown page: '%s'", page);
+		custom_error("Unknown page: '%s'", page);
 	}
 }
 
@@ -59,7 +59,7 @@ void on_header_button_clicked(GtkButton *button, gpointer data)
 	const char *icon;
 
 	icon = gtk_button_get_icon_name(button);
-	printLog("%s(): '%s'", __func__, icon);
+	print_log("%s(): '%s'", __func__, icon);
 
 	if (cmp(icon, "list-add-symbolic"))
 	{
@@ -87,7 +87,7 @@ void on_header_button_clicked(GtkButton *button, gpointer data)
 	}
 	else
 	{
-		customError("Unknown header bar button: '%s'", icon);
+		custom_error("Unknown header bar button: '%s'", icon);
 	}
 
 	/* Take the required actions for clicked header buttons. */
@@ -107,7 +107,7 @@ void on_comm_channel_selected(GObject *gobject, GParamSpec *pspec, gpointer data
 	GtkWidget *child;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __ui_row_selected(gobject, pspec, data, __func__);
+	selected = __ui_combo_row_selected(gobject, pspec, data, __func__);
 
 	switch (selected)  
 	{
@@ -115,7 +115,7 @@ void on_comm_channel_selected(GObject *gobject, GParamSpec *pspec, gpointer data
 		case 1:	micChannel = MIC_CHANNEL_USB;		break;
 		case 2:	micChannel = MIC_CHANNEL_WIFI;	break;
 		default:	
-			customError("Unknown combo row selection");
+			custom_error("Unknown combo row selection");
 	}
 	numDev = get_device_nodes(micChannel);
 	micDeviceNodes[numDev] = NULL;	/* NULL-terminating for GTK list */
@@ -155,7 +155,7 @@ void on_device_node_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	selected = adw_combo_row_get_selected(comboRow);
 	mod = adw_combo_row_get_model(comboRow);
 	item = (char *) gtk_string_list_get_string(GTK_STRING_LIST(mod), selected);
-	printLog("%s(): '%s'", __func__, item);
+	print_log("%s(): '%s'", __func__, item);
 
 	/* Clear the current device node and fill it with new */
 	micDeviceNode = item;
@@ -166,7 +166,7 @@ void on_baud_rate_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __ui_row_selected(gobject, pspec, data, __func__);
+	selected = __ui_combo_row_selected(gobject, pspec, data, __func__);
 
 	switch (selected) 
 	{
@@ -176,7 +176,7 @@ void on_baud_rate_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 		case 3:	micBaudRate = MIC_BAUD_RATE_57600;		break;
 		case 4:	micBaudRate = MIC_BAUD_RATE_115200;		break;
 		default:	
-			customError("Unknown combo row selection");
+			custom_error("Unknown combo row selection");
 	}
 }
 
@@ -185,7 +185,7 @@ void on_data_bits_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __ui_row_selected(gobject, pspec, data, __func__);
+	selected = __ui_combo_row_selected(gobject, pspec, data, __func__);
 
 	switch (selected) 
 	{
@@ -194,7 +194,7 @@ void on_data_bits_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 		case 2:	micDataBits = MIC_DATA_BITS_7;	break;
 		case 3:	micDataBits = MIC_DATA_BITS_8;	break;
 		default:	
-			customError("Unknown combo row selection");
+			custom_error("Unknown combo row selection");
 	}
 }
 
@@ -203,7 +203,7 @@ void on_parity_bit_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __ui_row_selected(gobject, pspec, data, __func__);
+	selected = __ui_combo_row_selected(gobject, pspec, data, __func__);
 
 	switch (selected) 
 	{
@@ -211,7 +211,7 @@ void on_parity_bit_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 		case 1:	micParityBit = MIC_PARITY_BIT_EVEN;		break;
 		case 2:	micParityBit = MIC_PARITY_BIT_ODD;		break;
 		default:
-			customError("Unknown combo row selection");
+			custom_error("Unknown combo row selection");
 	}
 }
 
@@ -220,14 +220,14 @@ void on_stop_bits_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __ui_row_selected(gobject, pspec, data, __func__);
+	selected = __ui_combo_row_selected(gobject, pspec, data, __func__);
 
 	switch (selected) 
 	{
 		case 0:	micStopBits = MIC_STOP_BITS_1;	break;
 		case 1:	micStopBits = MIC_STOP_BITS_2;	break;
 		default:
-			customError("Unknown combo row selection");
+			custom_error("Unknown combo row selection");
 	}
 }
 
@@ -236,7 +236,7 @@ void on_flow_control_selected(GObject *gobject, GParamSpec *pspec, gpointer data
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __ui_row_selected(gobject, pspec, data, __func__);
+	selected = __ui_combo_row_selected(gobject, pspec, data, __func__);
 
 	switch (selected) 
 	{
@@ -244,7 +244,7 @@ void on_flow_control_selected(GObject *gobject, GParamSpec *pspec, gpointer data
 		case 1:	micFlowCntl = MIC_FLOW_CNTL_HW;	break;
 		case 2:	micFlowCntl = MIC_FLOW_CNTL_SW;	break;
 		default:	
-			customError("Unknown combo row selection");	
+			custom_error("Unknown combo row selection");	
 	}
 }
 
@@ -262,7 +262,7 @@ void on_dataset_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	selected = adw_combo_row_get_selected(comboRow);
 	mod = adw_combo_row_get_model(comboRow);
 	item = (char *) gtk_string_list_get_string(GTK_STRING_LIST(mod), selected);
-	printLog("%s(): '%s'", __func__, item);
+	print_log("%s(): '%s'", __func__, item);
 
 	/* Clear the current device node and fill it with new. */
 	modelDataset = item;
@@ -273,14 +273,14 @@ void on_layer_type_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __ui_row_selected(gobject, pspec, data, __func__);
+	selected = __ui_combo_row_selected(gobject, pspec, data, __func__);
 
 	switch (selected) 
 	{
 		case 0:	modelLayerType = MODEL_LAYER_TYPE_LSTM;	break;
 		case 1:	modelLayerType = MODEL_LAYER_TYPE_GRU;		break;
 		default:
-			customError("Unknown combo row selection");
+			custom_error("Unknown combo row selection");
 	}
 }
 
@@ -291,7 +291,7 @@ void on_recurrent_dropout_changed(GObject *gobject, GParamSpec *pspec, gpointer 
 
 	spinRow = ADW_SPIN_ROW(gobject); 
 	value = adw_spin_row_get_value(spinRow);
-	printLog("%s(): '%.2f'", __func__, value);
+	print_log("%s(): '%.2f'", __func__, value);
 
 	modelDropout = value;
 }
@@ -299,13 +299,13 @@ void on_recurrent_dropout_changed(GObject *gobject, GParamSpec *pspec, gpointer 
 void on_units_changed(GObject *gobject, GParamSpec *pspec, gpointer data)
 {
 	/* Call the generic spin row signal and get the selected item. */
-	modelUnits = __ui_row_changed(gobject, pspec, data, __func__);
+	modelUnits = __ui_spin_row_changed(gobject, pspec, data, __func__);
 }
 
 void on_layer_number_changed(GObject *gobject, GParamSpec *pspec, gpointer data)
 {
 	/* Call the generic spin row signal and get the selected item. */
-	modelLayerNumber = __ui_row_changed(gobject, pspec, data, __func__);
+	modelLayerNumber = __ui_spin_row_changed(gobject, pspec, data, __func__);
 }
 
 void on_batch_size_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
@@ -313,7 +313,7 @@ void on_batch_size_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 	guint selected;
 
 	/* Call the generic combo row signal and get the selected item. */
-	selected = __ui_row_selected(gobject, pspec, data, __func__);
+	selected = __ui_combo_row_selected(gobject, pspec, data, __func__);
 
 	switch (selected) 
 	{
@@ -324,14 +324,14 @@ void on_batch_size_selected(GObject *gobject, GParamSpec *pspec, gpointer data)
 		case 4:	modelBatchSize = MODEL_BATCH_SIZE_256;	break;
 		case 5:	modelBatchSize = MODEL_BATCH_SIZE_512;	break;
 		default:
-			customError("Unknown combo row selection");
+			custom_error("Unknown combo row selection");
 	}
 }
 
 void on_epochs_changed(GObject *gobject, GParamSpec *pspec, gpointer data)
 {
 	/* Call the generic spin row signal and get the selected item. */
-	modelEpochs = __ui_row_changed(gobject, pspec, data, __func__);
+	modelEpochs = __ui_spin_row_changed(gobject, pspec, data, __func__);
 }
 
 void on_early_stop_switched(GObject *gobject, GParamSpec *pspec, gpointer data)
@@ -339,21 +339,21 @@ void on_early_stop_switched(GObject *gobject, GParamSpec *pspec, gpointer data)
 	gboolean isActive;
 
 	/* Call the generic switch row signal and get the active state. */
-	isActive = __ui_row_switched(gobject, pspec, data, __func__);
+	isActive = __ui_switch_row_switched(gobject, pspec, data, __func__);
 
 	switch (isActive) 
 	{
 		case 0:	modelEarlyStop = MODEL_EARLY_STOP_FALSE;	break;
 		case 1:	modelEarlyStop = MODEL_EARLY_STOP_TRUE;	break;
 		default:
-			customError("Unknown combo row selection");
+			custom_error("Unknown combo row selection");
 	}
 }
 
 void on_output_model_texted(GObject *gobject, GParamSpec *pspec, gpointer data)
 {
 	/* Call the generic entry row signal and then get the current text. */
-	modelOutputName = (char *) __ui_row_texted(gobject, pspec, data, __func__);
+	modelOutputName = (char *) __ui_entry_row_texted(gobject, pspec, data, __func__);
 }
 
 /*****************************************************************************/
@@ -366,7 +366,7 @@ void on_mic_button_clicked(GtkButton *button, gpointer data)
 	static int deviceFd = -1;
 
 	label = gtk_button_get_label(button);
-	printLog("%s(): '%s'", __func__, label);
+	print_log("%s(): '%s'", __func__, label);
 
 	if (cmp(label, "Start"))
 	{
@@ -382,7 +382,7 @@ void on_mic_button_clicked(GtkButton *button, gpointer data)
 	}
 	else
 	{
-		customError("Unknown microphone button: '%s'", label);
+		custom_error("Unknown microphone button: '%s'", label);
 	}
 
 	/* When the buttons clicked, take the required actions. */
@@ -392,8 +392,8 @@ void on_mic_button_clicked(GtkButton *button, gpointer data)
 		deviceFd = open_device_node(micChannel, micDeviceNode);
 
 		/* Open the 'sensor_data.db' database. */
-		// db = db_open(DB_SENSOR_DATA_PATH);
-		// db_create_table(db);
+		db = db_open(DB_SENSOR_PATH);
+		db_create_table(db);
 
 		/* Add the timeout for updating "payloadData". */
 		if (!micTimeout) 
@@ -419,9 +419,8 @@ void on_mic_button_clicked(GtkButton *button, gpointer data)
 		if (deviceFd != -1)
 		{
 			if (close(deviceFd) == -1)
-			syscallError();
+			syscall_error();
 		}
-
 		/* Stop the timeout for "payloadData". */
 		if (micTimeout) 
 		{
@@ -442,7 +441,7 @@ void on_model_button_clicked(GtkButton *button, gpointer data)
 	const char *label;
 
 	label = gtk_button_get_label(button);
-	printLog("%s(): '%s'", __func__, label);
+	print_log("%s(): '%s'", __func__, label);
 
 	if (cmp(label, "Fit"))
 	{
@@ -462,7 +461,7 @@ void on_model_button_clicked(GtkButton *button, gpointer data)
 	}
 	else
 	{
-		customError("Unknown AI model button: '%s'", label);
+		custom_error("Unknown AI model button: '%s'", label);
 	}
 
 	/* Clear the text view area firstly and then update it. */
@@ -474,8 +473,8 @@ void on_model_button_clicked(GtkButton *button, gpointer data)
 	{
 		if (!modelFitPid) 
 		{
-			printLog("running the Keras script of '%s'", MODEL_FIT_SCRIPT);
-			printLog("recording the Keras script log to '%s'", MODEL_LOG_PATH);
+			print_log("running the Keras script of '%s'", MODEL_FIT_SCRIPT);
+			print_log("recording the Keras script log to '%s'", MODEL_LOG_PATH);
 			modelFitPid = run_keras_script(MODEL_FIT_SCRIPT);	/* run the Keras model */
 
 			if (!modelTimeout)
@@ -489,7 +488,7 @@ void on_model_button_clicked(GtkButton *button, gpointer data)
 	{		
 		if (modelFitPid) 
 		{
-			printLog("aborted the running Keras script (%d)", modelFitPid);
+			print_log("aborted the running Keras script (%d)", modelFitPid);
 			abort_keras_script(modelFitPid);	/* abort the Keras script */
 			modelFitPid = 0;
 			
@@ -515,7 +514,7 @@ void on_nav_button_clicked(GtkButton *button, gpointer data)
 	const char *label;
 
 	label = gtk_button_get_label(button);
-	printLog("%s(): '%s'", __func__, label);
+	print_log("%s(): '%s'", __func__, label);
 
 	if (cmp(label, "Start"))
 	{
@@ -538,7 +537,7 @@ void on_gps_button_clicked(GtkButton *button, gpointer data)
 	const char *label;
 
 	label = gtk_button_get_label(button);
-	printLog("%s(): '%s'", __func__, label);
+	print_log("%s(): '%s'", __func__, label);
 
 	if (cmp(label, "Start"))
 	{

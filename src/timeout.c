@@ -44,12 +44,12 @@ gboolean device_node_timeout(gpointer data)
 
 	/* Make the signal analysis. */
 	make_signal_analysis(&sigBeamformed, arrival);
-	printLog("completed the signal analysis operations");
+	print_log("completed the signal analysis operations");
 
 	/* Lastly, redraw the cartesian and polar plots. */
 	gtk_widget_queue_draw(micCarPlot);
 	gtk_widget_queue_draw(micPolarPlot);
-	printLog("requested the microphone plot redraws");
+	print_log("requested the microphone plot redraws");
 
 	return G_SOURCE_CONTINUE;
 }
@@ -64,10 +64,10 @@ gboolean model_keras_log_timeout(gpointer data)
 	/* Get the current text view and then update it. */
 	modelTextBuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(modelTextView));
 	kerasLog = get_keras_script_log(MODEL_LOG_PATH);
-	printLog("fetched the keras script log from related file");
+	print_log("fetched the keras script log from related file");
 
 	gtk_text_buffer_set_text(modelTextBuffer, kerasLog, -1);
-	printLog("printed the keras script log within text view");
+	print_log("printed the keras script log within text view");
 
 	if ( is_keras_script_running(modelFitPid) )
 	{
@@ -88,8 +88,8 @@ gboolean db_record_timeout(gpointer data)
 
 	db = (sqlite3 *) data;
 	/* Bind the last sensor data. */
-	// db_bind_data(db);
-	printLog("recorded the sensor data into '%s'", DB_SENSOR_DATA_PATH);
+	db_bind_data(db);
+	print_log("recorded the sensor data into '%s'", DB_SENSOR_PATH);
 
 	return G_SOURCE_CONTINUE;
 }
@@ -101,7 +101,7 @@ gboolean nav_update_timeout(gpointer data)
 {
 	/* Update the navigation data. */
 	update_nav_data();
-	printLog("updated the navigation data correctly");
+	print_log("updated the navigation data correctly");
 
 	/* Select the direction and rotation for plot. */
 	navAccel = accel_direction();
@@ -109,7 +109,7 @@ gboolean nav_update_timeout(gpointer data)
 
 	/* Request redraw for navigation plot. */
 	gtk_widget_queue_draw(navPlotArea);
-	printLog("requested the navigtion plot redraw");
+	print_log("requested the navigtion plot redraw");
 
 	return G_SOURCE_CONTINUE;
 }
@@ -124,7 +124,7 @@ gboolean gps_update_timeout(gpointer)
 
 	/* Update the gps module data. */
 	update_gps_data();
-	printLog("updated the GPS map data correctly");
+	print_log("updated the GPS map data correctly");
 
 	/* Update the GPS map. */
 	// latitude = atof(payloadData.gpsLatitude);
@@ -133,7 +133,7 @@ gboolean gps_update_timeout(gpointer)
 	longitude = GPS_INIT_LONG;
 	shumate_map_center_on(gpsMap, latitude, longitude + i * 0.01);
 	gps_map_area_markers(gpsMarkerLayer, latitude, longitude + i * 0.01);
-	printLog("marked the last position onto the map");
+	print_log("marked the last position onto the map");
 
 	i++;
 

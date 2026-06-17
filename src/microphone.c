@@ -19,7 +19,7 @@
 
 /* Shared widgets and variables */
 
-char *micDeviceNodes[MAX_DEVICE_NODE] = {0};
+char *micDeviceNodes[MIC_DEVICE_NODE] = {0};
 GtkWidget *micUARTGroup;
 GtkWidget *micUSBGroup;
 GtkWidget *micWiFiGroup;
@@ -48,8 +48,8 @@ void mic_row_device_node(GtkWidget *propertyGroup)
 		"Device Node", (const char **)micDeviceNodes, 0
 	);
 	__ui_group_add(propertyGroup, deviceNodeRow);
-	realizeSig(deviceNodeRow, on_device_node_selected);
-	comboRowSig(deviceNodeRow, on_device_node_selected);
+	__ui_sig_realize(deviceNodeRow, on_device_node_selected);
+	__ui_sig_combo_row(deviceNodeRow, on_device_node_selected);
 }
 
 /**
@@ -64,7 +64,7 @@ void mic_row_baud_rate(GtkWidget *propertyGroup)
 		"115200", NULL}, 4
 	);
 	__ui_group_add(propertyGroup, baudRateRow);
-	comboRowSig(baudRateRow, on_baud_rate_selected);
+	__ui_sig_combo_row(baudRateRow, on_baud_rate_selected);
 }
 
 /**
@@ -78,7 +78,7 @@ void mic_row_data_bits(GtkWidget *propertyGroup)
 		"Data Bits", (const char *[]) {"5", "6", "7", "8", NULL}, 3
 	);
 	__ui_group_add(propertyGroup, dataBitsRow);
-	comboRowSig(dataBitsRow, on_data_bits_selected);
+	__ui_sig_combo_row(dataBitsRow, on_data_bits_selected);
 }
 
 /**
@@ -92,7 +92,7 @@ void mic_row_parity_bit(GtkWidget *propertyGroup)
 		"Parity Bit", (const char *[]) {"None", "Even", "Odd", NULL}, 0
 	);
 	__ui_group_add(propertyGroup, parityBitRow);
-	comboRowSig(parityBitRow, on_parity_bit_selected);
+	__ui_sig_combo_row(parityBitRow, on_parity_bit_selected);
 }
 
 /**
@@ -106,7 +106,7 @@ void mic_row_stop_bits(GtkWidget *propertyGroup)
 		"Stop Bits", (const char *[]) {"1", "2", NULL}, 0
 	);
 	__ui_group_add(propertyGroup, stopBitsRow);
-	comboRowSig(stopBitsRow, on_stop_bits_selected);
+	__ui_sig_combo_row(stopBitsRow, on_stop_bits_selected);
 }
 
 /**
@@ -121,7 +121,7 @@ void mic_row_flow_control(GtkWidget *propertyGroup)
 		"Software (XON/XOFF)", NULL}, 0
 	);
 	__ui_group_add(propertyGroup, flowControlRow);
-	comboRowSig(flowControlRow, on_flow_control_selected);
+	__ui_sig_combo_row(flowControlRow, on_flow_control_selected);
 }
 
 /**
@@ -231,10 +231,10 @@ void microphone(GtkBox *micBox, gpointer data)
 	gtk_widget_set_size_request(leftBox, 300, -1);
 	gtk_widget_set_size_request(centerBox, 300, -1);
 
-	gtk_widget_set_margin_end(leftBox, BOX_INNER_MARGIN);
-	gtk_widget_set_margin_start(centerBox, BOX_INNER_MARGIN);
-	gtk_widget_set_margin_end(centerBox, BOX_INNER_MARGIN);
-	gtk_widget_set_margin_start(rightBox, BOX_INNER_MARGIN);
+	gtk_widget_set_margin_end(leftBox, __UI_INNER_MARGIN);
+	gtk_widget_set_margin_start(centerBox, __UI_INNER_MARGIN);
+	gtk_widget_set_margin_end(centerBox, __UI_INNER_MARGIN);
+	gtk_widget_set_margin_start(rightBox, __UI_INNER_MARGIN);
 
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolledComm), 
 		GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
@@ -258,7 +258,7 @@ void microphone(GtkBox *micBox, gpointer data)
 		"Channel", (const char *[]){"UART", "USB", "Wi-Fi", NULL}, 0
 	);
 	__ui_group_add(commGroup, commRow);
-	comboRowSigWithData(commRow, on_comm_channel_selected, propertyBox);
+	__ui_sig_combo_row_data(commRow, on_comm_channel_selected, propertyBox);
 
 	/* Put the initial UART property box. */ 
 	get_device_nodes(micChannel);
@@ -279,7 +279,7 @@ void microphone(GtkBox *micBox, gpointer data)
 
 	for (i = 0; i < 2; i++) 
 	{
-		buttonSig(buttons[i], on_mic_button_clicked);	
+		__ui_sig_button(buttons[i], on_mic_button_clicked);	
 		gtk_box_append(GTK_BOX(btnBox), buttons[i]);
 	}
 

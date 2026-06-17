@@ -27,7 +27,7 @@ sqlite3 *db_open(const char *dbPath)
 
 	rc = sqlite3_open(dbPath, &db);
 	if (rc != SQLITE_OK)
-		dbError(db);
+		db_error(db);
 
 	return db;
 }
@@ -40,12 +40,12 @@ void db_create_table(sqlite3 *db)
 	int i;
 	int rc;
 	char data[32] = {0};
-	char sql[SQL_SIZE] = {0};
+	char sql[DB_SQL_LENGTH] = {0};
 
 	/* Create the database table for sensor data. */
 	sprintf(sql, 
 		"CREATE TABLE IF NOT EXISTS %s (ID INTEGER "
-		"PRIMARY KEY AUTOINCREMENT,", DB_SENSOR_DATA_TABLE
+		"PRIMARY KEY AUTOINCREMENT,", DB_SENSOR_TABLE
 	);
 	/* Append the data columns from 1 to DATA_SIZE. */
 	for (i = 1; i <= DATA_SIZE; i++)
@@ -59,7 +59,7 @@ void db_create_table(sqlite3 *db)
 
 	rc = sqlite3_exec(db, sql, 0, 0, 0);
 	if (rc != SQLITE_OK)
-		dbError(db);
+		db_error(db);
 }
 
 /**
@@ -70,11 +70,11 @@ void db_bind_data(sqlite3 *db)
 	int i;
 	int rc;
 	char data[16] = {0};
-	char sql[SQL_SIZE] = {0};
+	char sql[DB_SQL_LENGTH] = {0};
 	sqlite3_stmt *stmt;
 	
 	/* Build the sql sequence. */
-	sprintf(sql, "INSERT INTO %s (", DB_SENSOR_DATA_TABLE);
+	sprintf(sql, "INSERT INTO %s (", DB_SENSOR_TABLE);
 	for (i = 1; i <= DATA_SIZE; i++)
 	{
 		memset(data, 0, 16);		/* initialize with 0s */
@@ -91,7 +91,7 @@ void db_bind_data(sqlite3 *db)
 	/* Bind the sql sequence into the open database. */
 	rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
 	if (rc != SQLITE_OK)
-		dbError(db);
+		db_error(db);
 
 	for (i = 1; i <= DATA_SIZE; i++)
 	{
@@ -103,11 +103,11 @@ void db_bind_data(sqlite3 *db)
 	/* Step and finalize the current insertion. */
 	rc = sqlite3_step(stmt);
 	if (rc != SQLITE_DONE)
-		dbError(db);
+		db_error(db);
 	
 	rc = sqlite3_finalize(stmt);
 	if (rc != SQLITE_OK)
-		dbError(db);
+		db_error(db);
 }
 
 /**
@@ -118,13 +118,13 @@ void db_query_data(sqlite3 *db)
 	int i;
 	int rc;
 	sqlite3_stmt *stmt;
-	char sql[SQL_SIZE] = {0};
+	char sql[DB_SQL_LENGTH] = {0};
 
-	sprintf(sql, "SELECT * FROM %s", DB_SENSOR_DATA_TABLE);
+	sprintf(sql, "SELECT * FROM %s", DB_SENSOR_TABLE);
 
 	rc = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
 	if (rc != SQLITE_OK)
-		dbError(db);
+		db_error(db);
 			
 	while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
 	{
@@ -138,7 +138,7 @@ void db_query_data(sqlite3 *db)
 	/* Finalize the reading operations. */
 	rc = sqlite3_finalize(stmt);
 	if (rc != SQLITE_OK)
-		dbError(db);
+		db_error(db);
 }
 
 /**
@@ -150,5 +150,5 @@ void db_close(sqlite3 *db)
 
 	rc = sqlite3_close(db);
 	if (rc != SQLITE_OK)
-		dbError(db);
+		db_error(db);
 }
