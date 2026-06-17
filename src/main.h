@@ -61,17 +61,15 @@ extern "C" {
 
 #define TIME_FORMAT							"%F %T"
 #define BUFFER_SIZE							512
+#define INTERPRETER							"/bin/python3"
+#define SYSTEM_LOG_PATH						"./logs/system.log"
 
-/* DATA_SIZE is defined as the sample length. The DSP library 
-	defines a predefined DATA_SIZE. Firstly undefine and then 
-	redefine it. */
+/* DATA_SIZE is defined as the sample length. The DSP library defines a 
+   predefined DATA_SIZE. Firstly undefine and then redefine it. */
 #ifdef DATA_SIZE
 #undef DATA_SIZE
 #define DATA_SIZE							1024
 #endif
-
-#define INTERPRETER							"/bin/python3"
-#define SYSTEM_LOG_PATH						"./logs/system.log"
 
 #define DB_SENSOR_PATH						"./db/sensor-data.db"
 #define DB_SENSOR_TABLE						"SensorData"
@@ -196,7 +194,7 @@ gboolean gps_update_timeout(gpointer data);
 void prepare_samples(void);
 double find_dominant_freq(void);
 int calculate_arrival(double freq);
-DspTime do_beamforming(double freq, double arrival);
+DspTime do_beamforming(double arrival);
 void make_signal_analysis(const DspTime *beamformed, int arrival);
 int select_sector(void);
 NavAccel accel_direction(void);

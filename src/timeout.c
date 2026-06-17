@@ -22,7 +22,7 @@
  */
 gboolean device_node_timeout(gpointer data)
 {
-	double max_freq;
+	double maxFreq;
 	int arrival;
 	int deviceFd;
 
@@ -34,9 +34,9 @@ gboolean device_node_timeout(gpointer data)
 	prepare_samples();
 
 	/* Extract the required calculations in here. */
-	max_freq = find_dominant_freq();
-	arrival = calculate_arrival(max_freq);
-	sigBeamformed = do_beamforming(max_freq, arrival);
+	maxFreq = find_dominant_freq();
+	arrival = calculate_arrival(maxFreq);
+	sigBeamformed = do_beamforming(arrival);
 	sigVolumest = select_sector();
 
 	/* Make sure the amplitude of signal fits into the frame. */
@@ -59,6 +59,8 @@ gboolean device_node_timeout(gpointer data)
  */
 gboolean model_keras_log_timeout(gpointer data)
 {
+	(void)data;
+
 	const char *kerasLog;
 
 	/* Get the current text view and then update it. */
@@ -69,7 +71,7 @@ gboolean model_keras_log_timeout(gpointer data)
 	gtk_text_buffer_set_text(modelTextBuffer, kerasLog, -1);
 	print_log("printed the keras script log within text view");
 
-	if ( is_keras_script_running(modelFitPid) )
+	if (is_keras_script_running(modelFitPid))
 	{
 		return G_SOURCE_CONTINUE;
 	}
@@ -86,7 +88,7 @@ gboolean db_record_timeout(gpointer data)
 {
 	sqlite3 *db;
 
-	db = (sqlite3 *) data;
+	db = (sqlite3 *)data;
 	/* Bind the last sensor data. */
 	db_bind_data(db);
 	print_log("recorded the sensor data into '%s'", DB_SENSOR_PATH);
@@ -99,6 +101,8 @@ gboolean db_record_timeout(gpointer data)
  */
 gboolean nav_update_timeout(gpointer data)
 {
+	(void)data;
+
 	/* Update the navigation data. */
 	update_nav_data();
 	print_log("updated the navigation data correctly");
@@ -117,8 +121,10 @@ gboolean nav_update_timeout(gpointer data)
 /**
  * Set the timeout for GPS map updates.
  */
-gboolean gps_update_timeout(gpointer)
+gboolean gps_update_timeout(gpointer data)
 {
+	(void)data;
+
 	static int i = 0;
 	double longitude, latitude;
 

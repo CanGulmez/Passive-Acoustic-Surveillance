@@ -100,7 +100,7 @@ int calculate_arrival(double freq)
 /**
  * Make the delay-and-sum beamforming.
  */
-DspTime do_beamforming(double freq, double arrival)
+DspTime do_beamforming(double arrival)
 {
 	int i;
 	DspBeamform beamform;
@@ -262,7 +262,7 @@ NavGyro gyro_rotation(void)
  */
 void update_nav_data(void)
 {
-	char buffer[BUFFER_SIZE];
+	// char buffer[BUFFER_SIZE];
 
 	/* Update the sensor series and information. */
 	__ui_action_row_update(navSensorRows[0], NAV_IMU_SENSOR);

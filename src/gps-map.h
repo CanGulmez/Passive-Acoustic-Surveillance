@@ -42,8 +42,8 @@ extern GtkWidget *gpsModuleRows[GPS_OUTPUT_ROWS];
 
 /* GPS map function prototypes */
 
-void gps_map(GtkBox *mapBox, gpointer data);
-void gps_map_area(GtkBox *rightBox, gpointer data);
+void gps_map(GtkBox *mapBox);
+void gps_map_area(GtkBox *rightBox);
 void gps_map_area_markers(ShumateMarkerLayer *gpsMarkerLayer, double lat, double lon);
 
 /* GPS map signal handler prototypes */

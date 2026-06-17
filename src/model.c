@@ -118,7 +118,7 @@ void model_group_model(GtkWidget *modelGroup)
 /**
  * AI Model Integration Page
  */
-void model(GtkBox *modelBox, gpointer data)
+void model(GtkBox *modelBox)
 {
 	int i;
 	GtkWidget *rightBox, *separator, *leftBox;

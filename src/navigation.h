@@ -69,12 +69,12 @@ extern guint navTimeout;
 
 /* Navigation function prototypes */
 
-void navigation(GtkBox *imuBox, gpointer data);
-GtkWidget *nav_info_group(gpointer data);
-GtkWidget *nav_accel_group(gpointer data);
-GtkWidget *nav_gyro_group(gpointer data);
-GtkWidget *nav_magnet_group(gpointer data);
-GtkWidget *nav_temp_group(gpointer data);
+void navigation(GtkBox *imuBox);
+GtkWidget *nav_info_group(void);
+GtkWidget *nav_accel_group(void);
+GtkWidget *nav_gyro_group(void);
+GtkWidget *nav_magnet_group(void);
+GtkWidget *nav_temp_group(void);
 void nav_plot_area_grid(cairo_t *cr, int width, int height);
 void nav_plot_area_device(cairo_t *cr, int width, int height);
 void nav_plot_area_axes(cairo_t *cr, int width, int height);

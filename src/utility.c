@@ -288,7 +288,7 @@ void read_device_node(int fd)
  */
 int get_model_datasets(void)
 {
-	int i, index = 0;
+	size_t i, index = 0;
 	struct dirent *entry;
 	DIR *dir;
 	char *filename;

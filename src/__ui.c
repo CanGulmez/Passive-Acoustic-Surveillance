@@ -45,7 +45,7 @@ GtkWidget *__ui_header_button_new(const char *icon, const char *tooltip)
 /*****************************************************************************/
 
 GtkWidget *__ui_combo_row_new(const char *title, const char **strings, 
-										guint index)
+							  guint index)
 {
 	GtkWidget *comboRow;
 	GtkStringList *stringList;
@@ -61,7 +61,7 @@ GtkWidget *__ui_combo_row_new(const char *title, const char **strings,
 }
 
 GtkWidget *__ui_spin_row_new(const char *title, double value, double lower,
-									  double upper, double increment, guint digits)
+							 double upper, double increment, guint digits)
 {
 	GtkWidget *spinRow;
 	GtkAdjustment *adjustment;
@@ -149,15 +149,18 @@ GtkWidget *__ui_button_new(const char *label, const char *action)
 /**
  * Generic combo row signal handler to get the selected item
  */
-guint __ui_combo_row_selected(GObject *gobject, GParamSpec *pspec, gpointer data, 
+guint __ui_combo_row_selected(GObject *object, GParamSpec *pspec, gpointer data, 
 							  const char *func)
 {
+	(void)pspec;
+	(void)data;
+
 	AdwComboRow *comboRow;
 	guint selected;
 	const char *item;
 	GListModel *mod;
 
-	comboRow = ADW_COMBO_ROW(gobject);
+	comboRow = ADW_COMBO_ROW(object);
 	selected = adw_combo_row_get_selected(comboRow);
 	mod = adw_combo_row_get_model(comboRow);
 	item = gtk_string_list_get_string(GTK_STRING_LIST(mod), selected);
@@ -169,13 +172,16 @@ guint __ui_combo_row_selected(GObject *gobject, GParamSpec *pspec, gpointer data
 /**
  * Generic spin row signal handler to get the value.
  */
-guint __ui_spin_row_changed(GObject *gobject, GParamSpec *pspec, gpointer data, 
+guint __ui_spin_row_changed(GObject *object, GParamSpec *pspec, gpointer data, 
 							const char *func)
 {
+	(void)pspec;
+	(void)data;
+
 	guint value;
 	AdwSpinRow *spinRow;
 	
-	spinRow = ADW_SPIN_ROW(gobject);
+	spinRow = ADW_SPIN_ROW(object);
 	value = adw_spin_row_get_value(spinRow);
 	print_log("%s(): '%d'", func, value);
 
@@ -185,13 +191,16 @@ guint __ui_spin_row_changed(GObject *gobject, GParamSpec *pspec, gpointer data,
 /**
  * Generic switch row signal handler to get active state.
  */
-gboolean __ui_switch_row_switched(GObject *gobject, GParamSpec *pspec, gpointer data, 
+gboolean __ui_switch_row_switched(GObject *object, GParamSpec *pspec, gpointer data, 
 								  const char *func)
 {
+	(void)pspec;
+	(void)data;
+
 	gboolean isActive;
 	AdwSwitchRow *switchRow;
 
-	switchRow = ADW_SWITCH_ROW(gobject);
+	switchRow = ADW_SWITCH_ROW(object);
 	isActive = adw_switch_row_get_active(switchRow);
 	print_log("%s(): '%d'", func, isActive);
 
@@ -201,12 +210,15 @@ gboolean __ui_switch_row_switched(GObject *gobject, GParamSpec *pspec, gpointer 
 /**
  * Generic entry row signal handler to get current text.
  */
-const char *__ui_entry_row_texted(GObject *gobject, GParamSpec *pspec, 
+const char *__ui_entry_row_texted(GObject *object, GParamSpec *pspec, 
 								   gpointer data, const char *func)
 {
+	(void)pspec;
+	(void)data;
+	
 	const char *currentText;
 
-	currentText = gtk_editable_get_text(GTK_EDITABLE(gobject));
+	currentText = gtk_editable_get_text(GTK_EDITABLE(object));
 	print_log("%s(): '%s'", func, currentText);
 	
 	return currentText;

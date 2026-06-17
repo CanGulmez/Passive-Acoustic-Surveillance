@@ -69,7 +69,7 @@ void mic_plot_car_grid(cairo_t *cr, int width, int height)
 /**
  * Draw the cartesian plot x-axis label.
  */
-void mic_plot_car_label_x(cairo_t *cr, int width, int height)
+void mic_plot_car_label_x(cairo_t *cr, int height)
 {
 	char buffer[64];
 
@@ -87,7 +87,7 @@ void mic_plot_car_label_x(cairo_t *cr, int width, int height)
 /**
  * Draw the cartesian plot y-axis label.
  */
-void mic_plot_car_label_y(cairo_t *cr, int width, int height)
+void mic_plot_car_label_y(cairo_t *cr)
 {
 	cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);	/* black indices */
 	cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, 
@@ -139,16 +139,19 @@ void mic_plot_car_data(cairo_t *cr, int width, int height)
  * Draw the cartesian plot area.
  */
 void mic_plot_car(GtkDrawingArea *area, cairo_t *cr, int width, int height, 
-						gpointer data)
+				  gpointer data)
 {
+	(void)area;
+	(void)data;
+
 	/* Set the background of plot area. */
 	cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);	/* white background */
 	cairo_paint(cr);
 
 	mic_plot_car_frame(cr, width, height);		/* frame */
 	mic_plot_car_grid(cr, width, height);		/* grid */
-	mic_plot_car_label_x(cr, width, height);	/* x-Axis Label */
-	mic_plot_car_label_y(cr, width, height);	/* y-Axis Label */
+	mic_plot_car_label_x(cr, height);			/* x-Axis Label */
+	mic_plot_car_label_y(cr);					/* y-Axis Label */
 	mic_plot_car_data(cr, width, height);		/* data itself */
 }
 
@@ -302,6 +305,9 @@ void mic_plot_polar_sector(cairo_t *cr, int width, int height, int mic)
 void mic_plot_polar(GtkDrawingArea *area, cairo_t *cr, int width, int height, 
 						  gpointer data)
 {
+	(void)area;
+	(void)data;
+	
 	/* Set the background of plot area */
 	cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);	/* white background */
 	cairo_paint(cr);

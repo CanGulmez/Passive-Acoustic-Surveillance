@@ -108,22 +108,22 @@ extern MicButton micButton;
 
 /* Microphone function prototypes */
 
-void microphone(GtkBox *micBox, gpointer data);
+void microphone(GtkBox *micBox);
 void mic_row_device_node(GtkWidget *propertyGroup);						
 void mic_row_baud_rate(GtkWidget *propertyGroup);	
 void mic_row_data_bits(GtkWidget *propertyGroup);	
 void mic_row_parity_bit(GtkWidget *propertyGroup);
 void mic_row_stop_bits(GtkWidget *propertyGroup);	
 void mic_row_flow_control(GtkWidget *propertyGroup);
-void mic_group_UART(gpointer data);
-void mic_group_USB(gpointer data);
-void mic_group_WiFi(gpointer data);
+void mic_group_UART(void);
+void mic_group_USB(void);
+void mic_group_WiFi(void);
 void mic_signal_analysis(GtkWidget *analysisGroup);
 void mic_plot_car(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer data);
 void mic_plot_car_frame(cairo_t *cr, int width, int height);	
 void mic_plot_car_grid(cairo_t *cr, int width, int height);	
-void mic_plot_car_label_x(cairo_t *cr, int width, int height);		
-void mic_plot_car_label_y(cairo_t *cr, int width, int height);	
+void mic_plot_car_label_x(cairo_t *cr, int height);		
+void mic_plot_car_label_y(cairo_t *cr);	
 void mic_plot_car_data(cairo_t *cr, int width, int height);
 void mic_plot_polar(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer data);
 void mic_plot_polar_frame(cairo_t *cr, int width, int height);

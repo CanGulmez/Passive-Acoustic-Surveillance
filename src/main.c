@@ -17,8 +17,10 @@
 
 #include "./main.h"
 
-void on_activate(GtkApplication *app, gpointer user_data)
+void on_activate(GtkApplication *app, gpointer data)
 {
+	(void)data;
+
 	GtkWidget *window, *headerBar;
 	GtkWidget *mainBox, *micBox, *modelBox, *navBox, *gpsBox;
 	GtkWidget *viewSwitcher, *viewStack;
@@ -91,10 +93,10 @@ void on_activate(GtkApplication *app, gpointer user_data)
 
 	/* Modules */
 
-	microphone(GTK_BOX(micBox), NULL);
-	model(GTK_BOX(modelBox), NULL);
-	navigation(GTK_BOX(navBox), NULL);
-	gps_map(GTK_BOX(gpsBox), NULL);
+	microphone(GTK_BOX(micBox));
+	model(GTK_BOX(modelBox));
+	navigation(GTK_BOX(navBox));
+	gps_map(GTK_BOX(gpsBox));
 
 	/* Presentation */
 	

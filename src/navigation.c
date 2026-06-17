@@ -20,7 +20,7 @@
 /* Shared widgets and variables */
 
 NavAccel navAccel = NAV_ACCEL_UNDEF;
-NavGyro navGyro = NAV_ACCEL_UNDEF;
+NavGyro navGyro = NAV_GYRO_UNDEF;
 GtkWidget *navPlotArea;
 NavButton navButton;
 GtkWidget *navSensorRows[NAV_SENSOR_ROW]; /* module, accel-status, accel-output,
@@ -28,7 +28,7 @@ GtkWidget *navSensorRows[NAV_SENSOR_ROW]; /* module, accel-status, accel-output,
 											magnet-output, temp */
 guint navTimeout = 0;
 
-GtkWidget *nav_info_group(gpointer data)
+GtkWidget *nav_info_group(void)
 {
 	GtkWidget *infoGroup;
 
@@ -41,7 +41,7 @@ GtkWidget *nav_info_group(gpointer data)
 	return infoGroup;
 }
 
-GtkWidget *nav_accel_group(gpointer data)
+GtkWidget *nav_accel_group(void)
 {
 	GtkWidget *accelGroup;
 
@@ -56,7 +56,7 @@ GtkWidget *nav_accel_group(gpointer data)
 	return accelGroup;
 }
 
-GtkWidget *nav_gyro_group(gpointer data)
+GtkWidget *nav_gyro_group(void)
 {
 	GtkWidget *gyroGroup;
 
@@ -71,7 +71,7 @@ GtkWidget *nav_gyro_group(gpointer data)
 	return gyroGroup;
 }
 
-GtkWidget *nav_magnet_group(gpointer data)
+GtkWidget *nav_magnet_group(void)
 {
 	GtkWidget *magnetGroup;
 
@@ -86,7 +86,7 @@ GtkWidget *nav_magnet_group(gpointer data)
 	return magnetGroup;
 }
 
-GtkWidget *nav_temp_group(gpointer data)
+GtkWidget *nav_temp_group(void)
 {
 	GtkWidget *tempGroup;
 
@@ -99,7 +99,7 @@ GtkWidget *nav_temp_group(gpointer data)
 	return tempGroup;
 }
 
-void navigation(GtkBox *imuBox, gpointer data)
+void navigation(GtkBox *imuBox)
 {
 	GtkWidget *leftBox, *separator, *rightBox;
 	GtkWidget *accelGroup, *gyroGroup, *magnetGroup, *tempGroup,
@@ -128,11 +128,11 @@ void navigation(GtkBox *imuBox, gpointer data)
 		propertyBox);
 
 	/* Put the accelerometer, gyroscope and gyroscope groups. */
-	infoGroup = nav_info_group(NULL);
-	accelGroup = nav_accel_group(NULL);
-	gyroGroup = nav_gyro_group(NULL);
-	magnetGroup = nav_magnet_group(NULL);
-	tempGroup = nav_temp_group(NULL);
+	infoGroup = nav_info_group();
+	accelGroup = nav_accel_group();
+	gyroGroup = nav_gyro_group();
+	magnetGroup = nav_magnet_group();
+	tempGroup = nav_temp_group();
 
 	/* Put the required buttons. */
 	startBtn = __ui_button_new("Start", "suggested-action");

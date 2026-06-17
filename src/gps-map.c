@@ -50,7 +50,7 @@ void gps_map_area_markers(ShumateMarkerLayer *gpsMarkerLayer, double lat,
 /**
  * Put the GPS map area.
  */
-void gps_map_area(GtkBox *rightBox, gpointer data)
+void gps_map_area(GtkBox *rightBox)
 {
 	ShumateSimpleMap *simpleMap;
 	ShumateViewport *viewport;
@@ -86,7 +86,7 @@ void gps_map_area(GtkBox *rightBox, gpointer data)
 /**
  * GPS Map Page
  */
-void gps_map(GtkBox *mapBox, gpointer data)
+void gps_map(GtkBox *mapBox)
 {
 	int i;
 	GtkWidget *rightBox, *leftBox, *separator;	
@@ -173,7 +173,7 @@ void gps_map(GtkBox *mapBox, gpointer data)
 
 	gtk_box_append(GTK_BOX(leftBox), scrolledWin);
 	gtk_box_append(GTK_BOX(leftBox), startBtn);
-	gps_map_area(GTK_BOX(rightBox), NULL);
+	gps_map_area(GTK_BOX(rightBox));
 
 	gtk_box_append(mapBox, leftBox);
 	gtk_box_append(mapBox, separator);

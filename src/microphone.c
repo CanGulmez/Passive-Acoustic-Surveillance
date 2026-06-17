@@ -127,7 +127,7 @@ void mic_row_flow_control(GtkWidget *propertyGroup)
 /**
  * Initialize the UART property group.
  */
-void mic_group_UART(gpointer data)
+void mic_group_UART(void)
 {
 	/* Set the UART property group with default settings. */
 	micUARTGroup = __ui_group_new("UART Properties",
@@ -144,7 +144,7 @@ void mic_group_UART(gpointer data)
 /**
  * Initialize the USB property group.
  */
-void mic_group_USB(gpointer data)
+void mic_group_USB(void)
 {
 	/* Set the USB property group with default settings. */
 	micUSBGroup = __ui_group_new("USB Properties",
@@ -161,7 +161,7 @@ void mic_group_USB(gpointer data)
 /**
  * Initialize the Wi-Fi property group.
  */
-void mic_group_WiFi(gpointer data)
+void mic_group_WiFi(void)
 {
 	/* Set the Wi-Fi property group with default settings. */
 	micWiFiGroup = __ui_group_new("Wi-Fi Properties",
@@ -204,7 +204,7 @@ void mic_signal_analysis(GtkWidget *analysisGroup)
 /**
  * Microphone Data Page
  */
-void microphone(GtkBox *micBox, gpointer data)
+void microphone(GtkBox *micBox)
 {
 	int i;
 	GtkWidget *rightBox, *rightSep, *centerBox, *leftSep, *leftBox;
@@ -262,7 +262,7 @@ void microphone(GtkBox *micBox, gpointer data)
 
 	/* Put the initial UART property box. */ 
 	get_device_nodes(micChannel);
-	mic_group_UART(NULL);
+	mic_group_UART();
 
 	gtk_box_append(GTK_BOX(propertyBox), micUARTGroup);
 

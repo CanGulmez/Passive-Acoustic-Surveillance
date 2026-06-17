@@ -81,7 +81,7 @@ extern ModelButton modelButton;
 
 /* AI Model function prototypes */
 
-void model(GtkBox *modelBox, gpointer data);
+void model(GtkBox *modelBox);
 void model_group_dataset(GtkWidget *datasetGroup);
 void model_group_model(GtkWidget *modelGroup);
 

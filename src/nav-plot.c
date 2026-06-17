@@ -268,8 +268,11 @@ void nav_plot_area_gyro(cairo_t *cr, int width, int height, NavGyro navGyro)
 }
 
 void nav_plot_area(GtkDrawingArea *area, cairo_t *cr, int width,
-						 int height, gpointer data)
+				   int height, gpointer data)
 {
+	(void)area;
+	(void)data;
+
 	/* Set the background of bottom plot area. */
 	cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
 	cairo_paint(cr);
