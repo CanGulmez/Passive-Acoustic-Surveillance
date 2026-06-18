@@ -435,7 +435,7 @@ void configSDWriting(void)
 	HAL_StatusTypeDef status;
 
 	/* Initialize the GPIOA peripheral. */
-	initGPIO(&igpio, SD_PIN_CD, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, -1);
+	initGPIO(&igpio, SD_PIN_CD, GPIO_MODE_INPUT, GPIO_NOPULL, -1);
 	HAL_GPIO_Init(GPIOA, &igpio);
 
 	/* Initialize the GPIOC peripheral. */
@@ -449,7 +449,7 @@ void configSDWriting(void)
 
 	/* Initialize the SDMMC1 peripheral. */
 	hsdmmc1.Instance = SDMMC1;
-	hsdmmc1.Init.BusWide = SDMMC_BUS_WIDE_4B;
+	hsdmmc1.Init.BusWide = SDMMC_BUS_WIDE_1B;
 	hsdmmc1.Init.ClockEdge = SDMMC_CLOCK_EDGE_RISING;
 	hsdmmc1.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_DISABLE;
 	hsdmmc1.Init.ClockDiv = 1;
@@ -470,20 +470,20 @@ void configSDWriting(void)
 	/*************************************************************************/
 
 	/* Disable the cache for SDMMC1 for AXI SRAM access. */
-	HAL_MPU_Disable();
+	// HAL_MPU_Disable();
 
-	hsdmmc1mpu.Enable = MPU_REGION_ENABLE;
-	hsdmmc1mpu.Number = MPU_REGION_NUMBER0;
-	hsdmmc1mpu.BaseAddress = 0x24000000;
-	hsdmmc1mpu.Size = MPU_REGION_SIZE_512KB;
-	hsdmmc1mpu.SubRegionDisable = 0x0;
-	hsdmmc1mpu.TypeExtField = MPU_TEX_LEVEL1;	/* no-cachable */
-	hsdmmc1mpu.AccessPermission = MPU_REGION_FULL_ACCESS;
-	hsdmmc1mpu.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
-	hsdmmc1mpu.IsShareable = MPU_ACCESS_SHAREABLE;
-	hsdmmc1mpu.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
-	hsdmmc1mpu.IsBufferable = MPU_ACCESS_BUFFERABLE;
-	HAL_MPU_ConfigRegion(&hsdmmc1mpu);
+	// hsdmmc1mpu.Enable = MPU_REGION_ENABLE;
+	// hsdmmc1mpu.Number = MPU_REGION_NUMBER0;
+	// hsdmmc1mpu.BaseAddress = 0x24000000;
+	// hsdmmc1mpu.Size = MPU_REGION_SIZE_512KB;
+	// hsdmmc1mpu.SubRegionDisable = 0x0;
+	// hsdmmc1mpu.TypeExtField = MPU_TEX_LEVEL1;	/* no-cachable */
+	// hsdmmc1mpu.AccessPermission = MPU_REGION_FULL_ACCESS;
+	// hsdmmc1mpu.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
+	// hsdmmc1mpu.IsShareable = MPU_ACCESS_SHAREABLE;
+	// hsdmmc1mpu.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+	// hsdmmc1mpu.IsBufferable = MPU_ACCESS_BUFFERABLE;
+	// HAL_MPU_ConfigRegion(&hsdmmc1mpu);
 
-	HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+	// HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
 }

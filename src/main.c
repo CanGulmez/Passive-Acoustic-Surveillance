@@ -15,7 +15,7 @@
  ******************************************************************************
  */
 
-#include "./main.h"
+#include "main.h"
 
 void on_activate(GtkApplication *app, gpointer data)
 {

@@ -51,3 +51,9 @@ void SDMMC1_IRQHandler(void)
 {
 	HAL_SD_IRQHandler(&hsdmmc1);
 }
+
+void HardFault_Handler(void)
+{
+    printLog("*** HARDFAULT ***");
+    while(1);
+}

@@ -29,8 +29,8 @@ extern "C" {
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdalign.h>
 #include <unistd.h>
-#include <assert.h>
 #include <limits.h>
 #include <string.h>
 #include <ctype.h>
@@ -41,12 +41,15 @@ extern "C" {
 #include <math.h>
 #include <dirent.h>
 #include <errno.h>
+#include <sys/types.h>
+#include <sys/select.h>
 #include <sys/stat.h>
 #include <termios.h>
 #include <sys/types.h>
 #include <check.h>
 #include <shumate/shumate.h>
 #include <sqlite3.h>
+#include <pthread.h>
 
 #include "microphone.h"
 #include "model.h"
@@ -75,11 +78,10 @@ extern "C" {
 #define DB_SENSOR_TABLE						"SensorData"
 #define DB_SQL_LENGTH						30720
 
-#define TIMEOUT_DEVICE_READ					3000	/* ms */
-#define TIMEOUT_MODEL_LOG					3000	/* ms */
+#define TIMEOUT_MODEL_LOG					4000	/* ms */
 #define TIMEOUT_DATA_RECORD					8000	/* ms */
-#define TIMEOUT_NAV_UPDATE					3000	/* ms */ 
-#define TIMEOUT_GPS_UPDATE					3000	/* ms */
+#define TIMEOUT_NAV_UPDATE					1000	/* ms */ 
+#define TIMEOUT_GPS_UPDATE					1000	/* ms */
 
 /* Attribute and built-in macro definitions  */
 
@@ -181,13 +183,13 @@ void abort_keras_script(int childPid);
 int is_keras_script_running(int childPid);
 const char *get_keras_script_log(const char *logFile);
 
+/* Thread function prototypes */
+
+void *payload_data_thread(void *arg);
+
 /* Timeout utility function prototypes */
 
-gboolean device_node_timeout(gpointer data);
 gboolean model_keras_log_timeout(gpointer data);
-gboolean db_record_timeout(gpointer data);
-gboolean nav_update_timeout(gpointer data);
-gboolean gps_update_timeout(gpointer data);
 
 /* Signal analysis function prototypes */
 
@@ -199,8 +201,10 @@ void make_signal_analysis(const DspTime *beamformed, int arrival);
 int select_sector(void);
 NavAccel accel_direction(void);
 NavGyro gyro_rotation(void);
+void update_mic_data(void);
 void update_nav_data(void);
 void update_gps_data(void);
+void record_payload_data(void);
 
 /* General signal handler prototypes */
 

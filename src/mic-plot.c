@@ -15,7 +15,7 @@
  ******************************************************************************
  */
 
-#include "./main.h"
+#include "main.h"
 
 /**
  * Draw the cartesian plot frame.

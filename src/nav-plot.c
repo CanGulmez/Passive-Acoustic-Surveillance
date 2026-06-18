@@ -15,7 +15,7 @@
  ******************************************************************************
  */
 
-#include "./main.h"
+#include "main.h"
 
 void nav_plot_area_grid(cairo_t *cr, int width, int height)
 {

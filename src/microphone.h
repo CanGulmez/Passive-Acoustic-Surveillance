@@ -31,7 +31,7 @@
 #define MIC_RADIUS							0.1		/* meter */
 #define MIC_SAMPLING_FREQ					48000	/* Hz */
 #define MIC_DEVICE_NODE						64
-#define MIC_MAGIC_WORD						0xDEADBEEF
+#define MIC_MAGIC_WORD						-99
 
 /* Microphone enumerations */
 
@@ -102,8 +102,9 @@ extern MicDataBits micDataBits;
 extern MicParityBit micParityBit;
 extern MicStopBits micStopBits;
 extern MicFlowCntl micFlowCntl;
-extern guint micTimeout;
-extern guint recordTimeout;
+extern pthread_t micThread;
+extern pthread_mutex_t micMutex;
+extern bool micThreadStarted;
 extern MicButton micButton;
 
 /* Microphone function prototypes */

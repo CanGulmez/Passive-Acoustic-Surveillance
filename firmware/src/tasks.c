@@ -216,7 +216,7 @@ void taskIMUSensor(void *pvParams)
 	for (;;)
 	{
 		/* Give some period. */
-		vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(3000));
+		vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(1000));
 
 		/* Take the payload mutex to update the payload data. */
 		if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
@@ -243,7 +243,7 @@ void taskTransmitter(void *pvParams)
 {
 	(void)pvParams;
 
-	uint32_t magicWord = MAGIC_WORD;
+	int8_t magicWord = MAGIC_WORD;
 	EventBits_t eventBits = (TASK_MIC_EVENT_BIT_0 | TASK_MIC_EVENT_BIT_1 |
 							 TASK_MIC_EVENT_BIT_2 | TASK_MIC_EVENT_BIT_3 |
 							 TASK_IMU_EVENT_BIT);
@@ -261,10 +261,10 @@ void taskTransmitter(void *pvParams)
 		/* Transmit payload data locally using mutex. */
 		if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 		{
-			// HAL_UART_Transmit(&huart4, (uint8_t *)&magicWord, sizeof(magicWord), 
-			// 	portMAX_DELAY);
-			// HAL_UART_Transmit(&huart4, (uint8_t *)&payloadData, sizeof(payloadData), 
-			// 	portMAX_DELAY);
+			HAL_UART_Transmit(&huart4, (uint8_t *)&magicWord, sizeof(magicWord), 
+				portMAX_DELAY);
+			HAL_UART_Transmit(&huart4, (uint8_t *)&payloadData, sizeof(payloadData), 
+				portMAX_DELAY);
 
 			// printLog("filter0 (MK2): %ld, %ld, %ld", payloadData.micFilter0[10], payloadData.micFilter0[100], payloadData.micFilter0[500]);
 			// printLog("filter1 (MK7): %ld, %ld, %ld", payloadData.micFilter1[10], payloadData.micFilter1[100], payloadData.micFilter1[500]);
@@ -273,7 +273,7 @@ void taskTransmitter(void *pvParams)
 			// printLog("accel: %f, %f, %f", payloadData.imuAccel[0], payloadData.imuAccel[1], payloadData.imuAccel[2]);
 			// printLog("gyro: %f, %f, %f", payloadData.imuGyro[0], payloadData.imuGyro[1], payloadData.imuGyro[2]);
 			// printLog("temp: %f", payloadData.imuTemp);
-				
+			
 			/* Give up the payload mutex. */
 			xSemaphoreGive(payloadMutex);
 		}

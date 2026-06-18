@@ -15,14 +15,13 @@
  ******************************************************************************
  */
 
-#include "./main.h"
+#include "main.h"
 
 /* Shared widgets and variables */
 
 NavAccel navAccel = NAV_ACCEL_UNDEF;
 NavGyro navGyro = NAV_GYRO_UNDEF;
 GtkWidget *navPlotArea;
-NavButton navButton;
 GtkWidget *navSensorRows[NAV_SENSOR_ROW]; /* module, accel-status, accel-output,
 											gyro-status, gyro-output, magnet-status,
 											magnet-output, temp */
@@ -104,7 +103,7 @@ void navigation(GtkBox *imuBox)
 	GtkWidget *leftBox, *separator, *rightBox;
 	GtkWidget *accelGroup, *gyroGroup, *magnetGroup, *tempGroup,
 				 *infoGroup;	
-	GtkWidget *propertyBox, *scrolledWin, *startBtn;
+	GtkWidget *propertyBox, *scrolledWin;
 
 	/* Put the required boxes. */
 	leftBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
@@ -134,10 +133,6 @@ void navigation(GtkBox *imuBox)
 	magnetGroup = nav_magnet_group();
 	tempGroup = nav_temp_group();
 
-	/* Put the required buttons. */
-	startBtn = __ui_button_new("Start", "suggested-action");
-	__ui_sig_button(startBtn, on_nav_button_clicked);
-
 	/* Put the plot areas. */
 	navPlotArea = gtk_drawing_area_new();
 	gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(navPlotArea), 
@@ -155,7 +150,6 @@ void navigation(GtkBox *imuBox)
 	gtk_box_append(GTK_BOX(propertyBox), tempGroup);
 
 	gtk_box_append(GTK_BOX(leftBox), scrolledWin);
-	gtk_box_append(GTK_BOX(leftBox), startBtn);
 	gtk_box_append(GTK_BOX(rightBox), navPlotArea);
 
 	gtk_box_append(imuBox, leftBox);

@@ -27,17 +27,10 @@
 
 /* GPS map enumerations */
 
-typedef enum _GpsButton
-{
-	GPS_BUTTON_START = 1
-} GpsButton;
-
 /* GPS map shared widgets and variables */
 
 extern ShumateMarkerLayer *gpsMarkerLayer;
 extern ShumateMap *gpsMap;
-extern GpsButton gpsButton;
-extern guint gpsTimeout;
 extern GtkWidget *gpsModuleRows[GPS_OUTPUT_ROWS];
 
 /* GPS map function prototypes */
@@ -47,5 +40,3 @@ void gps_map_area(GtkBox *rightBox);
 void gps_map_area_markers(ShumateMarkerLayer *gpsMarkerLayer, double lat, double lon);
 
 /* GPS map signal handler prototypes */
-
-void on_gps_button_clicked(GtkButton *button, gpointer data);

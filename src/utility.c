@@ -15,7 +15,7 @@
  ******************************************************************************
  */
 
-#include "./main.h"
+#include "main.h"
 
 /**
  * Write the system logs into associated .log file.
@@ -125,7 +125,7 @@ void set_serial_attrs(int fd, struct termios *tty)
 	/* Set the other settings of the channel. */
    tty->c_oflag &= ~OPOST;
    tty->c_cc[VTIME] = 0;  				
-   tty->c_cc[VMIN] = 0;
+   tty->c_cc[VMIN] = 1;
    tty->c_cflag |= CREAD | CLOCAL;
 
    if (tcsetattr(fd, TCSANOW, tty) == -1)
@@ -217,7 +217,7 @@ int open_device_node(MicChannel channel, const char *node)
 	pathSize += strlen(node);
 	devicePath[pathSize] = '\0';
 
-	fd = open(devicePath, O_RDONLY | O_NONBLOCK); /* read-only channel */	
+	fd = open(devicePath, O_RDONLY); /* read-only channel */	
 	if (fd == -1)
 		syscall_error();
 	else
@@ -232,20 +232,21 @@ int open_device_node(MicChannel channel, const char *node)
 /**
  * Read the selected channel's device node.
  */
-void read_device_node(int fd)
+void read_device_node(int deviceFd)
 {
-	ssize_t numRead, totalRead;
-	uint8_t *payloadPtr;
-	uint32_t magicWord;
-	long payloadSize;
+	ssize_t numRead;
+	int8_t magicWord;
+	ssize_t totalRead = 0;
+	uint8_t *payloadPtr = (uint8_t *)&payloadData;
+	long payloadSize = sizeof(payloadData);
 	
-	/* Initialize with 0s. */
+	/* Initialize the payload data with zeros. */
 	memset(&payloadData, 0, sizeof(payloadData));
-	
-	/* Firstly, find the magic number to synchronize the stream. */
+
 	while (true)
 	{
-		numRead = read(fd, &magicWord, sizeof(magicWord));
+		/* Firstly, find the magic number to synchronize the stream. */
+		numRead = read(deviceFd, &magicWord, sizeof(magicWord));
 		if (numRead == sizeof(magicWord))
 		{
 			if (magicWord == MIC_MAGIC_WORD)
@@ -253,13 +254,9 @@ void read_device_node(int fd)
 				break;
 			}
 		}
-		else if (numRead == -1 && errno != EAGAIN)
+		else if (numRead == -1)
 			syscall_error();
 	}
-	
-	totalRead = 0;
-	payloadPtr = (uint8_t *) &payloadData;
-	payloadSize = sizeof(payloadData);
 	/**
 	 * Read the device node simulatenously. If the received data is 
 	 * bigger than kernel buffer size (defaultly, 4096 bytes), loop 
@@ -267,18 +264,13 @@ void read_device_node(int fd)
 	 */
 	while (totalRead < payloadSize)
 	{
-		numRead = read(fd, payloadPtr+totalRead, payloadSize-totalRead);
+		numRead = read(deviceFd, payloadPtr+totalRead, payloadSize-totalRead);
 		if (numRead > 0) 
 		{
 			totalRead += numRead;
-			print_log("read %ld bytes from the node", numRead);
 		} 
 		else if (numRead == -1) 
-		{
-			if (errno != EAGAIN && errno != EWOULDBLOCK)
-				syscall_error(); 
-				/* EAGAIN is normal (no data at this cycle) */
-		}
+			syscall_error(); 
 	}
 	print_log("read total %ld bytes from the associated node", totalRead);
 }
@@ -470,4 +462,17 @@ const char *get_keras_script_log(const char *logFile)
 		syscall_error();
 
 	return buffer;
+}
+
+/**
+ * Record the payload data in the associated db.
+ */
+void record_payload_data(void)
+{
+	// sqlite3 *db;
+
+	// db = (sqlite3 *)data;
+	/* Bind the last sensor data. */
+	// db_bind_data(db);
+	print_log("recorded the payload data into '%s'", DB_SENSOR_PATH);
 }

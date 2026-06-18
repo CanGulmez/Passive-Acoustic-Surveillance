@@ -53,19 +53,12 @@ typedef enum _NavGyro
 	NAV_GYRO_UNDEF
 } NavGyro;
 
-typedef enum _NavButton
-{
-	NAV_BUTTON_START = 1
-} NavButton;
-
 /* Nagivation shared widgets and variables */
 
 extern NavAccel navAccel;
 extern NavGyro navGyro;
 extern GtkWidget *navPlotArea;
-extern NavButton navButton;
 extern GtkWidget *navSensorRows[NAV_SENSOR_ROW];
-extern guint navTimeout;
 
 /* Navigation function prototypes */
 
@@ -84,5 +77,3 @@ void nav_plot_area_gyro(cairo_t *cr, int width, int height, NavGyro gyro);
 void nav_plot_area(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer data);
 
 /* Navigation signal handler prototypes */
-
-void on_nav_button_clicked(GtkButton *button, gpointer data);

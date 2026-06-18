@@ -15,7 +15,7 @@
  ******************************************************************************
  */
 
-#include "./main.h"
+#include "main.h"
 
 /* Global and Shared Variables */
 
@@ -201,7 +201,6 @@ NavAccel accel_direction(void)
 	double accelX = payloadData.imuAccel[0];
 	double accelY = payloadData.imuAccel[1];
 	double accelZ = payloadData.imuAccel[2] - NAV_FLAT_GRAVITY;
-	double noise = NAV_ACCEL_NOISE;
 
 	if ((accelX > accelY) && (accelX > accelZ))
 	{
@@ -238,7 +237,6 @@ NavGyro gyro_rotation(void)
 	double gyroX = payloadData.imuGyro[0];
 	double gyroY = payloadData.imuGyro[1];
 	double gyroZ = payloadData.imuGyro[2];
-	double noise = NAV_GYRO_NOISE;
 
 	if ((gyroX > gyroY) && (gyroX > gyroZ))
 	{
@@ -268,7 +266,37 @@ NavGyro gyro_rotation(void)
 }
 
 /**
- * Update the navigation data including IMU outputs.
+ * Update the four microphone data include filter 0 to 3.
+ */
+void update_mic_data(void)
+{
+	double maxFreq;
+	int arrival;
+	
+	/* Prepare the collected data for signal analysis. */
+	prepare_samples();
+
+	/* Extract the required calculations in here. */
+	maxFreq = find_dominant_freq();
+	arrival = calculate_arrival(maxFreq);
+	sigBeamformed = do_beamforming(arrival);
+	sigVolumest = select_sector();
+
+	/* Make sure the amplitude of signal fits into the frame. */
+	dsp_time_scale(&sigBeamformed, 128.0, &sigBeamformed);
+
+	/* Make the signal analysis. */
+	make_signal_analysis(&sigBeamformed, arrival);
+	print_log("completed the signal analysis operations");
+
+	/* Lastly, redraw the cartesian and polar plots. */
+	gtk_widget_queue_draw(micCarPlot);
+	gtk_widget_queue_draw(micPolarPlot);
+	print_log("requested the microphone plot redraws");
+}
+
+/**
+ * Update the nagivation data.
  */
 void update_nav_data(void)
 {
@@ -296,6 +324,15 @@ void update_nav_data(void)
 	/* Update the temperature output. */
 	snprintf(buffer, BUFFER_SIZE, "%.3f", payloadData.imuTemp);	
 	__ui_action_row_update(navSensorRows[7], buffer);
+	print_log("updated the navigation data recently");
+
+	/* Select the direction and rotation for plot. */
+	navAccel = accel_direction();
+	navGyro = gyro_rotation();
+
+	/* Request redraw for navigation plot. */
+	gtk_widget_queue_draw(navPlotArea);
+	print_log("requested the navigtion plot redraw");
 }
 
 /**
@@ -303,6 +340,9 @@ void update_nav_data(void)
  */
 void update_gps_data(void)
 {
+	static int i = 0;
+	double longitude, latitude;
+
 	/* Update the GPS module information. */
 	__ui_action_row_update(gpsModuleRows[0], GPS_MODULE);
 
@@ -317,5 +357,17 @@ void update_gps_data(void)
 	// __ui_action_row_update(gpsModuleRows[8], payloadData.gpsSpeed);
 	// __ui_action_row_update(gpsModuleRows[9], payloadData.gpsCourse);
 	// __ui_action_row_update(gpsModuleRows[10], payloadData.gpsDate);
+	print_log("updated the GPS map data recently");
+
+	/* Update the GPS map. */
+	// latitude = atof(payloadData.gpsLatitude);
+	// longitude = atof(payloadData.gpsLongitude);
+	latitude = GPS_INIT_LAT;
+	longitude = GPS_INIT_LONG;
+	shumate_map_center_on(gpsMap, latitude, longitude + i * 0.01);
+	gps_map_area_markers(gpsMarkerLayer, latitude, longitude + i * 0.01);
+	print_log("marked the last position on the map");
+
+	i++;
 }
  

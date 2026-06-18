@@ -15,7 +15,7 @@
  ******************************************************************************
  */
 
-#include "./main.h"
+#include "main.h"
 
 /* General shared widgets and variables */
 
@@ -379,7 +379,7 @@ void on_mic_button_clicked(GtkButton *button, gpointer data)
 
 	const char *label;
 	static sqlite3 *db = NULL;
-	static int deviceFd = -1;
+	static int deviceFd = -1, s;
 
 	label = gtk_button_get_label(button);
 	print_log("%s(): '%s'", __func__, label);
@@ -411,21 +411,24 @@ void on_mic_button_clicked(GtkButton *button, gpointer data)
 		db = db_open(DB_SENSOR_PATH);
 		db_create_table(db);
 
-		/* Add the timeout for updating "payloadData". */
-		if (!micTimeout) 
+		/* Create the new thread for reading the serial line. */
+		if (!micThreadStarted) 
 		{
-			micTimeout = g_timeout_add(TIMEOUT_DEVICE_READ, 
-				device_node_timeout, GINT_TO_POINTER(deviceFd));
-		}
-		/* Add the timeout for recording sensor data into database. */
-		if (!recordTimeout)
-		{
-			recordTimeout = g_timeout_add(TIMEOUT_DATA_RECORD,
-				db_record_timeout, (gpointer) db);
+			micThreadStarted = true;
+			s = pthread_create(&micThread, NULL, payload_data_thread, 
+							   (void *)&deviceFd);
+			if (s != 0)
+				syscall_error();
 		}
 	} 
 	else if (micButton == MIC_BUTTON_STOP) 
 	{
+		/* Cancel the thread. */
+		if (micThreadStarted)
+		{
+			pthread_cancel(micThread);
+			micThreadStarted = false;
+		}	
 		/* Close the open database. */
 		if (db != NULL)
 		{
@@ -436,18 +439,6 @@ void on_mic_button_clicked(GtkButton *button, gpointer data)
 		{
 			if (close(deviceFd) == -1)
 			syscall_error();
-		}
-		/* Stop the timeout for "payloadData". */
-		if (micTimeout) 
-		{
-			g_source_remove(micTimeout);
-			micTimeout = 0;
-		}
-		/* Stop the timeout for recording sensor data. */
-		if (recordTimeout)
-		{
-			g_source_remove(recordTimeout);
-			recordTimeout = 0;
 		}
 	} 
 }
@@ -526,54 +517,3 @@ void on_model_button_clicked(GtkButton *button, gpointer data)
 
 	}
 }
-
-void on_nav_button_clicked(GtkButton *button, gpointer data)
-{
-	(void)data;
-
-	const char *label;
-
-	label = gtk_button_get_label(button);
-	print_log("%s(): '%s'", __func__, label);
-
-	if (cmp(label, "Start"))
-	{
-		navButton = NAV_BUTTON_START;
-	}
-
-	/* If the 'Start' button is clicked, activate the readings. */
-	if (navButton == NAV_BUTTON_START)
-	{
-		if (!navTimeout)
-		{
-			/* Start the timeout for real-time tracking. */
-			g_timeout_add(TIMEOUT_NAV_UPDATE, nav_update_timeout, NULL);
-		}
-	}
-}
-
-void on_gps_button_clicked(GtkButton *button, gpointer data)
-{
-	(void)data;
-
-	const char *label;
-
-	label = gtk_button_get_label(button);
-	print_log("%s(): '%s'", __func__, label);
-
-	if (cmp(label, "Start"))
-	{
-		gpsButton = GPS_BUTTON_START;
-	}
-
-	/* If 'Start' button is clicked, activate the readings. */
-	if (gpsButton == GPS_BUTTON_START)
-	{
-		if (!gpsTimeout)
-		{
-			/* Start the timeout for real-time tracking. */
-			g_timeout_add(TIMEOUT_GPS_UPDATE, gps_update_timeout, NULL);
-		}
-	}
-}
- 

@@ -15,44 +15,7 @@
  ******************************************************************************
  */
 
-#include "./main.h"
-
-/**
- * Set the timeout to get the device data simultenously.
- */
-gboolean device_node_timeout(gpointer data)
-{
-	double maxFreq;
-	int arrival;
-	int deviceFd;
-
-	/* Read the device node to update 'payloadData' object. */
-	deviceFd = GPOINTER_TO_INT(data);
-	read_device_node(deviceFd);
-
-	/* Prepare the collected data for signal analysis. */
-	prepare_samples();
-
-	/* Extract the required calculations in here. */
-	maxFreq = find_dominant_freq();
-	arrival = calculate_arrival(maxFreq);
-	sigBeamformed = do_beamforming(arrival);
-	sigVolumest = select_sector();
-
-	/* Make sure the amplitude of signal fits into the frame. */
-	dsp_time_scale(&sigBeamformed, 128.0, &sigBeamformed);
-
-	/* Make the signal analysis. */
-	make_signal_analysis(&sigBeamformed, arrival);
-	print_log("completed the signal analysis operations");
-
-	/* Lastly, redraw the cartesian and polar plots. */
-	gtk_widget_queue_draw(micCarPlot);
-	gtk_widget_queue_draw(micPolarPlot);
-	print_log("requested the microphone plot redraws");
-
-	return G_SOURCE_CONTINUE;
-}
+#include "main.h"
 
 /**
  * Set the timeout to get the Keras logs into text view.
@@ -80,69 +43,3 @@ gboolean model_keras_log_timeout(gpointer data)
 		return G_SOURCE_REMOVE;
 	}
 }
-
-/**
- * Set the timeout to record the sensor data into database.
- */
-gboolean db_record_timeout(gpointer data)
-{
-	sqlite3 *db;
-
-	db = (sqlite3 *)data;
-	/* Bind the last sensor data. */
-	db_bind_data(db);
-	print_log("recorded the sensor data into '%s'", DB_SENSOR_PATH);
-
-	return G_SOURCE_CONTINUE;
-}
-
-/**
- * Set the timeout for navigation updates.
- */
-gboolean nav_update_timeout(gpointer data)
-{
-	(void)data;
-
-	/* Update the navigation data. */
-	update_nav_data();
-	print_log("updated the navigation data correctly");
-
-	/* Select the direction and rotation for plot. */
-	navAccel = accel_direction();
-	navGyro = gyro_rotation();
-
-	/* Request redraw for navigation plot. */
-	gtk_widget_queue_draw(navPlotArea);
-	print_log("requested the navigtion plot redraw");
-
-	return G_SOURCE_CONTINUE;
-}
-
-/**
- * Set the timeout for GPS map updates.
- */
-gboolean gps_update_timeout(gpointer data)
-{
-	(void)data;
-
-	static int i = 0;
-	double longitude, latitude;
-
-	/* Update the gps module data. */
-	update_gps_data();
-	print_log("updated the GPS map data correctly");
-
-	/* Update the GPS map. */
-	// latitude = atof(payloadData.gpsLatitude);
-	// longitude = atof(payloadData.gpsLongitude);
-	latitude = GPS_INIT_LAT;
-	longitude = GPS_INIT_LONG;
-	shumate_map_center_on(gpsMap, latitude, longitude + i * 0.01);
-	gps_map_area_markers(gpsMarkerLayer, latitude, longitude + i * 0.01);
-	print_log("marked the last position onto the map");
-
-	i++;
-
-	return G_SOURCE_CONTINUE;
-}
- 

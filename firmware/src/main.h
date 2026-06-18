@@ -44,7 +44,7 @@ extern "C" {
 #define DATA_SIZE			1024	/* 1 KB */
 #define CHANNEL_COUNT		4
 #define MIC_COUNT			(CHANNEL_COUNT * 2)
-#define MAGIC_WORD			0xDEADBEEF
+#define MAGIC_WORD			(-99)
 
 #define FILE				__FILE__
 #define LINE				__LINE__
@@ -185,6 +185,7 @@ extern void DMA1_Stream1_IRQHandler(void);
 extern void DMA1_Stream2_IRQHandler(void);
 extern void DMA1_Stream3_IRQHandler(void);
 extern void SDMMC1_IRQHandler(void);
+extern void HardFault_Handler(void);
 
 /* HAL callback function prototypes */
 

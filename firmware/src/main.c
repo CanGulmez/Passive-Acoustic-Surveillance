@@ -46,10 +46,10 @@ int main(void)
 	configSerialLine();
 	configMicSensors();
 	configIMUSensor();
-	configSDWriting();
+	// configSDWriting();
 
-	printLog("\nThe firmware is running...");
-	printLog("System core clock is %ld Hz", SystemCoreClock);
+	// printLog("\nThe firmware is running...");
+	// printLog("System core clock is %ld Hz", SystemCoreClock);
 
 	/* Create the mutex to protect the payload data. */
 	payloadMutex = xSemaphoreCreateMutex();
@@ -98,13 +98,14 @@ int main(void)
 		printKernel("Failed to create '%s' task!", TASK_SERIAL_NAME);
 
 	/* Create the taskSDCardWriting() task. */
-	status = xTaskCreate(taskSDWriting, TASK_SD_NAME, TASK_SD_STACK, 
-		NULL, TASK_SD_PRIORITY, NULL);
-	if (status != pdPASS)
-		printKernel("Failed to create '%s' task!", TASK_SD_NAME);
+	// status = xTaskCreate(taskSDWriting, TASK_SD_NAME, TASK_SD_STACK, 
+	// 	NULL, TASK_SD_PRIORITY, NULL);
+	// if (status != pdPASS)
+	// 	printKernel("Failed to create '%s' task!", TASK_SD_NAME);
 
-	printLog("free heap size is %d bytes", xPortGetFreeHeapSize());
+	// printLog("free heap size is %d bytes", xPortGetFreeHeapSize());
 
 	/* Start the task schedular. */
 	vTaskStartScheduler();
 }
+ 

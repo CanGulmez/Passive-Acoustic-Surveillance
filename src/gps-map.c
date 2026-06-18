@@ -15,15 +15,13 @@
  ******************************************************************************
  */
 
-#include "./main.h"
+#include "main.h"
 
 /* GPS map shared widgets and variables */
 
 ShumateMarkerLayer *gpsMarkerLayer = {0};
 ShumateMap *gpsMap = {0};
 GtkWidget *gpsModuleRows[GPS_OUTPUT_ROWS];	
-GpsButton gpsButton;
-guint gpsTimeout = 0;
 
 /**
  * Put the markers at specific locations in the map.
@@ -92,7 +90,6 @@ void gps_map(GtkBox *mapBox)
 	GtkWidget *rightBox, *leftBox, *separator;	
 	GtkWidget *GPSModuleGroup, *GPSResGroup;
 	GtkWidget *scrolledWin, *propertyBox;
-	GtkWidget *startBtn;
 
 	leftBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
 	propertyBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
@@ -163,16 +160,11 @@ void gps_map(GtkBox *mapBox)
 		__ui_group_add(GPSResGroup, gpsModuleRows[i]);
 	}
 
-	/* Put the required buttons. */
-	startBtn = __ui_button_new("Start", "suggested-action");
-	__ui_sig_button(startBtn, on_gps_button_clicked);
-	
 	/* Layout */
 	gtk_box_append(GTK_BOX(propertyBox), GPSModuleGroup);
 	gtk_box_append(GTK_BOX(propertyBox), GPSResGroup);
 
 	gtk_box_append(GTK_BOX(leftBox), scrolledWin);
-	gtk_box_append(GTK_BOX(leftBox), startBtn);
 	gps_map_area(GTK_BOX(rightBox));
 
 	gtk_box_append(mapBox, leftBox);
