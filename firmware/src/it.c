@@ -46,3 +46,8 @@ void DMA1_Stream3_IRQHandler(void)
 {
 	HAL_DMA_IRQHandler(&hdfsdm1dma3);
 }
+
+void SDMMC1_IRQHandler(void)
+{
+	HAL_SD_IRQHandler(&hsdmmc1);
+}

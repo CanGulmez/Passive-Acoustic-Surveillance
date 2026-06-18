@@ -36,6 +36,8 @@ extern "C" {
 #include "peripheral.h"
 #include "kernel.h"
 
+#include "ff.h"
+
 /* Global and generic definitions */
 
 #define BUFFER_SIZE			512
@@ -53,8 +55,10 @@ extern "C" {
 							  "UNDEFINED")
 
 #define MIC_IRQ				configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1
+#define SD_IRQ				configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 2
 
 #define PACKED				__attribute__((packed, aligned(1)))
+#define BACKUP				__attribute__((section(".axi_sram"), aligned(32)))
 
 /*****************************************************************************/
 
@@ -81,7 +85,10 @@ extern DMA_HandleTypeDef hdfsdm1dma2;
 extern DMA_HandleTypeDef hdfsdm1dma3;
 
 extern SPI_HandleTypeDef hspi1;				/* IMU Sensor */
-extern DMA_HandleTypeDef hspi1dma4;			/* IMU Sensor */
+
+extern SD_HandleTypeDef	hsdmmc1;			/* SD Card */
+extern MPU_Region_InitTypeDef hsdmmc1mpu;	/* SD Card MPU */
+extern RCC_PeriphCLKInitTypeDef hsdmmc1clk;	/* SD Card Clock */
 
 extern TaskHandle_t micTaskHandlers[CHANNEL_COUNT];
 extern SemaphoreHandle_t payloadMutex;
@@ -141,7 +148,7 @@ do {																		\
 
 /*****************************************************************************/
 
-/* Function prototypes */
+/* Dummy syscall prototypes */
 
 extern int _read(int, char *, int);
 extern int _write(int, char *, int);
@@ -152,10 +159,15 @@ extern int _kill(int);
 extern int _fstat(int, struct stat *);
 extern int _isatty(int);
 
+/* Configuration function prototypes */
+
 extern void configOscClk(void);
-extern void configDebugPort(void);
+extern void configSerialLine(void);
 extern void configMicSensors(void);
 extern void configIMUSensor(void);
+extern void configSDWriting(void);
+
+/* RTOS task function prototypes */
 
 extern void taskMicSensor0(void *);
 extern void taskMicSensor1(void *);
@@ -163,10 +175,29 @@ extern void taskMicSensor2(void *);
 extern void taskMicSensor3(void *);
 extern void taskIMUSensor(void *);
 extern void taskTransmitter(void *);
+extern void taskSDWriting(void *);
+
+/* HAL interrupt request function prototypes */
 
 extern void SysTick_Handler(void);
+extern void DMA1_Stream0_IRQHandler(void);
+extern void DMA1_Stream1_IRQHandler(void);
+extern void DMA1_Stream2_IRQHandler(void);
+extern void DMA1_Stream3_IRQHandler(void);
+extern void SDMMC1_IRQHandler(void);
+
+/* HAL callback function prototypes */
+
+extern void HAL_DFSDM_FilterRegConvCpltCallback(DFSDM_Filter_HandleTypeDef *);
+extern void HAL_SD_TxCpltCallback(SD_HandleTypeDef *);
+extern void HAL_SD_RxCpltCallback(SD_HandleTypeDef *);
+
+/* RTOS interrupt handler function prototypes */
+
 extern void xPortSysTickHandler(void);
 extern void vApplicationIdleHook(void);
+
+/* Helper and utility function prototypes */
 
 extern void writeRegToIMU(uint8_t, uint8_t);
 extern uint8_t readRegFromIMU(uint8_t);

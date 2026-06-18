@@ -30,18 +30,21 @@
 #define TASK_MIC_NAME_3				"taskMicSensor3"
 #define TASK_IMU_NAME				"taskIMUSensor"
 #define TASK_SERIAL_NAME			"taskTransmitter"
+#define TASK_SD_NAME				"taskSDWriting"
 
 /* RTOS task stacks (1 word = 4 bytes) */
 
 #define TASK_MIC_STACK				4096	/* 16 KB */
 #define TASK_IMU_STACK				1024	/* 4 KB */
 #define TASK_SERIAL_STACK			1024	/* 4 KB */
+#define TASK_SD_STACK				4096	/* 16 KB */
 
 /* RTOS task priorities */
 
 #define TASK_MIC_PRIORITY			1
 #define TASK_IMU_PRIORITY			1
 #define TASK_SERIAL_PRIORITY		2
+#define TASK_SD_PRIORITY			3
 
 /* RTOS task event group bits */
 

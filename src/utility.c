@@ -243,7 +243,7 @@ void read_device_node(int fd)
 	memset(&payloadData, 0, sizeof(payloadData));
 	
 	/* Firstly, find the magic number to synchronize the stream. */
-	while (TRUE)
+	while (true)
 	{
 		numRead = read(fd, &magicWord, sizeof(magicWord));
 		if (numRead == sizeof(magicWord))
@@ -359,8 +359,8 @@ int run_keras_script(const char *script)
 		case MODEL_LAYER_TYPE_GRU:  layerTypeStr = "GRU";  break;
 	}
 	snprintf(layerNumStr, sizeof(layerNumStr), "%u", modelLayerNumber);
-   snprintf(unitsStr, sizeof(unitsStr), "%u", modelUnits);
-   snprintf(epochsStr, sizeof(epochsStr), "%u", modelEpochs);
+	snprintf(unitsStr, sizeof(unitsStr), "%u", modelUnits);
+	snprintf(epochsStr, sizeof(epochsStr), "%u", modelEpochs);
 	switch (modelBatchSize) 							/* batch size */
 	{
       case MODEL_BATCH_SIZE_16:   batchSizeStr = "16"; break;

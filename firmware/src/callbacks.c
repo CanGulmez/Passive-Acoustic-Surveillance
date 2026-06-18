@@ -17,25 +17,35 @@
 
 #include "main.h"
 
-void HAL_DFSDM_FilterRegConvCpltCallback(DFSDM_Filter_HandleTypeDef *hdfsdm1f)
+void HAL_DFSDM_FilterRegConvCpltCallback(DFSDM_Filter_HandleTypeDef *hdfsdmf)
 {
 	BaseType_t highPri = pdFALSE;
 
-	if (hdfsdm1f->Instance == DFSDM1_Filter0)
+	if (hdfsdmf->Instance == DFSDM1_Filter0)
 	{
 		vTaskNotifyGiveFromISR(micTaskHandlers[0], &highPri);
 	}
-	else if (hdfsdm1f->Instance == DFSDM1_Filter1)
+	else if (hdfsdmf->Instance == DFSDM1_Filter1)
 	{
 		vTaskNotifyGiveFromISR(micTaskHandlers[1], &highPri);
 	}
-	else if (hdfsdm1f->Instance == DFSDM1_Filter2)
+	else if (hdfsdmf->Instance == DFSDM1_Filter2)
 	{
 		vTaskNotifyGiveFromISR(micTaskHandlers[2], &highPri);
 	}
-	else if (hdfsdm1f->Instance == DFSDM1_Filter3)
+	else if (hdfsdmf->Instance == DFSDM1_Filter3)
 	{
 		vTaskNotifyGiveFromISR(micTaskHandlers[3], &highPri);
 	}
 	portYIELD_FROM_ISR(highPri);
+}
+
+void HAL_SD_TxCpltCallback(SD_HandleTypeDef *hsdmmc)
+{
+    (void)hsdmmc;
+}
+
+void HAL_SD_RxCpltCallback(SD_HandleTypeDef *hsdmmc)
+{
+    (void)hsdmmc;
 }

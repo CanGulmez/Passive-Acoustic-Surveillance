@@ -105,6 +105,6 @@ void readTempFromIMU(PayloadData *payloadData)
 	low = readRegFromIMU(IMU_REG_OUT_TEMP_L);
 	high = readRegFromIMU(IMU_REG_OUT_TEMP_H);
 
-	payloadData->imuTemp = ((((high << 8) | low) / 256.0f) + 25.0f) / 10.0f;
+	payloadData->imuTemp = (((high << 8) | low) / 256.0f) + 25.0f;
 }
  

@@ -38,7 +38,11 @@ DMA_HandleTypeDef hdfsdm1dma2 = {0};
 DMA_HandleTypeDef hdfsdm1dma3 = {0};
 
 SPI_HandleTypeDef hspi1 = {0};				/* IMU Sensor */
-DMA_HandleTypeDef hspi1dma4 = {0};			/* IMU Sensor */
+
+SD_HandleTypeDef hsdmmc1 = {0};				/* SD Card */
+MPU_Region_InitTypeDef hsdmmc1mpu = {0};	/* SD Card MPU */
+RCC_PeriphCLKInitTypeDef hsdmmc1clk = {0};	/* SD Card Clock */
+
 
 /**
  * Configurate the oscillator and clock sources.
@@ -91,16 +95,20 @@ void configOscClk(void)
 	hdfsdm1clk.Dfsdm1ClockSelection = RCC_DFSDM1CLKSOURCE_D2PCLK1;
 	HAL_RCCEx_PeriphCLKConfig(&hdfsdm1clk);
 
+	hsdmmc1clk.PeriphClockSelection = RCC_PERIPHCLK_SDMMC;
+    hsdmmc1clk.SdmmcClockSelection = RCC_SDMMCCLKSOURCE_PLL;
+	HAL_RCCEx_PeriphCLKConfig(&hsdmmc1clk);
+
 	SystemCoreClock = HAL_RCC_GetSysClockFreq();
 }
 
 /**
- * Configurate the debug port.
+ * Configurate the serial line.
  */
-void configDebugPort(void)
+void configSerialLine(void)
 {
 	/* Initialize the GPIOA peripheral. */
-	initGPIO(&igpio, DEBUG_PIN_TX | DEBUG_PIN_RX, GPIO_MODE_AF_PP, 
+	initGPIO(&igpio, SERIAL_PIN_TX | SERIAL_PIN_RX, GPIO_MODE_AF_PP, 
 		GPIO_NOPULL, GPIO_AF8_UART4);
 	HAL_GPIO_Init(GPIOA, &igpio);
 
@@ -417,4 +425,65 @@ void configIMUSensor(void)
 	status = HAL_SPI_Init(&hspi1);
 	if (status != HAL_OK)
 		printError(status, "Failed to initialize SPI1 peripheral!");
+}
+
+/**
+ * Configure the SD card writing.
+ */
+void configSDWriting(void)
+{
+	HAL_StatusTypeDef status;
+
+	/* Initialize the GPIOA peripheral. */
+	initGPIO(&igpio, SD_PIN_CD, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, -1);
+	HAL_GPIO_Init(GPIOA, &igpio);
+
+	/* Initialize the GPIOC peripheral. */
+	initGPIO(&igpio, SD_PIN_DAT0 | SD_PIN_DAT1 | SD_PIN_DAT2 | SD_PIN_DAT3 | 
+		SD_PIN_CLK, GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF12_SDMMC1);
+	HAL_GPIO_Init(GPIOC, &igpio);
+
+	/* Initialize the GPIOD peripheral. */
+	initGPIO(&igpio, SD_PIN_CMD, GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_AF12_SDMMC1);
+	HAL_GPIO_Init(GPIOD, &igpio);
+
+	/* Initialize the SDMMC1 peripheral. */
+	hsdmmc1.Instance = SDMMC1;
+	hsdmmc1.Init.BusWide = SDMMC_BUS_WIDE_4B;
+	hsdmmc1.Init.ClockEdge = SDMMC_CLOCK_EDGE_RISING;
+	hsdmmc1.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_DISABLE;
+	hsdmmc1.Init.ClockDiv = 1;
+	hsdmmc1.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_DISABLE;
+
+	status = HAL_SD_Init(&hsdmmc1);
+	if (status != HAL_OK)
+		printError(status, "Failed to initialize SDMMC1 peripheral!");
+
+	status = HAL_SD_ConfigWideBusOperation(&hsdmmc1, SDMMC_BUS_WIDE_4B);
+	if (status != HAL_OK)
+		printError(status, "Failed to configure SDMMC1 wide bus operation!");
+
+	/* SDMMC1 internally use the DMA stream... */
+	HAL_NVIC_SetPriority(SDMMC1_IRQn, SD_IRQ, 0);
+	HAL_NVIC_EnableIRQ(SDMMC1_IRQn);
+
+	/*************************************************************************/
+
+	/* Disable the cache for SDMMC1 for AXI SRAM access. */
+	HAL_MPU_Disable();
+
+	hsdmmc1mpu.Enable = MPU_REGION_ENABLE;
+	hsdmmc1mpu.Number = MPU_REGION_NUMBER0;
+	hsdmmc1mpu.BaseAddress = 0x24000000;
+	hsdmmc1mpu.Size = MPU_REGION_SIZE_512KB;
+	hsdmmc1mpu.SubRegionDisable = 0x0;
+	hsdmmc1mpu.TypeExtField = MPU_TEX_LEVEL1;	/* no-cachable */
+	hsdmmc1mpu.AccessPermission = MPU_REGION_FULL_ACCESS;
+	hsdmmc1mpu.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
+	hsdmmc1mpu.IsShareable = MPU_ACCESS_SHAREABLE;
+	hsdmmc1mpu.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+	hsdmmc1mpu.IsBufferable = MPU_ACCESS_BUFFERABLE;
+	HAL_MPU_ConfigRegion(&hsdmmc1mpu);
+
+	HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
 }

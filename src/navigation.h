@@ -24,7 +24,7 @@
 #define NAV_PLOT_CAXIS						220		/* pixel */
 #define NAV_PLOT_VAXIS						280		/* pixel */
 #define NAV_FLAT_GRAVITY					9.81	/* m/s^2 */
-#define NAV_ACCEL_NOISE						1.0		/* m/s^2 */		
+#define NAV_ACCEL_NOISE						2.0		/* m/s^2 */		
 #define NAV_GYRO_NOISE						NAV_ACCEL_NOISE				
 #define NAV_IMU_SENSOR						"LSM6DALTR (ST)"
 #define NAV_SENSOR_ROW						8

@@ -115,16 +115,15 @@ void mic_plot_car_data(cairo_t *cr, int width, int height)
 	/* Get the middle point and step interval. */
 	middle = (MIC_PLOT_MARGIN / 2) + 
 				 ((height - (MIC_PLOT_MARGIN * 3 / 2)) / 2);
-	step = (width - (MIC_PLOT_MARGIN * 3 / 2)) / (DATA_SIZE - 1);
-	
+	step = (width - (MIC_PLOT_MARGIN * 3 / 2)) / (DATA_SIZE / 2 - 1);
+
 	/* Draw the sensor data itself. */
 	cairo_move_to(cr, MIC_PLOT_MARGIN + 2, middle);
 	for (i = 1; i <= (width - MIC_PLOT_MARGIN * 3 / 2) - 2; i++) 
 	{
 		if (i >= DATA_SIZE)
 		{
-			cairo_line_to(cr, MIC_PLOT_MARGIN + (step * i) + 2, 
-				middle);	
+			cairo_line_to(cr, MIC_PLOT_MARGIN + (step * i) + 2, middle);	
 		}
 		else
 		{

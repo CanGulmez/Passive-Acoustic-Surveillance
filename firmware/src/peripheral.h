@@ -19,8 +19,8 @@
 
 /* Peripheral pin definitions */
 
-#define DEBUG_PIN_TX					GPIO_PIN_0	/* GPIOA - UART4 */
-#define DEBUG_PIN_RX					GPIO_PIN_1	/* GPIOA - UART4 */
+#define SERIAL_PIN_TX					GPIO_PIN_0	/* GPIOA - UART4 */
+#define SERIAL_PIN_RX					GPIO_PIN_1	/* GPIOA - UART4 */
 
 #define MIC_PIN_DATAIN0					GPIO_PIN_1	/* GPIOC - DFSDM1 */ 
 #define MIC_PIN_DATAIN1					GPIO_PIN_1	/* GPIOB - DFSDM1 */
@@ -132,3 +132,11 @@
 
 #define IMU_NSS_LOW()					(HAL_GPIO_WritePin(GPIOA, IMU_PIN_NSS, GPIO_PIN_RESET))
 #define IMU_NSS_HIGH()					(HAL_GPIO_WritePin(GPIOA, IMU_PIN_NSS, GPIO_PIN_SET))
+
+#define SD_PIN_CD						GPIO_PIN_8	/* GPIOA - Output */
+#define SD_PIN_DAT0						GPIO_PIN_8	/* GPIOC - SDMMC1 */
+#define SD_PIN_DAT1						GPIO_PIN_9	/* GPIOC - SDMMC1 */
+#define SD_PIN_DAT2						GPIO_PIN_10	/* GPIOC - SDMMC1 */
+#define SD_PIN_DAT3						GPIO_PIN_11	/* GPIOC - SDMMC1 */
+#define SD_PIN_CMD						GPIO_PIN_2	/* GPIOD - SDMMC1 */
+#define SD_PIN_CLK						GPIO_PIN_12	/* GPIOC - SDMMC1 */

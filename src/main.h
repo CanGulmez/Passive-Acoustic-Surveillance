@@ -73,13 +73,13 @@ extern "C" {
 
 #define DB_SENSOR_PATH						"./db/sensor-data.db"
 #define DB_SENSOR_TABLE						"SensorData"
-#define DB_SQL_LENGTH						10240
+#define DB_SQL_LENGTH						30720
 
-#define TIMEOUT_DEVICE_READ					2000	/* ms */
-#define TIMEOUT_MODEL_LOG					2000	/* ms */
+#define TIMEOUT_DEVICE_READ					3000	/* ms */
+#define TIMEOUT_MODEL_LOG					3000	/* ms */
 #define TIMEOUT_DATA_RECORD					8000	/* ms */
-#define TIMEOUT_NAV_UPDATE					2000	/* ms */ 
-#define TIMEOUT_GPS_UPDATE					2000	/* ms */
+#define TIMEOUT_NAV_UPDATE					3000	/* ms */ 
+#define TIMEOUT_GPS_UPDATE					3000	/* ms */
 
 /* Attribute and built-in macro definitions  */
 

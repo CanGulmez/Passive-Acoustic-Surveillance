@@ -31,14 +31,26 @@ void prepare_samples(void)
 	int i;
 
 	/* Convert the payload data to 'DspTime' objects. */
-	for (i = 0; i < MIC_COUNT; i++)
+	for (i = 0; i < MIC_COUNT; i++)		/* the sample length */
 	{
 		sigSamples[i].length = DATA_SIZE;
 	}
-	memcpy(sigSamples[0].data, payloadData.micFilter0, DATA_SIZE * sizeof(int32_t));
-	memcpy(sigSamples[1].data, payloadData.micFilter1, DATA_SIZE * sizeof(int32_t));
-	memcpy(sigSamples[2].data, payloadData.micFilter2, DATA_SIZE * sizeof(int32_t));
-	memcpy(sigSamples[3].data, payloadData.micFilter3, DATA_SIZE * sizeof(int32_t));
+	for (i = 0; i < DATA_SIZE; i++)		/* the filter 0 samples */
+	{
+		sigSamples[0].data[i] = (double) payloadData.micFilter0[i];	
+	}
+	for (i = 0; i < DATA_SIZE; i++)		/* the filter 1 samples */
+	{
+		sigSamples[1].data[i] = (double) payloadData.micFilter1[i];	
+	}
+	for (i = 0; i < DATA_SIZE; i++)		/* the filter 2 samples */
+	{
+		sigSamples[2].data[i] = (double) payloadData.micFilter2[i];	
+	}
+	for (i = 0; i < DATA_SIZE; i++)		/* the filter 3 samples */
+	{
+		sigSamples[3].data[i] = (double) payloadData.micFilter3[i];	
+	}
 }
 
 /**
@@ -56,7 +68,7 @@ double find_dominant_freq(void)
 	/* Convert the time domain signals into frequency domain. */
 	for (i = 0; i < MIC_COUNT; i++)
 	{
-		dsp_transform_dft(&sigSamples[i], &outputs[i]);
+		dsp_transform_fft(&sigSamples[i], &outputs[i]);
 		outputs[i].length = (int) (outputs[i].length / 2);
 	}
 	/* Find the maximum frequencies and corresponding bins. */
@@ -186,36 +198,35 @@ int select_sector(void)
  */
 NavAccel accel_direction(void)
 {
-	// if ((payloadData.imuAccelX > payloadData.imuAccelY) &&
-	// 	 (payloadData.imuAccelX > payloadData.imuAccelZ))
-	// {
-	// 	return NAV_ACCEL_X_PLUS;
-	// }
-	// else if ((payloadData.imuAccelY > payloadData.imuAccelX) &&
-	// 	 		(payloadData.imuAccelY > payloadData.imuAccelZ))
-	// {
-	// 	return NAV_ACCEL_Y_PLUS;
-	// }
-	// else if ((payloadData.imuAccelZ > payloadData.imuAccelX) &&
-	// 	 		(payloadData.imuAccelZ > payloadData.imuAccelY))
-	// {
-	// 	return NAV_ACCEL_Z_PLUS;
-	// }
-	// else if ((payloadData.imuAccelX < payloadData.imuAccelY) &&
-	// 	 		(payloadData.imuAccelX < payloadData.imuAccelZ))
-	// {
-	// 	return NAV_ACCEL_X_MINUS;
-	// }
-	// else if ((payloadData.imuAccelY < payloadData.imuAccelX) &&
-	// 	 		(payloadData.imuAccelY < payloadData.imuAccelZ))
-	// {
-	// 	return NAV_ACCEL_Y_MINUS;
-	// }
-	// else if ((payloadData.imuAccelZ < payloadData.imuAccelX) &&
-	// 	 		(payloadData.imuAccelZ < payloadData.imuAccelY))
-	// {
-	// 	return NAV_ACCEL_Z_MINUS;
-	// }
+	double accelX = payloadData.imuAccel[0];
+	double accelY = payloadData.imuAccel[1];
+	double accelZ = payloadData.imuAccel[2] - NAV_FLAT_GRAVITY;
+	double noise = NAV_ACCEL_NOISE;
+
+	if ((accelX > accelY) && (accelX > accelZ))
+	{
+		return NAV_ACCEL_X_PLUS;
+	}
+	else if ((accelY > accelX) && (accelY > accelZ))
+	{
+		return NAV_ACCEL_Y_PLUS;
+	}
+	else if ((accelZ > accelX) && (accelZ > accelY))
+	{
+		return NAV_ACCEL_Z_PLUS;
+	}
+	else if ((accelX < accelY) && (accelX < accelZ))
+	{
+		return NAV_ACCEL_X_MINUS;
+	}
+	else if ((accelY < accelX) && (accelY < accelZ))
+	{
+		return NAV_ACCEL_Y_MINUS;
+	}
+	else if ((accelZ < accelX) && (accelZ < accelY))
+	{
+		return NAV_ACCEL_Z_MINUS;
+	}
 	return NAV_ACCEL_UNDEF;
 }
 
@@ -224,36 +235,35 @@ NavAccel accel_direction(void)
  */
 NavGyro gyro_rotation(void)
 {
-	// if ((payloadData.imuGyroX > payloadData.imuGyroY) &&
-	// 	 (payloadData.imuGyroX > payloadData.imuGyroZ))
-	// {
-	// 	return NAV_GYRO_X_PLUS;
-	// }
-	// else if ((payloadData.imuGyroY > payloadData.imuGyroX) &&
-	// 	 		(payloadData.imuGyroY > payloadData.imuGyroZ))
-	// {
-	// 	return NAV_GYRO_Y_PLUS;
-	// }
-	// else if ((payloadData.imuGyroZ > payloadData.imuGyroX) &&
-	// 	 		(payloadData.imuGyroZ > payloadData.imuGyroY))
-	// {
-	// 	return NAV_GYRO_Z_PLUS;
-	// }
-	// else if ((payloadData.imuGyroX < payloadData.imuGyroY) &&
-	// 	 		(payloadData.imuGyroX < payloadData.imuGyroZ))
-	// {
-	// 	return NAV_GYRO_X_MINUS;
-	// }
-	// else if ((payloadData.imuGyroY < payloadData.imuGyroX) &&
-	// 	 		(payloadData.imuGyroY < payloadData.imuGyroZ))
-	// {
-	// 	return NAV_GYRO_Y_MINUS;
-	// }
-	// else if ((payloadData.imuGyroZ < payloadData.imuGyroX) &&
-	// 	 		(payloadData.imuGyroZ < payloadData.imuGyroY))
-	// {
-	// 	return NAV_GYRO_Z_MINUS;
-	// }
+	double gyroX = payloadData.imuGyro[0];
+	double gyroY = payloadData.imuGyro[1];
+	double gyroZ = payloadData.imuGyro[2];
+	double noise = NAV_GYRO_NOISE;
+
+	if ((gyroX > gyroY) && (gyroX > gyroZ))
+	{
+		return NAV_GYRO_X_PLUS;
+	}
+	else if ((gyroY > gyroX) && (gyroY > gyroZ))
+	{
+		return NAV_GYRO_Y_PLUS;
+	}
+	else if ((gyroZ > gyroX) && (gyroZ > gyroY))
+	{
+		return NAV_GYRO_Z_PLUS;
+	}
+	else if ((gyroX < gyroY) && (gyroX < gyroZ))
+	{
+		return NAV_GYRO_X_MINUS;
+	}
+	else if ((gyroY < gyroX) && (gyroY < gyroZ))
+	{
+		return NAV_GYRO_Y_MINUS;
+	}
+	else if ((gyroZ < gyroX) && (gyroZ < gyroY))
+	{
+		return NAV_GYRO_Z_MINUS;
+	}
 	return NAV_GYRO_UNDEF;
 }
 
@@ -262,32 +272,30 @@ NavGyro gyro_rotation(void)
  */
 void update_nav_data(void)
 {
-	// char buffer[BUFFER_SIZE];
+	char buffer[BUFFER_SIZE];
 
 	/* Update the sensor series and information. */
 	__ui_action_row_update(navSensorRows[0], NAV_IMU_SENSOR);
 
 	/* Update the acceloremeter output. */
-	// snprintf(
-	// 	buffer, BUFFER_SIZE, "[%.2f, %.2f, %.2f]", 
-	// 	payloadData.imuAccelX, payloadData.imuAccelY, payloadData.imuAccelZ
-	// );
-	// __ui_action_row_update(navSensorRows[1], "Running");
-	// __ui_action_row_update(navSensorRows[2], buffer);
+	snprintf(
+		buffer, BUFFER_SIZE, "[%.2f, %.2f, %.2f]", 
+		payloadData.imuAccel[0], payloadData.imuAccel[1], payloadData.imuAccel[2]
+	);
+	__ui_action_row_update(navSensorRows[1], "Running");
+	__ui_action_row_update(navSensorRows[2], buffer);
 
 	/* Update the gyroscope output. */
-	// snprintf(
-	// 	buffer, BUFFER_SIZE, "[%.2f, %.2f, %.2f]", 
-	// 	payloadData.imuGyroX, payloadData.imuGyroY, payloadData.imuGyroZ
-	// );	
-	// __ui_action_row_update(navSensorRows[3], "Running");
-	// __ui_action_row_update(navSensorRows[4], buffer);
+	snprintf(
+		buffer, BUFFER_SIZE, "[%.2f, %.2f, %.2f]", 
+		payloadData.imuGyro[0], payloadData.imuGyro[1], payloadData.imuGyro[2]
+	);	
+	__ui_action_row_update(navSensorRows[3], "Running");
+	__ui_action_row_update(navSensorRows[4], buffer);
 
 	/* Update the temperature output. */
-	// snprintf(
-	// 	buffer, BUFFER_SIZE, "%.3f", payloadData.imuTemp
-	// );	
-	// __ui_action_row_update(navSensorRows[7], buffer);
+	snprintf(buffer, BUFFER_SIZE, "%.3f", payloadData.imuTemp);	
+	__ui_action_row_update(navSensorRows[7], buffer);
 }
 
 /**

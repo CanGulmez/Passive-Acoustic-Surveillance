@@ -30,7 +30,7 @@ void taskMicSensor0(void *pvParams)
 {
 	(void)pvParams;
 	
-	int32_t notified;
+	int32_t i, notified;
 	static int32_t samples[DATA_SIZE] = {0};
 	HAL_StatusTypeDef status;
 
@@ -45,6 +45,10 @@ void taskMicSensor0(void *pvParams)
 		notified = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 		if (notified != 0)
 		{
+			for (i = 0; i < DATA_SIZE; i++)
+			{
+				samples[i] = samples[i] >> 8;
+			}
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 			{
@@ -68,7 +72,7 @@ void taskMicSensor1(void *pvParams)
 {
 	(void)pvParams;
 
-	int32_t notified;
+	int32_t i, notified;
 	static int32_t samples[DATA_SIZE] = {0};
 	HAL_StatusTypeDef status;
 
@@ -83,6 +87,10 @@ void taskMicSensor1(void *pvParams)
 		notified = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 		if (notified != 0)
 		{
+			for (i = 0; i < DATA_SIZE; i++)
+			{
+				samples[i] = samples[i] >> 8;
+			}
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 			{
@@ -106,7 +114,7 @@ void taskMicSensor2(void *pvParams)
 {
 	(void)pvParams;
 
-	int32_t notified;
+	int32_t i, notified;
 	static int32_t samples[DATA_SIZE] = {0};
 	HAL_StatusTypeDef status;
 
@@ -121,6 +129,10 @@ void taskMicSensor2(void *pvParams)
 		notified = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 		if (notified != 0)
 		{
+			for (i = 0; i < DATA_SIZE; i++)
+			{
+				samples[i] = samples[i] >> 8;
+			}
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 			{
@@ -144,7 +156,7 @@ void taskMicSensor3(void *pvParams)
 {
 	(void)pvParams;
 
-	int32_t notified;
+	int32_t i, notified;
 	static int32_t samples[DATA_SIZE] = {0};
 	HAL_StatusTypeDef status;
 
@@ -159,6 +171,10 @@ void taskMicSensor3(void *pvParams)
 		notified = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 		if (notified != 0)
 		{
+			for (i = 0; i < DATA_SIZE; i++)
+			{
+				samples[i] = samples[i] >> 8;
+			}
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 			{
@@ -200,7 +216,7 @@ void taskIMUSensor(void *pvParams)
 	for (;;)
 	{
 		/* Give some period. */
-		vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(1000));
+		vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(3000));
 
 		/* Take the payload mutex to update the payload data. */
 		if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
@@ -245,10 +261,10 @@ void taskTransmitter(void *pvParams)
 		/* Transmit payload data locally using mutex. */
 		if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
 		{
-			HAL_UART_Transmit(&huart4, (uint8_t *)&magicWord, sizeof(magicWord), 
-				portMAX_DELAY);
-			HAL_UART_Transmit(&huart4, (uint8_t *)&payloadData, sizeof(payloadData), 
-				portMAX_DELAY);
+			// HAL_UART_Transmit(&huart4, (uint8_t *)&magicWord, sizeof(magicWord), 
+			// 	portMAX_DELAY);
+			// HAL_UART_Transmit(&huart4, (uint8_t *)&payloadData, sizeof(payloadData), 
+			// 	portMAX_DELAY);
 
 			// printLog("filter0 (MK2): %ld, %ld, %ld", payloadData.micFilter0[10], payloadData.micFilter0[100], payloadData.micFilter0[500]);
 			// printLog("filter1 (MK7): %ld, %ld, %ld", payloadData.micFilter1[10], payloadData.micFilter1[100], payloadData.micFilter1[500]);
@@ -261,6 +277,36 @@ void taskTransmitter(void *pvParams)
 			/* Give up the payload mutex. */
 			xSemaphoreGive(payloadMutex);
 		}
+	}
+	vTaskDelete(NULL);
+}
+
+/**
+ * Back up the sensor data into the on-board SD card.
+ */
+void taskSDWriting(void *pvParams)
+{
+	(void)pvParams;
+
+	/**
+	 * Some important notes about SDMMC1 and SD Card backing up:
+	 * 
+	 * + SDMMC1 can only access AXI (D1) SRAM (0x24000000), 
+	 *   not SRAM1/2/3. Place all DMA buffers there.
+	 * + All DMA buffers must be 32-byte aligned.
+	 * + SDMMC1 uses DMA internally. Disable cache for the DMA 
+	 *   region over MPU.
+	 */
+	
+	static int32_t filter0[DATA_SIZE] BACKUP;
+	static int32_t filter1[DATA_SIZE] BACKUP;
+	static int32_t filter2[DATA_SIZE] BACKUP;
+	static int32_t filter3[DATA_SIZE] BACKUP;
+	static float imu[7] BACKUP;		/* 3 accel, 3 gyro, 1 temp */
+	
+	for (;;)
+	{
+		
 	}
 	vTaskDelete(NULL);
 }

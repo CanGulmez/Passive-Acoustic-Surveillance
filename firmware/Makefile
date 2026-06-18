@@ -25,6 +25,7 @@ CMSIS_DEV_INC	:= ./drivers/CMSIS/Device/ST/STM32H7xx/Include
 HAL_INC			:= ./drivers/STM32H7xx_HAL_Driver/Inc
 RTOS_INC		:= ./drivers/FreeRTOS/include 
 RTOS_GCC_INC	:= ./drivers/FreeRTOS/portable/GCC/ARM_CM7
+FATFS_INC		:= ./drivers/FatFs/src
 
 # Source files
 MAIN_SRC		:= $(wildcard ./src/*.c)
@@ -32,7 +33,9 @@ HAL_SRC			:= $(wildcard ./drivers/STM32H7xx_HAL_Driver/Src/*.c)
 SYSTEM_SRC		:= ./drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/system_stm32h7xx.c
 RTOS_SRC		:= $(wildcard ./drivers/FreeRTOS/*.c) 
 RTOS_GCC_SRC	:= $(wildcard ./drivers/FreeRTOS/portable/GCC/ARM_CM7/*.c) 
-RTOS_MEM_SRC	:= $(wildcard ./drivers/FreeRTOS/portable/MemMang/*.c) 
+RTOS_MEM_SRC	:= $(wildcard ./drivers/FreeRTOS/portable/MemMang/*.c)
+FATFS_SRC		:= $(wildcard ./drivers/FatFs/src/*.c)
+FATFS_OP_SRC	:= $(wildcard ./drivers/FatFs/src/option/*.c)
 
 # Startup file and linker script 
 STARTUP_CODE	:= ./drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc/startup_stm32h750xx.S
@@ -40,10 +43,11 @@ LINKER_SCRIPT	:= ./drivers/STM32H750VBTX_FLASH.ld
 
 # Sorthand and build definititions
 INCLUDES		:= -I$(MAIN_INC) -I$(CMSIS_DEV_INC) -I$(CMSIS_INC) -I$(HAL_INC) \
-				   -I$(RTOS_INC) -I$(RTOS_GCC_INC)
+				   -I$(RTOS_INC) -I$(RTOS_GCC_INC) -I$(FATFS_INC)
 DEFINES			:= -D$(DEVICE_FAMILY) -D$(DEVICE_MODEL) -D$(DEVICE_VARIANT) \
 				   -DUSE_HAL_DRIVER -DUSE_PWR_LDO_SUPPLY
-DRIVER_SRCS		:= $(HAL_SRC) $(SYSTEM_SRC) $(RTOS_SRC) $(RTOS_GCC_SRC) $(RTOS_MEM_SRC)
+DRIVER_SRCS		:= $(HAL_SRC) $(SYSTEM_SRC) $(RTOS_SRC) $(RTOS_GCC_SRC) $(RTOS_MEM_SRC) \
+				   $(FATFS_SRC) $(FATFS_OP_SRC)
 DRIVER_OBJS		:= $(notdir $(patsubst %.c,%.o,$(DRIVER_SRCS))) startup_stm32h750xx.o
 MAIN_OBJS		:= $(notdir $(patsubst %.c,%.o,$(MAIN_SRC)))
 
