@@ -33,9 +33,6 @@ MicDataBits micDataBits = MIC_DATA_BITS_8;
 MicParityBit micParityBit = MIC_PARITY_BIT_NONE;
 MicStopBits micStopBits = MIC_STOP_BITS_1;
 MicFlowCntl micFlowCntl = MIC_FLOW_CNTL_NO;
-pthread_t micThread;
-bool micThreadStarted = false;
-pthread_mutex_t micMutex = PTHREAD_MUTEX_INITIALIZER;
 MicButton micButton;
 
 /**

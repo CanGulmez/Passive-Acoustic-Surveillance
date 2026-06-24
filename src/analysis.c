@@ -19,9 +19,9 @@
 
 /* Global and Shared Variables */
 
-DspTime sigSamples[MIC_COUNT] = {0};
+DspTime sigSamples[MIC_COUNT] = {0};	/* MK1-MK8 */
 DspTime sigBeamformed = {0};
-guint sigVolumest = 1;
+mic_t sigVolumest = 1;
 
 /**
  * Convert the payload mic data to 'DspTime' objects.
@@ -31,25 +31,41 @@ void prepare_samples(void)
 	int i;
 
 	/* Convert the payload data to 'DspTime' objects. */
-	for (i = 0; i < MIC_COUNT; i++)		/* the sample length */
+	for (i = 0; i < MIC_COUNT; i++)			/* sample length */
 	{
 		sigSamples[i].length = DATA_SIZE;
 	}
-	for (i = 0; i < DATA_SIZE; i++)		/* the filter 0 samples */
+	for (i = 0; i < DATA_SIZE; i++)			/* MK1 */
 	{
-		sigSamples[0].data[i] = (double) payloadData.micFilter0[i];	
+		sigSamples[0].data[i] = 0.0;
 	}
-	for (i = 0; i < DATA_SIZE; i++)		/* the filter 1 samples */
+	for (i = 0; i < DATA_SIZE; i++)			/* filter 0 - MK2 */
 	{
-		sigSamples[1].data[i] = (double) payloadData.micFilter1[i];	
+		sigSamples[1].data[i] = (double) payloadData.micFilter0[i];	
 	}
-	for (i = 0; i < DATA_SIZE; i++)		/* the filter 2 samples */
+	for (i = 0; i < DATA_SIZE; i++)			/* MK3 */
 	{
-		sigSamples[2].data[i] = (double) payloadData.micFilter2[i];	
+		sigSamples[2].data[i] = 0.0;
 	}
-	for (i = 0; i < DATA_SIZE; i++)		/* the filter 3 samples */
+	for (i = 0; i < DATA_SIZE; i++)			/* MK4 */
 	{
-		sigSamples[3].data[i] = (double) payloadData.micFilter3[i];	
+		sigSamples[3].data[i] = 0.0;
+	}
+	for (i = 0; i < DATA_SIZE; i++)			/* filter 3 - MK5 */
+	{
+		sigSamples[4].data[i] = (double) payloadData.micFilter3[i];	
+	}
+	for (i = 0; i < DATA_SIZE; i++)			/* filter 2 - MK6 */
+	{
+		sigSamples[5].data[i] = (double) payloadData.micFilter2[i];	
+	}
+	for (i = 0; i < DATA_SIZE; i++)			/* filter 1 - MK7 */
+	{
+		sigSamples[6].data[i] = (double) payloadData.micFilter1[i];	
+	}
+	for (i = 0; i < DATA_SIZE; i++)			/* MKK */
+	{
+		sigSamples[7].data[i] = 0.0;
 	}
 }
 
@@ -79,7 +95,7 @@ double find_dominant_freq(void)
 		indexes[i] = dsp_time_argmax(&magnitudes[i]);
 		frequencies[i] = (MIC_SAMPLING_FREQ / DATA_SIZE) * indexes[i];
 	}
-	/* Compare the frequencies to find the maximum. */
+	/* Compare the frequencies to find the maximum one. */
 	for (i = 0; i < MIC_COUNT; i++)
 	{
 		if (frequencies[i] > max_freq)
@@ -110,9 +126,9 @@ int calculate_arrival(double freq)
 }
 
 /**
- * Make the delay-and-sum beamforming.
+ * Make the delay-and-sum beamforming to enhance the signals.
  */
-DspTime do_beamforming(double arrival)
+DspTime do_beamforming(int arrival)
 {
 	int i;
 	DspBeamform beamform;
@@ -121,7 +137,7 @@ DspTime do_beamforming(double arrival)
 	beamform.mics = MIC_COUNT;	
 	beamform.fs = MIC_SAMPLING_FREQ;
 	beamform.radius = MIC_RADIUS;	
-	beamform.theta = arrival;
+	beamform.theta = (double) arrival;
 	for (i = 0; i < MIC_COUNT; i++)	
 	{
 		beamform.samples[i] = &sigSamples[i];	/* samples itself */
@@ -163,34 +179,44 @@ void make_signal_analysis(const DspTime *beamformed, int arrival)
 /**
  * Return the sector that has much more intensity.
  */
-int select_sector(void)
+mic_t select_sector(int arrival)
 {
 	int i;
-	double means[MIC_COUNT], biggest;
+	mic_t sector = 1;
 
-	/* Get the mean of sensor signals. */
-	for (i = 0; i < MIC_COUNT; i++)
+	if ((arrival <= 22) && (arrival >= 337))
 	{
-		means[i] = dsp_time_mean(&sigSamples[i]);
+		sector = 1;		/* MK1 */
 	}
-	/* Find the biggest mean. */
-	biggest = means[0];
-	for (i = 0; i < MIC_COUNT; i++)
+	else if ((arrival <= 67) && (arrival >= 23))
 	{
-		if (means[i] > biggest)
-		{
-			biggest = means[i];
-		}
+		sector = 2;		/* MK2 */
 	}
-	for (i = 0; i < MIC_COUNT; i++)
+	else if ((arrival <= 112) && (arrival >= 68))
 	{
-		if (means[i] == biggest)
-		{
-			return i + 1;
-		}
+		sector = 3;		/* MK3 */
 	}
-	/* Never should come here. */
-	return -1;
+	else if ((arrival <= 157) && (arrival >= 113))
+	{
+		sector = 4;		/* MK4 */
+	}
+	else if ((arrival <= 202) && (arrival >= 158))
+	{
+		sector = 5;		/* MK5 */
+	}
+	else if ((arrival <= 247) && (arrival >= 203))
+	{
+		sector = 6;		/* MK6 */
+	}
+	else if ((arrival <= 292) && (arrival >= 248))
+	{
+		sector = 7;		/* MK7 */
+	}
+	else if ((arrival <= 336) && (arrival >= 293))
+	{
+		sector = 8;		/* MK8 */
+	}	
+	return sector;
 }
 
 /**
@@ -280,7 +306,7 @@ void update_mic_data(void)
 	maxFreq = find_dominant_freq();
 	arrival = calculate_arrival(maxFreq);
 	sigBeamformed = do_beamforming(arrival);
-	sigVolumest = select_sector();
+	sigVolumest = select_sector(arrival);
 
 	/* Make sure the amplitude of signal fits into the frame. */
 	dsp_time_scale(&sigBeamformed, 128.0, &sigBeamformed);
@@ -308,7 +334,8 @@ void update_nav_data(void)
 	/* Update the acceloremeter output. */
 	snprintf(
 		buffer, BUFFER_SIZE, "[%.2f, %.2f, %.2f]", 
-		payloadData.imuAccel[0], payloadData.imuAccel[1], payloadData.imuAccel[2]
+		payloadData.imuAccel[0], payloadData.imuAccel[1], 
+		payloadData.imuAccel[2]
 	);
 	__ui_action_row_update(navSensorRows[1], "Running");
 	__ui_action_row_update(navSensorRows[2], buffer);
@@ -316,7 +343,8 @@ void update_nav_data(void)
 	/* Update the gyroscope output. */
 	snprintf(
 		buffer, BUFFER_SIZE, "[%.2f, %.2f, %.2f]", 
-		payloadData.imuGyro[0], payloadData.imuGyro[1], payloadData.imuGyro[2]
+		payloadData.imuGyro[0], payloadData.imuGyro[1], 
+		payloadData.imuGyro[2]
 	);	
 	__ui_action_row_update(navSensorRows[3], "Running");
 	__ui_action_row_update(navSensorRows[4], buffer);
@@ -347,16 +375,16 @@ void update_gps_data(void)
 	__ui_action_row_update(gpsModuleRows[0], GPS_MODULE);
 
 	/* Update the GPS module outputs. */
-	// __ui_action_row_update(gpsModuleRows[1], payloadData.gpsUTCTime);
-	// __ui_action_row_update(gpsModuleRows[2], payloadData.gpsLatitude);
-	// __ui_action_row_update(gpsModuleRows[3], payloadData.gpsLongitude);
-	// __ui_action_row_update(gpsModuleRows[4], payloadData.gpsQuality);
-	// __ui_action_row_update(gpsModuleRows[5], payloadData.gpsNumSat);
-	// __ui_action_row_update(gpsModuleRows[6], payloadData.gpsAltitude);
-	// __ui_action_row_update(gpsModuleRows[7], payloadData.gpsStatus);
-	// __ui_action_row_update(gpsModuleRows[8], payloadData.gpsSpeed);
-	// __ui_action_row_update(gpsModuleRows[9], payloadData.gpsCourse);
-	// __ui_action_row_update(gpsModuleRows[10], payloadData.gpsDate);
+	__ui_action_row_update(gpsModuleRows[1], "0.0");
+	__ui_action_row_update(gpsModuleRows[2], "0.0");
+	__ui_action_row_update(gpsModuleRows[3], "0.0");
+	__ui_action_row_update(gpsModuleRows[4], "0.0");
+	__ui_action_row_update(gpsModuleRows[5], "0.0");
+	__ui_action_row_update(gpsModuleRows[6], "0.0");
+	__ui_action_row_update(gpsModuleRows[7], "0.0");
+	__ui_action_row_update(gpsModuleRows[8], "0.0");
+	__ui_action_row_update(gpsModuleRows[9], "0.0");
+	__ui_action_row_update(gpsModuleRows[10], "0.0");
 	print_log("updated the GPS map data recently");
 
 	/* Update the GPS map. */
@@ -364,9 +392,9 @@ void update_gps_data(void)
 	// longitude = atof(payloadData.gpsLongitude);
 	latitude = GPS_INIT_LAT;
 	longitude = GPS_INIT_LONG;
-	shumate_map_center_on(gpsMap, latitude, longitude + i * 0.01);
-	gps_map_area_markers(gpsMarkerLayer, latitude, longitude + i * 0.01);
-	print_log("marked the last position on the map");
+	// shumate_map_center_on(gpsMap, latitude, longitude + i * 0.01);
+	// gps_map_area_markers(gpsMarkerLayer, latitude, longitude + i * 0.01);
+	print_log("marked the last position on the gps map");
 
 	i++;
 }

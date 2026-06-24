@@ -17,12 +17,6 @@
 
 #include "main.h"
 
-/* Global and shared objects */
-
-PayloadData payloadData = {0};
-SemaphoreHandle_t payloadMutex = {0};
-EventGroupHandle_t payloadEvent = {0};
-
 /**
  * Read microphone data from the filter 0 (physically MK2).
  */
@@ -145,7 +139,7 @@ void taskMicSensor2(void *pvParams)
 				xSemaphoreGive(payloadMutex);
 			}
 		}
-	}	
+	}
 	vTaskDelete(NULL);
 }
 
@@ -200,6 +194,7 @@ void taskIMUSensor(void *pvParams)
 
 	uint8_t whoami;
 	TickType_t lastWake;
+	TickType_t delay;
 
 	/* Confirm that IMU sensor is registered. */
 	whoami = readRegFromIMU(IMU_REG_WHO_AM_I);
@@ -211,12 +206,12 @@ void taskIMUSensor(void *pvParams)
 	writeRegToIMU(IMU_REG_CTRL2_G, 0x6C);	/* 416Hz, 2000dps */
 	writeRegToIMU(IMU_REG_CTRL3_C, 0x44);	/* BDU and IF_INC */
 
-	/* Get the recent task tick count. */
 	lastWake = xTaskGetTickCount();
+	delay = pdMS_TO_TICKS(4000);
 	for (;;)
 	{
 		/* Give some period. */
-		vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(1000));
+		vTaskDelayUntil(&lastWake, delay);
 
 		/* Take the payload mutex to update the payload data. */
 		if (xSemaphoreTake(payloadMutex, portMAX_DELAY))

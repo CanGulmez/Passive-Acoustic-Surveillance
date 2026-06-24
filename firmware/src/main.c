@@ -19,6 +19,9 @@
 
 /* Global and shared objects */
 
+PayloadData payloadData = {0};
+SemaphoreHandle_t payloadMutex = {0};
+EventGroupHandle_t payloadEvent = {0};
 TaskHandle_t micTaskHandlers[CHANNEL_COUNT] = {0};
 
 int main(void)

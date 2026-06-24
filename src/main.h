@@ -62,31 +62,32 @@ extern "C" {
 
 /* Global macro definitions */
 
-#define TIME_FORMAT							"%F %T"
-#define BUFFER_SIZE							512
-#define INTERPRETER							"/bin/python3"
-#define SYSTEM_LOG_PATH						"./logs/system.log"
+#define TIME_FORMAT					"%F %T"
+#define BUFFER_SIZE					512
+#define INTERPRETER					"/bin/python3"
+#define SYSTEM_LOG_PATH				"./logs/system.log"
 
-/* DATA_SIZE is defined as the sample length. The DSP library defines a 
-   predefined DATA_SIZE. Firstly undefine and then redefine it. */
+/* DATA_SIZE is defined as the sample length. The DSP library 
+   defines a predefined DATA_SIZE. Firstly undefine and then 
+   redefine it. */
 #ifdef DATA_SIZE
 #undef DATA_SIZE
-#define DATA_SIZE							1024
+#define DATA_SIZE					1024
 #endif
 
-#define DB_SENSOR_PATH						"./db/sensor-data.db"
-#define DB_SENSOR_TABLE						"SensorData"
-#define DB_SQL_LENGTH						30720
+#define DB_SENSOR_PATH				"./db/sensor-data.db"
+#define DB_SENSOR_TABLE				"SensorData"
+#define DB_SQL_LENGTH				30720
 
-#define TIMEOUT_MODEL_LOG					4000	/* ms */
-#define TIMEOUT_DATA_RECORD					8000	/* ms */
-#define TIMEOUT_NAV_UPDATE					1000	/* ms */ 
-#define TIMEOUT_GPS_UPDATE					1000	/* ms */
+#define TIMEOUT_MODEL_LOG			4000	/* ms */
 
 /* Attribute and built-in macro definitions  */
 
-#define PACKED								__attribute__((packed, aligned(1)))
-#define cmp(fstring, sstring) 				(strcmp(fstring, sstring) == 0)
+#define PACKED						__attribute__((packed, aligned(1)))
+#define cmp(fstring, sstring)		(strcmp(fstring, sstring) == 0)
+
+/*****************************************************************************/
+/*****************************************************************************/
 
 /* Maro function definitions */
 
@@ -122,17 +123,10 @@ do {																		\
 	exit(EXIT_FAILURE);	/* exit with failure status */						\
 } while (0)
 
-/* General enumerations */
+/*****************************************************************************/
+/*****************************************************************************/
 
-typedef enum _CurrentPage 
-{
-	PAGE_MICROPHONE = 1,
-	PAGE_AI_MODEL,
-	PAGE_NAVIGATION,
-	PAGE_GPS_MAP
-} CurrentPage;
-
-/* Global and structures */
+/* Global data structures */
 typedef struct PACKED _PayloadData
 {
 	/* microphone sensors payload data */
@@ -152,14 +146,19 @@ typedef struct PACKED _PayloadData
 
 /* General shared widgets and variables */
 
-extern CurrentPage currentPage;
 extern PayloadData payloadData;
+extern pthread_t payloadThread;
+extern pthread_mutex_t payloadMutex;
+extern bool payloadThreadStarted;
 
 /* Signal analysis shared widgets and variables */
 
 extern DspTime sigSamples[MIC_COUNT];
 extern DspTime sigBeamformed;
-extern guint sigVolumest;
+extern mic_t sigVolumest;
+
+/*****************************************************************************/
+/*****************************************************************************/
 
 /* Database function prototypes */
 
@@ -196,9 +195,9 @@ gboolean model_keras_log_timeout(gpointer data);
 void prepare_samples(void);
 double find_dominant_freq(void);
 int calculate_arrival(double freq);
-DspTime do_beamforming(double arrival);
+DspTime do_beamforming(int arrival);
 void make_signal_analysis(const DspTime *beamformed, int arrival);
-int select_sector(void);
+mic_t select_sector(int arrival);
 NavAccel accel_direction(void);
 NavGyro gyro_rotation(void);
 void update_mic_data(void);

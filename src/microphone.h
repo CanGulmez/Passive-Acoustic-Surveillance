@@ -27,7 +27,7 @@
 #define MIC_PLOT_MARGIN						40		/* pixel */
 #define MIC_PLOT_GRID						20		/* pixel */
 #define MIC_SIGNAL_NUM						15
-#define MIC_COUNT							4
+#define MIC_COUNT							8
 #define MIC_RADIUS							0.1		/* meter */
 #define MIC_SAMPLING_FREQ					48000	/* Hz */
 #define MIC_DEVICE_NODE						64
@@ -102,9 +102,6 @@ extern MicDataBits micDataBits;
 extern MicParityBit micParityBit;
 extern MicStopBits micStopBits;
 extern MicFlowCntl micFlowCntl;
-extern pthread_t micThread;
-extern pthread_mutex_t micMutex;
-extern bool micThreadStarted;
 extern MicButton micButton;
 
 /* Microphone function prototypes */

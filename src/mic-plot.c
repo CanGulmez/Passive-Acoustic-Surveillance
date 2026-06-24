@@ -228,25 +228,25 @@ void mic_plot_polar_label(cairo_t *cr, int width, int height)
    cairo_set_font_size(cr, 18.0);
 	
 	cairo_move_to(cr, center_x - 25, center_y - radius - 5);
-	cairo_show_text(cr, "North");
-	// cairo_move_to(cr, center_x + radius - MIC_PLOT_MARGIN + 4, 
-	// 				  center_y - radius + MIC_PLOT_MARGIN - 4);
-	// cairo_show_text(cr, "45");
+	cairo_show_text(cr, "MK1");
+	cairo_move_to(cr, center_x + radius - MIC_PLOT_MARGIN + 4, 
+					  center_y - radius + MIC_PLOT_MARGIN - 4);
+	cairo_show_text(cr, "MK8");
 	cairo_line_to(cr, center_x + radius + 4, center_y + 4);
-	cairo_show_text(cr, "East");
-	// cairo_move_to(cr, center_x + radius - MIC_PLOT_MARGIN + 2, 
-	// 				  center_y + radius - MIC_PLOT_MARGIN + 16);
-	// cairo_show_text(cr, "135");
+	cairo_show_text(cr, "MK7");
+	cairo_move_to(cr, center_x + radius - MIC_PLOT_MARGIN + 2, 
+					  center_y + radius - MIC_PLOT_MARGIN + 16);
+	cairo_show_text(cr, "MK6");
 	cairo_move_to(cr, center_x - 20, center_y + radius + 20);
-	cairo_show_text(cr, "South");
-	// cairo_move_to(cr, center_x - radius + MIC_PLOT_MARGIN - 30, 
-	// 				  center_y + radius - MIC_PLOT_MARGIN + 20);
-	// cairo_show_text(cr, "225");
-	cairo_move_to(cr, center_x - radius - 50, center_y + 5);
-	cairo_show_text(cr, "West");
-	// cairo_move_to(cr, center_x - radius + MIC_PLOT_MARGIN - 30, 
-	// 				  center_y - radius + MIC_PLOT_MARGIN - 10);
-	// cairo_show_text(cr, "315");
+	cairo_show_text(cr, "MK5");
+	cairo_move_to(cr, center_x - radius + MIC_PLOT_MARGIN - 30, 
+					  center_y + radius - MIC_PLOT_MARGIN + 25);
+	cairo_show_text(cr, "MK4");
+	cairo_move_to(cr, center_x - radius - 40, center_y + 5);
+	cairo_show_text(cr, "MK3");
+	cairo_move_to(cr, center_x - radius + MIC_PLOT_MARGIN - 30, 
+					  center_y - radius + MIC_PLOT_MARGIN - 10);
+	cairo_show_text(cr, "MK2");
 }
 
 /**
@@ -269,7 +269,7 @@ void mic_plot_polar_fill(cairo_t *cr, int width, int height, double start,
 	start_rad = start * (M_PI / 180.0);
 	end_rad = end * (M_PI / 180.0);
 	start_compass = atan2(-cos(start_rad), sin(start_rad));
-   end_compass = atan2(-cos(end_rad), sin(end_rad));
+	end_compass = atan2(-cos(end_rad), sin(end_rad));
 
 	/* Select the sector area and then fill up. */
 	cairo_move_to(cr, center_x, center_y);
@@ -287,14 +287,14 @@ void mic_plot_polar_sector(cairo_t *cr, int width, int height, int mic)
 {
 	switch (mic)
 	{
-		case 1: mic_plot_polar_fill(cr, width, height, -15.0, 15.0); break;
-		case 2: mic_plot_polar_fill(cr, width, height, 30.0, 60.0); break;
-		case 3: mic_plot_polar_fill(cr, width, height, 75.0, 105.0); break;
-		case 4: mic_plot_polar_fill(cr, width, height, 120.0, 150.0); break;
-		case 5: mic_plot_polar_fill(cr, width, height, 165.0, 195.0); break;
-		case 6: mic_plot_polar_fill(cr, width, height, 210.0, 240.0); break;
-		case 7: mic_plot_polar_fill(cr, width, height, 255.0, 285.0); break;
-		case 8: mic_plot_polar_fill(cr, width, height, 300.0, 330.0); break;
+		case 1: mic_plot_polar_fill(cr, width, height, 337.5, 22.5); break;
+		case 2: mic_plot_polar_fill(cr, width, height, 292.5, 337.5); break;
+		case 3: mic_plot_polar_fill(cr, width, height, 67.5, 112.5); break;
+		case 4: mic_plot_polar_fill(cr, width, height, 202.5, 247.5); break;
+		case 5: mic_plot_polar_fill(cr, width, height, 157.5, 202.5); break;
+		case 6: mic_plot_polar_fill(cr, width, height, 112.5, 157.5); break;
+		case 7: mic_plot_polar_fill(cr, width, height, 247.5, 292.5); break;
+		case 8: mic_plot_polar_fill(cr, width, height, 222.5, 67.5); break;
 	}
 }
 
@@ -314,6 +314,6 @@ void mic_plot_polar(GtkDrawingArea *area, cairo_t *cr, int width, int height,
 	mic_plot_polar_frame(cr, width, height);	/* draw the frame */
 	mic_plot_polar_label(cr, width, height);	/* put the labels */
 	mic_plot_polar_sector(cr, width, height, 
-		sigVolumest);									/* fill the sector */
+		sigVolumest);							/* fill the sector */
 }
  

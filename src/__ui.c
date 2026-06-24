@@ -17,6 +17,8 @@
 
 #include "./main.h"
 
+/* General shared variables */
+
 GtkWidget *__ui_page_box_new(void)
 {
 	GtkWidget *pageBox;

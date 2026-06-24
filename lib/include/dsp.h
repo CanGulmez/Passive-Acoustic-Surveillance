@@ -52,17 +52,17 @@ extern "C" {
  
 /* User-defined constants */
 
-#define DATA_SIZE					1024
-#define MAX_MICS					24 
+#define DATA_SIZE			1024
+#define MAX_MICS			24 
 #define MAX_SOURCES        	8  
 #define SOUND_SPEED        	343.0    // m/s
 
 #define DEG(rad)           	((rad) * 180.0 / M_PI)
 #define RAD(deg)           	((deg) * M_PI / 180.0)
 
-#define PLOT_ID					"com.example.dsp"
-#define PLOT_MARGIN				40		/* pixel */
-#define PLOT_GRID					20		/* pixel */
+#define PLOT_ID				"com.example.dsp"
+#define PLOT_MARGIN			40		/* pixel */
+#define PLOT_GRID			20		/* pixel */
 
 /*****************************************************************************/
 /*****************************************************************************/

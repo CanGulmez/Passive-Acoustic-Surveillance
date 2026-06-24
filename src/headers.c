@@ -17,6 +17,11 @@
 
 #include "main.h"
 
+/* Global shared variables */
+
+HeaderButton headerButton;
+CurrentPage currentPage = PAGE_MICROPHONE;
+
 /**
  * System Window
  */

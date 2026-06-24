@@ -17,12 +17,6 @@
 
 #include "main.h"
 
-/* General shared widgets and variables */
-
-HeaderButton headerButton;
-CurrentPage currentPage = PAGE_MICROPHONE;
-PayloadData payloadData = {0};
-
 void on_visible_page_changed(GObject *object, GParamSpec *pspec, gpointer data)
 {
 	(void)pspec;
@@ -406,17 +400,17 @@ void on_mic_button_clicked(GtkButton *button, gpointer data)
 	{
 		/* Open the selected device node. */
 		deviceFd = open_device_node(micChannel, micDeviceNode);
-
+	
 		/* Open the 'sensor_data.db' database. */
 		db = db_open(DB_SENSOR_PATH);
 		db_create_table(db);
 
 		/* Create the new thread for reading the serial line. */
-		if (!micThreadStarted) 
+		if (!payloadThreadStarted) 
 		{
-			micThreadStarted = true;
-			s = pthread_create(&micThread, NULL, payload_data_thread, 
-							   (void *)&deviceFd);
+			payloadThreadStarted = true;
+			s = pthread_create(&payloadThread, NULL, 
+						payload_data_thread, (void *)&deviceFd);
 			if (s != 0)
 				syscall_error();
 		}
@@ -424,10 +418,10 @@ void on_mic_button_clicked(GtkButton *button, gpointer data)
 	else if (micButton == MIC_BUTTON_STOP) 
 	{
 		/* Cancel the thread. */
-		if (micThreadStarted)
+		if (payloadThreadStarted)
 		{
-			pthread_cancel(micThread);
-			micThreadStarted = false;
+			pthread_cancel(payloadThread);
+			payloadThreadStarted = false;
 		}	
 		/* Close the open database. */
 		if (db != NULL)

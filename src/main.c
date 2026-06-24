@@ -17,6 +17,13 @@
 
 #include "main.h"
 
+/* General shared widgets and variables */
+
+PayloadData payloadData = {0};
+pthread_t payloadThread;
+pthread_mutex_t payloadMutex = PTHREAD_MUTEX_INITIALIZER;
+bool payloadThreadStarted = false;
+
 void on_activate(GtkApplication *app, gpointer data)
 {
 	(void)data;

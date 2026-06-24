@@ -26,7 +26,15 @@
 #define HEADER_SYSTEM_WEBSITE				"https://github.com/CanGulmez/Passive-Acoustic-Surveillance"
 #define HEADER_SYSTEM_ICON					"weather-clear"
 
-/* Header button enumerations */
+/* Enumerations */
+
+typedef enum _CurrentPage 
+{
+	PAGE_MICROPHONE = 1,
+	PAGE_AI_MODEL,
+	PAGE_NAVIGATION,
+	PAGE_GPS_MAP
+} CurrentPage;
 
 typedef enum _HeaderButton 
 {
@@ -41,6 +49,7 @@ typedef enum _HeaderButton
 /* Header button shared widgets and variables */
 
 extern HeaderButton headerButton;
+extern CurrentPage currentPage;
 
 /* Header button function prototypes */
 
