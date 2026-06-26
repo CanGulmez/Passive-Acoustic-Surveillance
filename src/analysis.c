@@ -63,7 +63,7 @@ void prepare_samples(void)
 	{
 		sigSamples[6].data[i] = (double) payloadData.micFilter1[i];	
 	}
-	for (i = 0; i < DATA_SIZE; i++)			/* MKK */
+	for (i = 0; i < DATA_SIZE; i++)			/* MK8 */
 	{
 		sigSamples[7].data[i] = 0.0;
 	}
@@ -75,26 +75,47 @@ void prepare_samples(void)
 double find_dominant_freq(void)
 {
 	int i;
-	DspFreq outputs[MIC_COUNT];
-	DspTime magnitudes[MIC_COUNT];
-	int indexes[MIC_COUNT];
-	double frequencies[MIC_COUNT];
+	DspFreq outputs[MIC_COUNT] = {0};
+	DspTime magnitudes[MIC_COUNT] = {0};
+	int indexes[MIC_COUNT] = {0};
+	double frequencies[MIC_COUNT] = {0};
 	double max_freq = 0;
 
-	/* Convert the time domain signals into frequency domain. */
+	printf("MK2: %.4f, %.4f, %.4f\n", sigSamples[1].data[0], 
+		sigSamples[1].data[100], sigSamples[1].data[250]);
+	// printf("MK5: %.4f, %.4f, %.4f, %.4f\n", sigSamples[4].data[0], 
+	// 	sigSamples[4].data[100], sigSamples[4].data[250], sigSamples[4].data[600]);
+	// printf("MK6: %.4f, %.4f, %.4f, %.4f\n", sigSamples[5].data[0], 
+	// 	sigSamples[5].data[100], sigSamples[5].data[250], sigSamples[5].data[600]);
+	// printf("MK7: %.4f, %.4f, %.4f, %.4f\n", sigSamples[6].data[0], 
+	// 	sigSamples[6].data[100], sigSamples[6].data[250], sigSamples[6].data[600]);
+
+	/* Convert the time domain samples into frequency domain and then 
+	   calculate the magintudes to find the maximum frequencies and 
+	   corresponding bins. */
 	for (i = 0; i < MIC_COUNT; i++)
 	{
-		dsp_transform_fft(&sigSamples[i], &outputs[i]);
-		outputs[i].length = (int) (outputs[i].length / 2);
+		dsp_transform_dft(&sigSamples[i], &outputs[i]);
+		// dsp_freq_magnitude(&outputs[i], &magnitudes[i]);
+		// magnitudes[i].data[0] = 0.0;	/* pass the DC bias */
+		// indexes[i] = dsp_time_argmax(&magnitudes[i]);
+		// frequencies[i] = (MIC_SAMPLING_FREQ / DATA_SIZE) * indexes[i];
 	}
-	/* Find the maximum frequencies and corresponding bins. */
-	for (i = 0; i < MIC_COUNT; i++)
-	{
-		dsp_freq_magnitude(&outputs[i], &magnitudes[i]);
-		magnitudes[i].data[0] = 0.0;	/* pass the DC bias */
-		indexes[i] = dsp_time_argmax(&magnitudes[i]);
-		frequencies[i] = (MIC_SAMPLING_FREQ / DATA_SIZE) * indexes[i];
-	}
+	printf("MK2: [%.2f, %.2f], [%.2f, %.2f], [%.2f, %.2f]\n", 
+		outputs[1].data[0][0], outputs[1].data[0][1],
+		outputs[1].data[100][0], outputs[1].data[100][1],
+		outputs[1].data[250][0], outputs[1].data[250][1]);
+	// printf("MK5: %.2f, %.2f, %.2f\n", outputs[4].data[0][0], 
+	// 	outputs[4].data[100][0], outputs[4].data[250][0], outputs[4].data[600][0]);
+	// printf("MK6: %.2f, %.2f, %.2f\n", outputs[5].data[0][0], 
+	// 	outputs[5].data[100][0], outputs[5].data[250][0], outputs[5].data[600][0]);
+	// printf("MK7: %.2f, %.2f, %.2f\n", outputs[6].data[0][0], 
+	// 	outputs[6].data[100][0], outputs[6].data[250][0], outputs[6].data[600][0]);
+		
+	// printf("\n");
+	// printf("frequencies: ");
+	// printf("MK2: %.2f, MK5: %.2f, MK6: %.2f, MK7: %.2f", frequencies[1], frequencies[4], frequencies[5], frequencies[6]);
+	// printf("\n");
 	/* Compare the frequencies to find the maximum one. */
 	for (i = 0; i < MIC_COUNT; i++)
 	{
@@ -313,12 +334,12 @@ void update_mic_data(void)
 
 	/* Make the signal analysis. */
 	make_signal_analysis(&sigBeamformed, arrival);
-	print_log("completed the signal analysis operations");
+	// print_log("completed the signal analysis operations");
 
 	/* Lastly, redraw the cartesian and polar plots. */
 	gtk_widget_queue_draw(micCarPlot);
 	gtk_widget_queue_draw(micPolarPlot);
-	print_log("requested the microphone plot redraws");
+	// print_log("requested the microphone plot redraws");
 }
 
 /**
@@ -352,7 +373,7 @@ void update_nav_data(void)
 	/* Update the temperature output. */
 	snprintf(buffer, BUFFER_SIZE, "%.3f", payloadData.imuTemp);	
 	__ui_action_row_update(navSensorRows[7], buffer);
-	print_log("updated the navigation data recently");
+	// print_log("updated the navigation data recently");
 
 	/* Select the direction and rotation for plot. */
 	navAccel = accel_direction();
@@ -360,7 +381,7 @@ void update_nav_data(void)
 
 	/* Request redraw for navigation plot. */
 	gtk_widget_queue_draw(navPlotArea);
-	print_log("requested the navigtion plot redraw");
+	// print_log("requested the navigtion plot redraw");
 }
 
 /**
@@ -385,7 +406,7 @@ void update_gps_data(void)
 	__ui_action_row_update(gpsModuleRows[8], "0.0");
 	__ui_action_row_update(gpsModuleRows[9], "0.0");
 	__ui_action_row_update(gpsModuleRows[10], "0.0");
-	print_log("updated the GPS map data recently");
+	// print_log("updated the GPS map data recently");
 
 	/* Update the GPS map. */
 	// latitude = atof(payloadData.gpsLatitude);
@@ -394,7 +415,7 @@ void update_gps_data(void)
 	longitude = GPS_INIT_LONG;
 	// shumate_map_center_on(gpsMap, latitude, longitude + i * 0.01);
 	// gps_map_area_markers(gpsMarkerLayer, latitude, longitude + i * 0.01);
-	print_log("marked the last position on the gps map");
+	// print_log("marked the last position on the gps map");
 
 	i++;
 }

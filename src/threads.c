@@ -48,7 +48,7 @@ void *payload_data_thread(void *arg)
 			syscall_error();
 
 		/* Take the another required actions. */
-		record_payload_data();
+		// record_payload_data();
 	}
 	return NULL;
 }

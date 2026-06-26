@@ -45,6 +45,7 @@ extern "C" {
 #define CHANNEL_COUNT		4
 #define MIC_COUNT			(CHANNEL_COUNT * 2)
 #define MAGIC_WORD			(-99)
+#define MIC_NOISE			1000.0
 
 #define FILE				__FILE__
 #define LINE				__LINE__

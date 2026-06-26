@@ -2,7 +2,7 @@
 
 # Toolchain definitions
 CC				:= arm-none-eabi-gcc
-OBJCOPY			:= arm-none-eabi-objcopy
+OBJCOPY		:= arm-none-eabi-objcopy
 SIZE			:= arm-none-eabi-size
 RM				:= rm
 FILE			:= file
@@ -16,19 +16,19 @@ DEVICE_VARIANT	:= STM32H750VBTx
 # Compiler and linker flags
 CORTEX_FLAGS	:= -mthumb -mcpu=cortex-m7 -mfpu=fpv5-d16 -mfloat-abi=hard
 COMMON_FLAGS	:= -std=gnu2x -O0 -g -Wall -Wextra -ffunction-sections -fdata-sections
-AS_FLAGS		:= -x assembler-with-cpp
+AS_FLAGS			:= -x assembler-with-cpp
 
 # Include paths
-MAIN_INC		:= ./src
+MAIN_INC			:= ./src
 CMSIS_INC		:= ./drivers/CMSIS/Include 
 CMSIS_DEV_INC	:= ./drivers/CMSIS/Device/ST/STM32H7xx/Include
 HAL_INC			:= ./drivers/STM32H7xx_HAL_Driver/Inc
-RTOS_INC		:= ./drivers/FreeRTOS/include 
+RTOS_INC			:= ./drivers/FreeRTOS/include 
 RTOS_GCC_INC	:= ./drivers/FreeRTOS/portable/GCC/ARM_CM7
 FATFS_INC		:= ./drivers/FatFs/src
 
 # Source files
-MAIN_SRC		:= $(wildcard ./src/*.c)
+MAIN_SRC			:= $(wildcard ./src/*.c)
 HAL_SRC			:= $(wildcard ./drivers/STM32H7xx_HAL_Driver/Src/*.c)
 SYSTEM_SRC		:= ./drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/system_stm32h7xx.c
 RTOS_SRC		:= $(wildcard ./drivers/FreeRTOS/*.c) 

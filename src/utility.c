@@ -272,7 +272,7 @@ void read_device_node(int deviceFd)
 		else if (numRead == -1) 
 			syscall_error(); 
 	}
-	print_log("read total %ld bytes from the associated node", totalRead);
+	// print_log("read total %ld bytes from the associated node", totalRead);
 }
 
 /**

@@ -39,9 +39,12 @@ void taskMicSensor0(void *pvParams)
 		notified = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 		if (notified != 0)
 		{
+			/* Normalize the filter samples and suppress the noises. */
 			for (i = 0; i < DATA_SIZE; i++)
 			{
 				samples[i] = samples[i] >> 8;
+				samples[i] = ((samples[i] >= -MIC_NOISE) && 
+							  (samples[i] <= MIC_NOISE)) ? 1.0 : samples[i];
 			}
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
@@ -81,9 +84,12 @@ void taskMicSensor1(void *pvParams)
 		notified = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 		if (notified != 0)
 		{
+			/* Normalize the filter samples and suppress the noises. */
 			for (i = 0; i < DATA_SIZE; i++)
 			{
 				samples[i] = samples[i] >> 8;
+				samples[i] = ((samples[i] >= -MIC_NOISE) && 
+							  (samples[i] <= MIC_NOISE)) ? 1.0 : samples[i];
 			}
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
@@ -123,9 +129,12 @@ void taskMicSensor2(void *pvParams)
 		notified = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 		if (notified != 0)
 		{
+			/* Normalize the filter samples and suppress the noises. */
 			for (i = 0; i < DATA_SIZE; i++)
 			{
 				samples[i] = samples[i] >> 8;
+				samples[i] = ((samples[i] >= -MIC_NOISE) && 
+							  (samples[i] <= MIC_NOISE)) ? 1.0 : samples[i];
 			}
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
@@ -165,9 +174,12 @@ void taskMicSensor3(void *pvParams)
 		notified = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 		if (notified != 0)
 		{
+			/* Normalize the filter samples and suppress the noises. */
 			for (i = 0; i < DATA_SIZE; i++)
 			{
 				samples[i] = samples[i] >> 8;
+				samples[i] = ((samples[i] >= -MIC_NOISE) && 
+							  (samples[i] <= MIC_NOISE)) ? 1.0 : samples[i];
 			}
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
@@ -207,7 +219,7 @@ void taskIMUSensor(void *pvParams)
 	writeRegToIMU(IMU_REG_CTRL3_C, 0x44);	/* BDU and IF_INC */
 
 	lastWake = xTaskGetTickCount();
-	delay = pdMS_TO_TICKS(4000);
+	delay = pdMS_TO_TICKS(1000);
 	for (;;)
 	{
 		/* Give some period. */
@@ -261,9 +273,9 @@ void taskTransmitter(void *pvParams)
 			HAL_UART_Transmit(&huart4, (uint8_t *)&payloadData, sizeof(payloadData), 
 				portMAX_DELAY);
 
-			// printLog("filter0 (MK2): %ld, %ld, %ld", payloadData.micFilter0[10], payloadData.micFilter0[100], payloadData.micFilter0[500]);
-			// printLog("filter1 (MK7): %ld, %ld, %ld", payloadData.micFilter1[10], payloadData.micFilter1[100], payloadData.micFilter1[500]);
-			// printLog("filter2 (MK6): %ld, %ld, %ld", payloadData.micFilter2[10], payloadData.micFilter2[100], payloadData.micFilter2[500]);
+			// printLog("filter0 (MK2): %ld, %ld, %ld", payloadData.micFilter0[50], payloadData.micFilter0[100], payloadData.micFilter0[500]);
+			// printLog("filter1 (MK7): %ld, %ld, %ld", payloadData.micFilter1[1], payloadData.micFilter1[100], payloadData.micFilter1[500]);
+			// printLog("filter2 (MK6): %ld, %ld, %ld", payloadData.micFilter2[1], payloadData.micFilter2[100], payloadData.micFilter2[500]);
 			// printLog("filter3 (MK5): %ld, %ld, %ld", payloadData.micFilter3[10], payloadData.micFilter3[100], payloadData.micFilter3[500]);
 			// printLog("accel: %f, %f, %f", payloadData.imuAccel[0], payloadData.imuAccel[1], payloadData.imuAccel[2]);
 			// printLog("gyro: %f, %f, %f", payloadData.imuGyro[0], payloadData.imuGyro[1], payloadData.imuGyro[2]);
