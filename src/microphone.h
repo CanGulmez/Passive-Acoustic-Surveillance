@@ -29,7 +29,7 @@
 #define MIC_SIGNAL_NUM						15
 #define MIC_COUNT							8
 #define MIC_RADIUS							0.1		/* meter */
-#define MIC_SAMPLING_FREQ					48000	/* Hz */
+#define MIC_SAMPLING_FREQ					48828	/* Hz */
 #define MIC_DEVICE_NODE						64
 #define MIC_MAGIC_WORD						-99
 

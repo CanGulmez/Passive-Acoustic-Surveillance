@@ -43,8 +43,8 @@ void taskMicSensor0(void *pvParams)
 			for (i = 0; i < DATA_SIZE; i++)
 			{
 				samples[i] = samples[i] >> 8;
-				samples[i] = ((samples[i] >= -MIC_NOISE) && 
-							  (samples[i] <= MIC_NOISE)) ? 1.0 : samples[i];
+				// samples[i] = ((samples[i] >= -MIC_NOISE) && 
+				// 			  (samples[i] <= MIC_NOISE)) ? 1.0 : samples[i];
 			}
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
@@ -88,8 +88,8 @@ void taskMicSensor1(void *pvParams)
 			for (i = 0; i < DATA_SIZE; i++)
 			{
 				samples[i] = samples[i] >> 8;
-				samples[i] = ((samples[i] >= -MIC_NOISE) && 
-							  (samples[i] <= MIC_NOISE)) ? 1.0 : samples[i];
+				// samples[i] = ((samples[i] >= -MIC_NOISE) && 
+				// 			  (samples[i] <= MIC_NOISE)) ? 1.0 : samples[i];
 			}
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
@@ -133,8 +133,8 @@ void taskMicSensor2(void *pvParams)
 			for (i = 0; i < DATA_SIZE; i++)
 			{
 				samples[i] = samples[i] >> 8;
-				samples[i] = ((samples[i] >= -MIC_NOISE) && 
-							  (samples[i] <= MIC_NOISE)) ? 1.0 : samples[i];
+				// samples[i] = ((samples[i] >= -MIC_NOISE) && 
+				// 			  (samples[i] <= MIC_NOISE)) ? 1.0 : samples[i];
 			}
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))
@@ -178,8 +178,8 @@ void taskMicSensor3(void *pvParams)
 			for (i = 0; i < DATA_SIZE; i++)
 			{
 				samples[i] = samples[i] >> 8;
-				samples[i] = ((samples[i] >= -MIC_NOISE) && 
-							  (samples[i] <= MIC_NOISE)) ? 1.0 : samples[i];
+				// samples[i] = ((samples[i] >= -MIC_NOISE) && 
+				// 			  (samples[i] <= MIC_NOISE)) ? 1.0 : samples[i];
 			}
 			/* Take the payload mutex to update the shared payload data object. */
 			if (xSemaphoreTake(payloadMutex, portMAX_DELAY))

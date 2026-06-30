@@ -74,57 +74,46 @@ void prepare_samples(void)
  */
 double find_dominant_freq(void)
 {
-	int i;
-	DspFreq outputs[MIC_COUNT] = {0};
+	int i, j;
+	DspTime centered[MIC_COUNT] = {0};
+	DspTime windowed[MIC_COUNT] = {0};
+	DspFreq transformed[MIC_COUNT] = {0};
 	DspTime magnitudes[MIC_COUNT] = {0};
 	int indexes[MIC_COUNT] = {0};
 	double frequencies[MIC_COUNT] = {0};
-	double max_freq = 0;
+	double maxFreq = 0.0, mean = 0.0;
 
-	printf("MK2: %.4f, %.4f, %.4f\n", sigSamples[1].data[0], 
-		sigSamples[1].data[100], sigSamples[1].data[250]);
-	// printf("MK5: %.4f, %.4f, %.4f, %.4f\n", sigSamples[4].data[0], 
-	// 	sigSamples[4].data[100], sigSamples[4].data[250], sigSamples[4].data[600]);
-	// printf("MK6: %.4f, %.4f, %.4f, %.4f\n", sigSamples[5].data[0], 
-	// 	sigSamples[5].data[100], sigSamples[5].data[250], sigSamples[5].data[600]);
-	// printf("MK7: %.4f, %.4f, %.4f, %.4f\n", sigSamples[6].data[0], 
-	// 	sigSamples[6].data[100], sigSamples[6].data[250], sigSamples[6].data[600]);
-
-	/* Convert the time domain samples into frequency domain and then 
-	   calculate the magintudes to find the maximum frequencies and 
-	   corresponding bins. */
 	for (i = 0; i < MIC_COUNT; i++)
 	{
-		dsp_transform_dft(&sigSamples[i], &outputs[i]);
-		// dsp_freq_magnitude(&outputs[i], &magnitudes[i]);
-		// magnitudes[i].data[0] = 0.0;	/* pass the DC bias */
-		// indexes[i] = dsp_time_argmax(&magnitudes[i]);
-		// frequencies[i] = (MIC_SAMPLING_FREQ / DATA_SIZE) * indexes[i];
+		/* Calculate the mean of the samples and then subtract it. */
+		mean = dsp_time_mean(&sigSamples[i]);
+		centered[i].length = sigSamples[i].length;
+		for (j = 0; j < centered[i].length; j++)
+		{
+			centered[i].data[j] = sigSamples[i].data[j] - mean;
+		}
+		/* Window the centered samples to reduce the DC bias. */
+		dsp_window_blackman(&centered[i], &windowed[i]);
+
+		/* Convert the time-domain windowed samples into frequency 
+		   domain and then calculate the magnitude of these samples. */
+		dsp_transform_fft(&windowed[i], &transformed[i]);
+		dsp_freq_magnitude(&transformed[i], &magnitudes[i]);
+		magnitudes[i].data[0] = 0.0;	/* pass the DC bias */
+
+		/* Find the max bin to convert it to real sample frequency. */
+		indexes[i] = dsp_time_argmax(&magnitudes[i]);
+		frequencies[i] = (MIC_SAMPLING_FREQ / DATA_SIZE) * indexes[i];
 	}
-	printf("MK2: [%.2f, %.2f], [%.2f, %.2f], [%.2f, %.2f]\n", 
-		outputs[1].data[0][0], outputs[1].data[0][1],
-		outputs[1].data[100][0], outputs[1].data[100][1],
-		outputs[1].data[250][0], outputs[1].data[250][1]);
-	// printf("MK5: %.2f, %.2f, %.2f\n", outputs[4].data[0][0], 
-	// 	outputs[4].data[100][0], outputs[4].data[250][0], outputs[4].data[600][0]);
-	// printf("MK6: %.2f, %.2f, %.2f\n", outputs[5].data[0][0], 
-	// 	outputs[5].data[100][0], outputs[5].data[250][0], outputs[5].data[600][0]);
-	// printf("MK7: %.2f, %.2f, %.2f\n", outputs[6].data[0][0], 
-	// 	outputs[6].data[100][0], outputs[6].data[250][0], outputs[6].data[600][0]);
-		
-	// printf("\n");
-	// printf("frequencies: ");
-	// printf("MK2: %.2f, MK5: %.2f, MK6: %.2f, MK7: %.2f", frequencies[1], frequencies[4], frequencies[5], frequencies[6]);
-	// printf("\n");
 	/* Compare the frequencies to find the maximum one. */
 	for (i = 0; i < MIC_COUNT; i++)
 	{
-		if (frequencies[i] > max_freq)
+		if (frequencies[i] > maxFreq)
 		{
-			max_freq = frequencies[i];
+			maxFreq = frequencies[i];
 		}
 	}
-	return max_freq;
+	return maxFreq;
 }
 
 /**

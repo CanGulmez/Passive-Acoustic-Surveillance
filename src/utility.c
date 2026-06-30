@@ -272,7 +272,7 @@ void read_device_node(int deviceFd)
 		else if (numRead == -1) 
 			syscall_error(); 
 	}
-	// print_log("read total %ld bytes from the associated node", totalRead);
+	// print_log("read total %ld bytes from the device node", totalRead);
 }
 
 /**
@@ -474,5 +474,5 @@ void record_payload_data(void)
 	// db = (sqlite3 *)data;
 	/* Bind the last sensor data. */
 	// db_bind_data(db);
-	print_log("recorded the payload data into '%s'", DB_SENSOR_PATH);
+	// print_log("recorded the payload data in the database");
 }

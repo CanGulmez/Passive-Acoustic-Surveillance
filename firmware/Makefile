@@ -2,7 +2,7 @@
 
 # Toolchain definitions
 CC				:= arm-none-eabi-gcc
-OBJCOPY		:= arm-none-eabi-objcopy
+OBJCOPY			:= arm-none-eabi-objcopy
 SIZE			:= arm-none-eabi-size
 RM				:= rm
 FILE			:= file

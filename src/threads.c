@@ -18,9 +18,9 @@
 #include "main.h"
 
 /**
- * Read the associated device node to get the payload data. This
- * is done by creating a new thread because of attempting to not
- * freezing the main thread.
+ * Read the associated device node to get the payload 
+ * data. This is done by creating a new thread because 
+ * of attempting to not freezing the main thread.
  */
 void *payload_data_thread(void *arg)
 {
@@ -48,7 +48,7 @@ void *payload_data_thread(void *arg)
 			syscall_error();
 
 		/* Take the another required actions. */
-		// record_payload_data();
+		record_payload_data();
 	}
 	return NULL;
 }

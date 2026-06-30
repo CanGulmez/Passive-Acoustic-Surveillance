@@ -1,7 +1,7 @@
 # Unit Tests
 
-CC					:= gcc
-CFLAGS			:= -Wall -std=gnu17 -O3 -march=native
+CC				:= gcc
+CFLAGS			:= -Wall -std=gnu2x -O3 -march=native
 
 DEPENDS			:= check sqlite3 gsl gtk4 libadwaita-1 shumate-1.0
 CONFIG			:= -ldsp -L../../lib $(shell pkg-config --cflags --libs $(DEPENDS))
